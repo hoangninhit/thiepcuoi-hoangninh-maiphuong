@@ -1,0 +1,3256 @@
+/* =====================================================================
+   THIỆP CƯỚI HOÀNG NINH & MAI PHƯƠNG - MẪU ĐỎ MỘC NÂU SANG TRỌNG
+   Theme: Burgundy Red (#85141b) & Warm Earth Brown (#4a2e2b) & Gold (#d4af37)
+   Standard Vietnamese Wedding Typography: Playfair Display & Cormorant Garamond
+   ===================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Dancing+Script:wght@500;600;700&family=Great+Vibes&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&display=swap');
+
+:root {
+  --primary-red: #8b1820;
+  --primary-dark-red: #680f15;
+  --accent-gold: #c59b4c;
+  --accent-light-gold: #e8d39f;
+  --earth-brown: #4a2e2b;
+  --warm-bg: #fcf9f5;
+  --card-bg: #ffffff;
+  --text-dark: #2c2523;
+  --text-muted: #6b6360;
+  --border-gold: rgba(197, 155, 76, 0.4);
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --shadow-strong: 0 15px 35px rgba(104, 15, 21, 0.2);
+  --font-wedding: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  --font-serif: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Montserrat', sans-serif;
+  --font-script: 'Great Vibes', cursive;
+  --font-calligraphy: 'Dancing Script', cursive;
+  --container-width: 450px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 15px;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #201415;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(139, 24, 32, 0.35) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(197, 155, 76, 0.22) 0%, transparent 40%),
+    linear-gradient(135deg, #170d0e 0%, #2b1718 100%);
+  background-attachment: fixed;
+  color: var(--text-dark);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Outer Desktop Frame */
+.desktop-wrapper {
+  width: 100%;
+  max-width: var(--container-width);
+  min-height: 100vh;
+  background-color: var(--warm-bg);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow-x: hidden;
+  opacity: 1;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.desktop-wrapper.revealed {
+  animation: mainContentReveal 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes mainContentReveal {
+  from { opacity: 0; transform: translateY(30px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Petals Falling Canvas */
+#particles-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99;
+}
+
+/* =====================================================================
+   FLOATING MUSIC & CONTROLS
+   ===================================================================== */
+.floating-music-btn {
+  position: fixed;
+  bottom: 25px;
+  left: calc(50% - (var(--container-width) / 2) + 20px);
+  z-index: 1000;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b1820, #5c0f14);
+  border: 2px solid var(--accent-light-gold);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+@media (max-width: 480px) {
+  .floating-music-btn {
+    left: 20px;
+  }
+}
+
+.floating-music-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(139, 24, 32, 0.5);
+}
+
+.music-disc {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: spinDisc 6s linear infinite;
+  animation-play-state: paused;
+}
+
+.floating-music-btn.playing .music-disc {
+  animation-play-state: running;
+}
+
+.floating-music-btn.playing::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid var(--accent-gold);
+  animation: pulseRipple 1.8s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes spinDisc {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulseRipple {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.music-icon {
+  font-size: 18px;
+  color: #fff;
+}
+
+/* Floating Share / Tool Button */
+.floating-tool-btn {
+  position: fixed;
+  bottom: 25px;
+  right: calc(50% - (var(--container-width) / 2) + 20px);
+  z-index: 1000;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid var(--accent-gold);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+@media (max-width: 480px) {
+  .floating-tool-btn {
+    right: 20px;
+  }
+}
+
+.floating-tool-btn:hover {
+  transform: scale(1.1);
+}
+
+/* =====================================================================
+   IMPERIAL PALACE GATE OPENING TRANSITION (CỬA CUNG ĐÌNH HOÀNG GIA)
+   ===================================================================== */
+.palace-gate-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at 50% 35%, #3d070c 0%, #200407 60%, #0a0102 100%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 1.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.3s ease, transform 1.3s ease;
+  padding: 15px;
+  overflow: hidden;
+}
+
+.palace-gate-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.15);
+  pointer-events: none;
+}
+
+/* Top Bar & Skip Button */
+.palace-top-bar {
+  position: absolute;
+  top: 18px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 25px;
+  z-index: 100;
+}
+
+.palace-top-badge {
+  font-family: var(--font-serif);
+  font-size: 11.5px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--accent-light-gold);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+}
+
+.btn-skip-intro {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: #edd9b5;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.btn-skip-intro:hover {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  border-color: var(--accent-gold);
+  transform: translateY(-1px);
+}
+
+/* Golden Ray Backdrop / Palace Interior Glow */
+.palace-interior-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1s ease;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.palace-light-beam {
+  width: 110vmax;
+  height: 110vmax;
+  background: radial-gradient(circle, rgba(255, 235, 175, 0.95) 0%, rgba(212, 175, 55, 0.5) 30%, transparent 65%);
+  transform: scale(0.4);
+  transition: transform 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.palace-gate-overlay.doors-opened .palace-interior-glow {
+  opacity: 1;
+}
+
+.palace-gate-overlay.doors-opened .palace-light-beam {
+  transform: scale(1.4);
+}
+
+/* Palace Gate Arch & Container */
+.palace-gate-container {
+  position: relative;
+  width: 350px;
+  max-width: 92vw;
+  margin: auto;
+  perspective: 1400px;
+  z-index: 20;
+  transition: transform 1.2s ease, opacity 1s ease;
+  animation: floatPalaceGate 4s ease-in-out infinite;
+}
+
+@keyframes floatPalaceGate {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+.palace-gate-overlay.doors-opened .palace-gate-container {
+  animation: none;
+}
+
+/* Imperial Roof Cornice & Plaque */
+.palace-roof-cornice {
+  position: relative;
+  z-index: 25;
+  margin-bottom: -2px;
+}
+
+.palace-roof-eaves {
+  height: 22px;
+  background: linear-gradient(180deg, #9a7329, #c59b4c 50%, #6b4d1b 100%);
+  border-radius: 8px 8px 0 0;
+  position: relative;
+  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+}
+
+.eave-ornament {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff1c5 0%, #c59b4c 100%);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.eave-ridge {
+  display: flex;
+  gap: 15px;
+  color: #fff2cb;
+  font-size: 11px;
+}
+
+.roof-tile-ornament {
+  opacity: 0.85;
+}
+
+.palace-plaque {
+  background: linear-gradient(135deg, #7a1218, #540c10);
+  border: 2px solid var(--accent-gold);
+  padding: 10px 14px;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+.plaque-border {
+  border: 1px dashed rgba(212, 175, 55, 0.5);
+  padding: 6px;
+  border-radius: 4px;
+}
+
+.plaque-sub {
+  font-family: var(--font-serif);
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--accent-light-gold);
+  text-transform: uppercase;
+  display: block;
+}
+
+.plaque-title {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  color: #ffffff;
+  letter-spacing: 2px;
+  margin: 2px 0 3px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-weight: 700;
+}
+
+.plaque-guest {
+  font-size: 11.5px;
+  color: #edd9b5;
+  font-style: italic;
+}
+
+.plaque-guest strong {
+  color: #ffffff;
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* 3D Door Portal */
+.palace-door-portal {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  display: flex;
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+  border: 4px solid #8c6a21;
+  border-top: none;
+  border-bottom: none;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+  background: #240508;
+  overflow: visible;
+}
+
+@media (max-height: 700px) {
+  .palace-door-portal {
+    height: 330px;
+  }
+}
+
+.palace-door {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 1.6s cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: transform;
+  background: linear-gradient(180deg, #6b1016 0%, #87151c 30%, #590c11 70%, #47080c 100%);
+}
+
+.door-left {
+  left: 0;
+  transform-origin: left center;
+  border-right: 2px solid #330407;
+  box-shadow: inset -5px 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.door-right {
+  right: 0;
+  transform-origin: right center;
+  border-left: 2px solid #330407;
+  box-shadow: inset 5px 0 15px rgba(0, 0, 0, 0.5);
+}
+
+/* 3D Door Opening State */
+.palace-gate-overlay.doors-opened .door-left {
+  transform: rotateY(-86deg);
+  box-shadow: -15px 0 35px rgba(0, 0, 0, 0.85);
+}
+
+.palace-gate-overlay.doors-opened .door-right {
+  transform: rotateY(86deg);
+  box-shadow: 15px 0 35px rgba(0, 0, 0, 0.85);
+}
+
+/* Door Inner Frame & Ornaments */
+.door-frame-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 6px;
+}
+
+.door-corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--accent-gold);
+}
+.door-corner.lt { top: 4px; left: 4px; border-right: none; border-bottom: none; }
+.door-corner.lb { bottom: 4px; left: 4px; border-right: none; border-top: none; }
+.door-corner.rt { top: 4px; right: 4px; border-left: none; border-bottom: none; }
+.door-corner.rb { bottom: 4px; right: 4px; border-left: none; border-top: none; }
+
+/* Golden Rivets Matrix */
+.rivets-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px 8px;
+  padding: 8px 6px;
+  justify-items: center;
+}
+
+.rivet {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff1c5 0%, #d4af37 55%, #805f18 100%);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.7);
+}
+
+/* Imperial Brass Lion Door Knocker */
+.door-knocker-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 6px 0;
+  position: relative;
+  z-index: 10;
+}
+
+.knocker-mask {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fce9b8 0%, #c59b4c 60%, #7d5b19 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3b0609;
+  font-size: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+  border: 1.5px solid #fff2cb;
+}
+
+.knocker-ring {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 4px solid #d4af37;
+  margin-top: -12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  animation: knockerSwing 3s ease-in-out infinite;
+}
+
+@keyframes knockerSwing {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(8deg); }
+}
+
+/* Door Carving */
+.door-carving {
+  border-top: 1px dashed rgba(212, 175, 55, 0.4);
+  padding-top: 6px;
+  margin: 0 4px;
+}
+
+.carving-filigree {
+  height: 16px;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+  border-radius: 3px;
+}
+
+/* Center Palace Lock (Touch Trigger) */
+.palace-center-lock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 50;
+  cursor: pointer;
+  text-align: center;
+  pointer-events: auto;
+  transition: transform 0.3s ease;
+}
+
+.palace-center-lock:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.lock-ornament {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #9e1921 0%, #630c11 75%, #3d060a 100%);
+  border: 3px solid #d4af37;
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.75), inset 0 2px 4px rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: lockGlow 2.2s infinite ease-in-out;
+}
+
+@keyframes lockGlow {
+  0% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.5), 0 0 0 0 rgba(212, 175, 55, 0.5); }
+  50% { box-shadow: 0 0 35px 8px rgba(212, 175, 55, 0.85), 0 0 15px 4px rgba(255, 230, 160, 0.8); }
+  100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.5), 0 0 0 0 rgba(212, 175, 55, 0.5); }
+}
+
+.lock-double-happiness {
+  font-size: 26px;
+  color: #ffe6a0;
+  font-weight: bold;
+  line-height: 1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.lock-monogram {
+  font-family: var(--font-serif);
+  font-size: 9.5px;
+  color: #ffffff;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.palace-touch-hint {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(5px);
+  color: #f7e6c4;
+  font-family: var(--font-serif);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  animation: hintBounce 2s infinite ease-in-out;
+}
+
+/* Lock Unlocking Animation */
+.palace-center-lock.unlocked {
+  animation: lockBreak 0.6s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+}
+
+@keyframes lockBreak {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  50% { transform: translate(-50%, -50%) scale(1.3) rotate(20deg); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(1.6) rotate(45deg); opacity: 0; pointer-events: none; }
+}
+
+/* Imperial Threshold */
+.palace-threshold {
+  background: linear-gradient(180deg, #3d070b, #220305);
+  border: 2px solid var(--accent-gold);
+  border-top: 3px solid #d4af37;
+  padding: 8px;
+  text-align: center;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+}
+
+.threshold-meta {
+  font-family: var(--font-serif);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #edd9b5;
+}
+
+.threshold-meta strong {
+  color: var(--accent-light-gold);
+  margin-left: 5px;
+}
+/* =====================================================================
+   MAIN SECTIONS COMMON
+   ===================================================================== */
+section {
+  position: relative;
+  width: 100%;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 15px auto 25px;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  height: 1px;
+  width: 50px;
+  background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+}
+
+.section-divider i {
+  color: var(--accent-gold);
+  font-size: 14px;
+}
+
+.sec-subtitle {
+  font-family: var(--font-serif);
+  font-size: 12px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.sec-title {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  color: var(--primary-red);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* =====================================================================
+   SECTION 1: HERO & BÌA THIỆP
+   ===================================================================== */
+.section-hero {
+  padding: 30px 15px 40px;
+  background: #ffffff;
+  position: relative;
+}
+
+.hero-ornament-top {
+  width: 180px;
+  margin: 0 auto 10px;
+  opacity: 0.85;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-family: 'Montserrat', var(--font-serif);
+  font-size: 13px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+  font-weight: 600;
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.hero-badge::before,
+.hero-badge::after {
+  content: '';
+  display: inline-block;
+  width: 26px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-gold));
+}
+
+.hero-badge::after {
+  background: linear-gradient(90deg, var(--accent-gold), transparent);
+}
+
+.hero-names {
+  font-family: var(--font-wedding);
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: var(--primary-red);
+  line-height: 1.25;
+  margin-bottom: 16px;
+  text-shadow: 0 1px 3px rgba(139, 24, 32, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-names .name-line {
+  display: block;
+  letter-spacing: 3.5px;
+  white-space: nowrap;
+}
+
+.hero-names span.and {
+  font-family: var(--font-wedding);
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent-gold);
+  margin: 3px 0 5px;
+  width: 100%;
+}
+
+.hero-names span.and::before,
+.hero-names span.and::after {
+  content: '';
+  display: inline-block;
+  width: 36px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(197, 155, 76, 0.6));
+}
+
+.hero-names span.and::after {
+  background: linear-gradient(90deg, rgba(197, 155, 76, 0.6), transparent);
+}
+
+@media (max-width: 380px) {
+  .hero-names {
+    font-size: 31px;
+    letter-spacing: 2.5px;
+  }
+  .hero-names .name-line {
+    letter-spacing: 2.5px;
+  }
+  .hero-names span.and {
+    font-size: 24px;
+  }
+}
+
+.hero-photo-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 370px;
+  margin: 0 auto 20px;
+  border-radius: 180px 180px 12px 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  border: 4px solid #ffffff;
+  outline: 1px solid var(--border-gold);
+}
+
+.hero-photo-wrapper img {
+  width: 100%;
+  height: 440px;
+  object-fit: cover;
+  object-position: 42% center;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.hero-photo-wrapper:hover img {
+  transform: scale(1.03);
+}
+
+.hero-date-banner {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  letter-spacing: 3px;
+  color: var(--primary-red);
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+/* Guest Personalized Card */
+.guest-invitation-card {
+  background: linear-gradient(135deg, #fdfbf7 0%, #f6ede2 100%);
+  border: 1px solid var(--border-gold);
+  border-radius: 12px;
+  padding: 20px 15px;
+  max-width: 360px;
+  margin: 0 auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.guest-card-corner {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border: 2px solid var(--accent-gold);
+}
+
+.guest-card-corner.top-left { top: 6px; left: 6px; border-right: none; border-bottom: none; }
+.guest-card-corner.top-right { top: 6px; right: 6px; border-left: none; border-bottom: none; }
+.guest-card-corner.bottom-left { bottom: 6px; left: 6px; border-right: none; border-top: none; }
+.guest-card-corner.bottom-right { bottom: 6px; right: 6px; border-left: none; border-top: none; }
+
+.guest-invitation-card .invite-label {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.guest-invitation-card .guest-highlight-name {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  color: var(--primary-red);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.guest-invitation-card .invite-line {
+  width: 120px;
+  height: 1px;
+  background: var(--accent-gold);
+  margin: 0 auto 10px;
+}
+
+.guest-invitation-card .invite-sub {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* =====================================================================
+   SECTION 2: LỜI BÁO TIN & HAI GIA ĐÌNH
+   ===================================================================== */
+.section-families {
+  background: #ffffff;
+  padding: 45px 20px;
+  position: relative;
+  border-top: 1px dashed var(--border-gold);
+  border-bottom: 1px dashed var(--border-gold);
+}
+
+.announcement-text {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  color: var(--earth-brown);
+  line-height: 1.8;
+  margin-bottom: 30px;
+  font-style: italic;
+}
+
+.families-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 35px;
+}
+
+.family-column {
+  background: #faf7f2;
+  border-radius: 10px;
+  padding: 20px 12px;
+  border: 1px solid rgba(197, 155, 76, 0.25);
+  text-align: center;
+}
+
+.family-title {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--primary-red);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-gold);
+}
+
+.parent-names {
+  font-size: 13px;
+  line-height: 1.6;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.family-address {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+/* Groom & Bride Feature */
+.couple-feature {
+  position: relative;
+  margin: 30px 0 20px;
+}
+
+.couple-arch-photo {
+  width: 200px;
+  height: 270px;
+  border-radius: 100px 100px 12px 12px;
+  margin: 0 auto 20px;
+  overflow: hidden;
+  border: 3px solid #ffffff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  outline: 1px solid var(--border-gold);
+}
+
+.couple-arch-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+}
+
+.couple-names-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.groom-box, .bride-box {
+  width: 100%;
+}
+
+.role-tag {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+
+.person-name {
+  font-family: var(--font-wedding);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--primary-red);
+  letter-spacing: 1px;
+  margin-top: 3px;
+}
+
+.couple-heart-amp {
+  font-family: var(--font-wedding);
+  font-style: italic;
+  font-size: 30px;
+  color: var(--accent-gold);
+  margin: -3px 0;
+}
+
+/* =====================================================================
+   SECTION 3 & 4: CHI TIẾT SỰ KIỆN (LỄ VU QUY & LỄ THÀNH HÔN)
+   ===================================================================== */
+.section-events {
+  background: #fdfbf7;
+  padding: 45px 20px;
+}
+
+.events-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  max-width: 390px;
+  margin: 0 auto;
+}
+
+.event-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid var(--border-gold);
+  padding: 25px 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+
+.event-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--accent-gold), var(--primary-red), var(--accent-gold));
+}
+
+.event-badge {
+  display: inline-block;
+  background: var(--primary-red);
+  color: #fff;
+  font-family: var(--font-serif);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.event-title {
+  font-family: var(--font-serif);
+  font-size: 21px;
+  color: var(--primary-red);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.event-datetime-box {
+  background: #faf5ee;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px dashed rgba(197, 155, 76, 0.4);
+}
+
+.event-time {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--earth-brown);
+}
+
+.event-date {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary-red);
+  margin-top: 2px;
+}
+
+.event-lunar {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: 3px;
+}
+
+.event-venue-name {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.event-address {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+
+.event-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-map, .btn-calendar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: 25px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-map {
+  background: var(--primary-red);
+  color: #ffffff;
+  border: none;
+}
+
+.btn-map:hover {
+  background: var(--primary-dark-red);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 24, 32, 0.3);
+}
+
+.btn-calendar {
+  background: transparent;
+  color: var(--earth-brown);
+  border: 1px solid var(--accent-gold);
+}
+
+.btn-calendar:hover {
+  background: #faf5ee;
+  color: var(--primary-red);
+}
+
+/* =====================================================================
+   SECTION 5: LỊCH NGÀY CƯỚI & ĐẾM NGƯỢC (CALENDAR & COUNTDOWN)
+   ===================================================================== */
+.section-calendar {
+  background: #ffffff;
+  padding: 45px 20px;
+}
+
+.wedding-calendar-card {
+  background: #faf7f2;
+  border: 1px solid var(--border-gold);
+  border-radius: 14px;
+  padding: 22px 18px;
+  max-width: 360px;
+  margin: 0 auto 30px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+}
+
+.calendar-header {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary-red);
+  text-align: center;
+  margin-bottom: 16px;
+  letter-spacing: 2px;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  text-align: center;
+}
+
+.cal-dow {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-gold);
+  padding: 6px 0;
+  text-transform: uppercase;
+}
+
+.cal-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: var(--text-dark);
+  border-radius: 50%;
+  position: relative;
+}
+
+.cal-day.sun {
+  font-weight: 700;
+  color: var(--primary-red);
+}
+
+.cal-day.empty {
+  visibility: hidden;
+}
+
+.cal-day.selected {
+  font-weight: 700;
+  color: #ffffff;
+  z-index: 2;
+}
+
+.cal-heart-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 36px;
+  z-index: -1;
+  animation: heartPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes heartPulse {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.18); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* Countdown Clock */
+.countdown-container {
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.countdown-title {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--earth-brown);
+  margin-bottom: 15px;
+}
+
+.countdown-boxes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.countdown-item {
+  background: linear-gradient(145deg, #8b1820, #630f14);
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 12px 6px;
+  border: 1px solid rgba(232, 211, 159, 0.4);
+  box-shadow: 0 4px 15px rgba(104, 15, 21, 0.2);
+}
+
+.countdown-number {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+  color: #ffffff;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.countdown-label {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent-light-gold);
+}
+
+/* =====================================================================
+   SECTION 6: XÁC NHẬN THAM DỰ & TRAO GỬI YÊU THƯƠNG
+   ===================================================================== */
+.section-rsvp {
+  background: #faf7f2;
+  padding: 45px 20px;
+  border-top: 1px dashed var(--border-gold);
+}
+
+.rsvp-card {
+  background: #ffffff;
+  border: 1px solid var(--border-gold);
+  border-radius: 16px;
+  padding: 30px 20px;
+  max-width: 390px;
+  margin: 0 auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.btn-open-gift {
+  width: 100%;
+  background: linear-gradient(135deg, #c59b4c, #e8d39f, #b38536);
+  color: #4a2e2b;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 14px 20px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(197, 155, 76, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 25px;
+  transition: all 0.3s ease;
+}
+
+.btn-open-gift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(197, 155, 76, 0.6);
+}
+
+.btn-open-gift img, .btn-open-gift i {
+  font-size: 18px;
+}
+
+.rsvp-form-wrap {
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #dcd3c8;
+  background: #fdfbf8;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  color: var(--text-dark);
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--primary-red);
+  box-shadow: 0 0 0 3px rgba(139, 24, 32, 0.12);
+  background: #ffffff;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.btn-submit-rsvp {
+  width: 100%;
+  background: var(--primary-red);
+  color: #ffffff;
+  font-family: var(--font-serif);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 13px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 5px 18px rgba(139, 24, 32, 0.3);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn-submit-rsvp:hover {
+  background: var(--primary-dark-red);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(139, 24, 32, 0.4);
+}
+
+/* Guestbook Live List */
+.guestbook-section {
+  margin-top: 35px;
+  text-align: left;
+}
+
+.guestbook-title {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--primary-red);
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.guestbook-badge {
+  font-size: 12px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  background: #faf0e6;
+  color: var(--primary-red);
+  padding: 2px 10px;
+  border-radius: 12px;
+}
+
+.wishes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.wishes-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.wishes-list::-webkit-scrollbar-thumb {
+  background: var(--accent-light-gold);
+  border-radius: 4px;
+}
+
+.wish-item {
+  background: #fdfbf7;
+  border: 1px solid rgba(197, 155, 76, 0.2);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.wish-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.wish-author {
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--primary-red);
+}
+
+.wish-relation {
+  font-size: 11px;
+  color: var(--accent-gold);
+  background: #fff;
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--border-gold);
+}
+
+.wish-content {
+  font-size: 12.5px;
+  color: var(--text-dark);
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.wish-time {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  text-align: right;
+}
+
+/* =====================================================================
+   SECTION 7: ALBUM HÌNH CƯỚI (GALLERY & LIGHTBOX)
+   ===================================================================== */
+.section-gallery {
+  background: #ffffff;
+  padding: 45px 15px;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  max-width: 410px;
+  margin: 0 auto;
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  aspect-ratio: 2 / 3;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  display: block;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.06);
+}
+
+.gallery-item-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(139, 24, 32, 0.4);
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+  color: #fff;
+  font-size: 22px;
+}
+
+.gallery-item:hover .gallery-item-overlay {
+  opacity: 1;
+}
+
+/* =====================================================================
+   SECTION 8: LỜI CẢM ƠN (THANK YOU) & FOOTER
+   ===================================================================== */
+.section-thankyou {
+  background: #ffffff;
+  padding: 45px 20px 30px;
+  text-align: center;
+}
+
+.thankyou-photo {
+  width: 100%;
+  max-width: 370px;
+  margin: 0 auto 25px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  border: 4px solid #ffffff;
+  outline: 1px solid var(--border-gold);
+}
+
+.thankyou-photo img {
+  width: 100%;
+  height: auto;
+  max-height: 480px;
+  object-fit: cover;
+  display: block;
+}
+
+.thankyou-heading {
+  font-family: var(--font-wedding);
+  font-style: italic;
+  font-size: 52px;
+  font-weight: 600;
+  color: var(--primary-red);
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+.thankyou-message {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  color: var(--earth-brown);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 25px;
+}
+
+.footer-credit {
+  border-top: 1px solid #ede5da;
+  padding: 20px 0 10px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+/* =====================================================================
+   MODAL POPUPS (TRAO GỬI YÊU THƯƠNG & LIGHTBOX)
+   ===================================================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(5px);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.gift-modal-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 380px;
+  max-height: 88vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: 18px;
+  border: 2px solid var(--accent-light-gold);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  position: relative;
+  text-align: center;
+  padding: 30px 20px 24px;
+  animation: zoomIn 0.3s ease;
+}
+
+.gift-modal-card::-webkit-scrollbar {
+  width: 5px;
+}
+
+.gift-modal-card::-webkit-scrollbar-track {
+  background: #f4eee6;
+  border-radius: 10px;
+}
+
+.gift-modal-card::-webkit-scrollbar-thumb {
+  background: var(--accent-gold);
+  border-radius: 10px;
+}
+
+@keyframes zoomIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f0ebe4;
+  border: none;
+  font-size: 16px;
+  color: var(--text-dark);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  background: #e2d9cd;
+}
+
+.gift-modal-title {
+  font-family: var(--font-wedding);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary-red);
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.gift-qr-box {
+  width: 220px;
+  height: 220px;
+  margin: 0 auto 15px;
+  border: 1px solid var(--border-gold);
+  border-radius: 12px;
+  padding: 8px;
+  background: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.gift-qr-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  border-radius: 6px;
+}
+
+.bank-info-box {
+  background: #faf7f2;
+  border-radius: 10px;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  text-align: left;
+  font-size: 13px;
+  border: 1px dashed var(--border-gold);
+}
+
+.bank-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.bank-row .label {
+  color: var(--text-muted);
+}
+
+.bank-row .val {
+  font-weight: 700;
+  color: var(--primary-red);
+}
+
+.btn-copy-account {
+  width: 100%;
+  background: var(--primary-red);
+  color: #ffffff;
+  font-family: var(--font-serif);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 11px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(139, 24, 32, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-copy-account:hover {
+  background: var(--primary-dark-red);
+}
+
+/* Trao Gửi Yêu Thương Notify Box (Mừng Cưới qua Email ninhphuong247@gmail.com) */
+.gift-notify-box {
+  background: #fdfaf5;
+  border-radius: 14px;
+  padding: 14px 15px;
+  margin-top: 15px;
+  text-align: left;
+  border: 1.5px solid rgba(197, 155, 76, 0.35);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.gift-notify-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-serif);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--primary-red);
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.gift-notify-header i {
+  color: var(--primary-red);
+  font-size: 14px;
+}
+
+.gift-notify-desc {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.gift-notify-desc strong {
+  color: var(--primary-red);
+}
+
+.gift-notify-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gift-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.gift-form-group {
+  width: 100%;
+}
+
+.gift-input,
+.gift-textarea {
+  width: 100%;
+  padding: 9px 12px;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  color: var(--text-dark);
+  background: #ffffff;
+  border: 1px solid #e0d8cc;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.gift-input:focus,
+.gift-textarea:focus {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 2px rgba(197, 155, 76, 0.18);
+}
+
+.gift-textarea {
+  resize: none;
+  min-height: 52px;
+}
+
+.btn-submit-gift-notify {
+  width: 100%;
+  background: linear-gradient(135deg, #8b1820 0%, #b31d27 100%);
+  color: #ffffff;
+  font-family: var(--font-serif);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(139, 24, 32, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition: all 0.2s ease;
+}
+
+.btn-submit-gift-notify:hover {
+  background: linear-gradient(135deg, #a11c25 0%, #721219 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(139, 24, 32, 0.35);
+}
+
+.btn-submit-gift-notify:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.rsvp-email-notice {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #fdf8ee;
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px dashed var(--accent-light-gold);
+  line-height: 1.4;
+}
+
+/* Lightbox Modal */
+.lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.92);
+  z-index: 4000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.lightbox-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox-img-wrap {
+  position: relative;
+  max-width: 90vw;
+  max-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.lightbox-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.lightbox-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.lightbox-nav-btn.prev { left: 15px; }
+.lightbox-nav-btn.next { right: 15px; }
+
+.lightbox-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-counter {
+  margin-top: 15px;
+  color: #edd9b5;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+/* Toast Message */
+.toast-msg {
+  position: fixed;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: #2b2220;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 13px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  z-index: 5000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--accent-gold);
+  transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.toast-msg.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Guest Link Creator Modal (For Groom & Bride to send custom links!) */
+.creator-modal-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 380px;
+  border-radius: 16px;
+  padding: 25px 20px;
+  text-align: left;
+  border: 2px solid var(--accent-light-gold);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.creator-modal-title {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-red);
+  margin-bottom: 8px;
+}
+
+.creator-modal-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 15px;
+}
+
+.generated-link-box {
+  background: #faf7f2;
+  border: 1px dashed var(--border-gold);
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 12px;
+  word-break: break-all;
+  color: var(--earth-brown);
+  margin: 12px 0;
+  font-family: monospace;
+}
+
+/* =====================================================================
+   SCROLL EFFECTS & TRANSITIONS (Hiệu ứng cuộn chuột & Thanh tiến trình)
+   ===================================================================== */
+
+/* 1. Golden Scroll Progress Bar */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3.5px;
+  width: 0%;
+  background: linear-gradient(90deg, #9a7329, #c59b4c, #f6e9c7, #c59b4c, #9a7329);
+  background-size: 200% 100%;
+  animation: goldShimmer 3s linear infinite;
+  box-shadow: 0 0 10px rgba(197, 155, 76, 0.9), 0 0 5px rgba(232, 211, 159, 0.6);
+  z-index: 10000;
+  transition: width 0.15s ease-out;
+  pointer-events: none;
+}
+
+@keyframes goldShimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* 2. Floating Scroll-To-Top Button */
+.floating-scroll-top {
+  position: fixed;
+  bottom: 85px;
+  right: calc(50% - (var(--container-width) / 2) + 20px);
+  z-index: 1000;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b1820, #5c0f14);
+  border: 2px solid var(--accent-light-gold);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px) scale(0.85);
+  transition: all 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+@media (max-width: 480px) {
+  .floating-scroll-top {
+    right: 20px;
+  }
+}
+
+.floating-scroll-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.floating-scroll-top:hover {
+  transform: translateY(-4px) scale(1.1);
+  box-shadow: 0 6px 20px rgba(139, 24, 32, 0.6);
+  background: linear-gradient(135deg, #a31c26, #6b1117);
+}
+
+/* 3. Base AOS Animation States */
+[data-aos] {
+  opacity: 0;
+  filter: blur(4px);
+  transition-property: transform, opacity, filter;
+  transition-duration: 0.9s;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity, filter;
+}
+
+[data-aos].aos-animate {
+  opacity: 1;
+  filter: blur(0px) !important;
+  transform: translate3d(0, 0, 0) scale(1) rotate(0) !important;
+}
+
+/* Specific Transitions */
+[data-aos="fade-up"] {
+  transform: translate3d(0, 40px, 0);
+}
+
+[data-aos="fade-down"] {
+  transform: translate3d(0, -40px, 0);
+}
+
+[data-aos="fade-right"] {
+  transform: translate3d(-45px, 0, 0);
+}
+
+[data-aos="fade-left"] {
+  transform: translate3d(45px, 0, 0);
+}
+
+[data-aos="zoom-in"] {
+  transform: scale(0.88);
+}
+
+[data-aos="zoom-out"] {
+  transform: scale(1.1);
+}
+
+[data-aos="flip-up"] {
+  transform: perspective(1000px) rotateX(25deg) translateY(35px);
+}
+
+[data-aos="flip-down"] {
+  transform: perspective(1000px) rotateX(-25deg) translateY(-35px);
+}
+
+/* Staggered Delays */
+[data-aos-delay="50"] { transition-delay: 0.05s; }
+[data-aos-delay="100"] { transition-delay: 0.1s; }
+[data-aos-delay="150"] { transition-delay: 0.15s; }
+[data-aos-delay="200"] { transition-delay: 0.2s; }
+[data-aos-delay="250"] { transition-delay: 0.25s; }
+[data-aos-delay="300"] { transition-delay: 0.3s; }
+[data-aos-delay="350"] { transition-delay: 0.35s; }
+[data-aos-delay="400"] { transition-delay: 0.4s; }
+[data-aos-delay="450"] { transition-delay: 0.45s; }
+[data-aos-delay="500"] { transition-delay: 0.5s; }
+
+/* Interactive Hover Feedback on Cards */
+.event-card, .family-column, .wedding-calendar-card, .rsvp-card, .guest-invitation-card {
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.event-card:hover, .wedding-calendar-card:hover, .rsvp-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(104, 15, 21, 0.12);
+  border-color: var(--accent-gold);
+}
+
+.family-column:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-gold);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* =====================================================================
+   TIKTOK LIVE GIFTING SYSTEM (TẶNG QUÀ LIVE TIKTOK)
+   ===================================================================== */
+.floating-gift-btn {
+  position: fixed;
+  bottom: 85px;
+  left: calc(50% - (var(--container-width) / 2) + 20px);
+  z-index: 1000;
+  height: 40px;
+  padding: 0 14px 0 10px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #ff2c55 0%, #ee1d52 50%, #8b1820 100%);
+  border: 1.5px solid #ffd700;
+  box-shadow: 0 4px 18px rgba(255, 44, 85, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 480px) {
+  .floating-gift-btn {
+    left: 20px;
+    bottom: 85px;
+  }
+}
+
+.floating-gift-btn:hover {
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 44, 85, 0.6);
+}
+
+.floating-gift-btn:active {
+  transform: scale(0.94);
+}
+
+.gift-btn-glow {
+  position: absolute;
+  inset: -5px;
+  border-radius: 25px;
+  background: radial-gradient(ellipse at center, rgba(255, 44, 85, 0.45) 0%, transparent 75%);
+  animation: giftPulseRing 1.8s infinite;
+  pointer-events: none;
+}
+
+@keyframes giftPulseRing {
+  0% { transform: scale(0.9); opacity: 0.9; }
+  50% { transform: scale(1.35); opacity: 0; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+.gift-btn-inner {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  line-height: 1;
+}
+
+.gift-btn-icon {
+  font-size: 20px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  animation: giftShake 2.5s infinite;
+  display: inline-block;
+}
+
+@keyframes giftShake {
+  0%, 100% { transform: rotate(0deg); }
+  10%, 30% { transform: rotate(-10deg) scale(1.1); }
+  20%, 40% { transform: rotate(10deg) scale(1.1); }
+  50% { transform: rotate(0deg); }
+}
+
+.gift-btn-label,
+.gift-btn-badge {
+  font-family: 'Montserrat', var(--font-sans), sans-serif;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+  line-height: 1;
+  display: inline-block;
+}
+
+.gift-live-pulse-dot {
+  width: 7px;
+  height: 7px;
+  background: #ffd700;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #ffd700;
+  animation: liveDotPulse 1.2s infinite;
+  display: inline-block;
+  margin-left: 2px;
+}
+
+/* In-Page TikTok Live Gifts Section */
+.section-tiktok-gifts {
+  background: linear-gradient(180deg, #fcf9f5 0%, #fff7f8 50%, #fdfbf7 100%);
+  padding: 45px 20px 40px;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid #f2e6e8;
+  border-bottom: 1px solid #f2e6e8;
+}
+
+.tiktok-live-badge-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 44, 85, 0.08);
+  border: 1px solid rgba(255, 44, 85, 0.25);
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin: 0 auto 10px;
+}
+
+.tiktok-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff2c55;
+  box-shadow: 0 0 8px #ff2c55;
+  animation: liveDotPulse 1.2s infinite;
+}
+
+@keyframes liveDotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.3); }
+}
+
+.tiktok-live-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: #ff2c55;
+  letter-spacing: 1px;
+}
+
+.tiktok-desc {
+  font-size: 13px;
+  text-align: center;
+  color: var(--text-muted);
+  max-width: 380px;
+  margin: 0 auto 18px;
+  line-height: 1.6;
+}
+
+.tiktok-desc strong {
+  color: var(--primary-red);
+}
+
+.tiktok-gift-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.stat-pill {
+  background: #ffffff;
+  border: 1px solid #fae4e6;
+  border-radius: 12px;
+  padding: 8px 4px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  font-size: 11px;
+  color: var(--text-muted);
+  transition: transform 0.3s ease;
+}
+
+.stat-pill:hover {
+  transform: translateY(-2px);
+  border-color: #ff2c55;
+}
+
+.stat-icon {
+  font-size: 16px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.stat-pill strong {
+  color: #ff2c55;
+  font-size: 13.5px;
+  font-weight: 800;
+  display: block;
+}
+
+.tiktok-sender-bar {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid var(--border-gold);
+  border-radius: 12px;
+  padding: 8px 14px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+}
+
+.tiktok-guest-input {
+  border: none;
+  outline: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary-red);
+  flex: 1;
+  background: transparent;
+  font-family: inherit;
+}
+
+.tiktok-gifts-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+@media (max-width: 380px) {
+  .tiktok-gifts-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+}
+
+.gift-card {
+  background: #ffffff;
+  border: 1.5px solid #fae6e8;
+  border-radius: 14px;
+  padding: 12px 6px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+.gift-card:hover {
+  transform: translateY(-4px) scale(1.05);
+  border-color: #ff2c55;
+  box-shadow: 0 8px 22px rgba(255, 44, 85, 0.2);
+}
+
+.gift-card:active {
+  transform: scale(0.92);
+}
+
+.gift-card-icon {
+  font-size: 34px;
+  line-height: 1.1;
+  margin-bottom: 5px;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.gift-card:hover .gift-card-icon {
+  transform: scale(1.2) rotate(-8deg);
+}
+
+.gift-card-name {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #2c2523;
+  line-height: 1.2;
+  margin-bottom: 2px;
+  text-align: center;
+}
+
+.gift-card-sub {
+  font-size: 9.5px;
+  color: #8a7a7a;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.gift-card-tap-badge {
+  font-size: 9px;
+  font-weight: 700;
+  color: #ff2c55;
+  background: #fff0f3;
+  padding: 2px 6px;
+  border-radius: 8px;
+  border: 1px solid #ffd6de;
+  transition: all 0.2s ease;
+}
+
+.gift-card:hover .gift-card-tap-badge {
+  background: #ff2c55;
+  color: #ffffff;
+}
+
+.gift-highlight {
+  background: linear-gradient(180deg, #ffffff 0%, #fff6f7 100%);
+  border-color: #ffd2d9;
+}
+
+.gift-badge-hot, .gift-badge-vip {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 8px;
+  font-weight: 800;
+  color: #fff;
+  padding: 1px 5px;
+  border-radius: 6px;
+}
+
+.gift-badge-hot {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+}
+
+.gift-badge-vip {
+  background: linear-gradient(135deg, #d4af37, #aa7c11);
+}
+
+.tiktok-recent-box {
+  background: #ffffff;
+  border: 1px dashed var(--border-gold);
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+}
+
+.recent-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--earth-brown);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.tiktok-feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.feed-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  padding: 6px 0;
+  border-bottom: 1px solid #fdf5f5;
+  animation: feedSlideIn 0.35s ease;
+}
+
+.feed-item:last-child {
+  border-bottom: none;
+}
+
+@keyframes feedSlideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.feed-avatar {
+  font-size: 15px;
+}
+
+.feed-text {
+  flex: 1;
+  color: var(--text-dark);
+}
+
+.feed-text strong {
+  color: var(--primary-red);
+}
+
+.feed-time {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* Fullscreen TikTok Gift Overlay */
+.tiktok-gift-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 10005;
+  overflow: hidden;
+}
+
+/* TikTok Live Gift Notification Banner */
+.tiktok-gift-banner {
+  position: fixed;
+  top: 105px;
+  left: calc(50% - (var(--container-width) / 2) + 15px);
+  z-index: 10010;
+  background: linear-gradient(135deg, rgba(25, 12, 16, 0.94) 0%, rgba(45, 14, 24, 0.96) 100%);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(255, 215, 0, 0.7);
+  border-radius: 40px;
+  padding: 6px 18px 6px 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45), 0 0 20px rgba(255, 44, 85, 0.35);
+  transform: translateX(-160%);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 480px) {
+  .tiktok-gift-banner {
+    left: 15px;
+    top: 90px;
+  }
+}
+
+.tiktok-gift-banner.active {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.banner-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff2c55, #ffd700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.banner-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.banner-sender {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+}
+
+.banner-action {
+  font-size: 11px;
+  color: #ffd700;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.banner-gift-icon {
+  font-size: 32px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 10px rgba(255, 215, 0, 0.8));
+  animation: giftBounce 0.5s ease infinite alternate;
+}
+
+@keyframes giftBounce {
+  from { transform: translateY(0) scale(1); }
+  to { transform: translateY(-4px) scale(1.15); }
+}
+
+.banner-combo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 6px;
+}
+
+.combo-label {
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #ff2c55;
+  background: #ffffff;
+  padding: 0 5px;
+  border-radius: 4px;
+  line-height: 1.2;
+}
+
+.combo-num {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 28px;
+  font-weight: 900;
+  font-style: italic;
+  color: #ffd700;
+  -webkit-text-stroke: 1.2px #ff2c55;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.9);
+  line-height: 1;
+  transition: transform 0.15s ease;
+}
+
+.combo-num.bounce {
+  animation: comboPunch 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes comboPunch {
+  0% { transform: scale(0.6); }
+  50% { transform: scale(1.6); }
+  100% { transform: scale(1); }
+}
+
+/* Stage & Dynamic Animations */
+.tiktok-stage {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Rose Stream Effect */
+.stage-rose-item {
+  position: absolute;
+  pointer-events: none;
+  font-size: 36px;
+  will-change: transform, opacity;
+  animation: roseFloatUp 2.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  filter: drop-shadow(0 4px 10px rgba(255, 44, 85, 0.5));
+}
+
+@keyframes roseFloatUp {
+  0% { transform: translate3d(0, 0, 0) scale(0.4) rotate(0deg); opacity: 0; }
+  15% { opacity: 1; transform: translate3d(var(--drift-x, 20px), -100px, 0) scale(1.1) rotate(15deg); }
+  50% { transform: translate3d(calc(var(--drift-x, 20px) * -1), -350px, 0) scale(1) rotate(-15deg); }
+  85% { opacity: 1; }
+  100% { transform: translate3d(var(--drift-x, 20px), -650px, 0) scale(0.7) rotate(30deg); opacity: 0; }
+}
+
+/* Supercar Driving Across Animation */
+.stage-supercar-wrap {
+  position: absolute;
+  bottom: 22%;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  animation: carDriveAcross 3.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  z-index: 10006;
+}
+
+@keyframes carDriveAcross {
+  0% { transform: translate3d(-120%, 0, 0) scale(0.85); opacity: 0; }
+  15% { transform: translate3d(-10%, 0, 0) scale(1); opacity: 1; }
+  55% { transform: translate3d(15%, 0, 0) scale(1.05); opacity: 1; }
+  75% { transform: translate3d(30%, 0, 0) scale(1.05); opacity: 1; }
+  100% { transform: translate3d(140%, 0, 0) scale(1.15); opacity: 0; }
+}
+
+.car-banner-text {
+  text-align: center;
+  font-family: var(--font-wedding);
+  font-size: 18px;
+  font-weight: 800;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 2px 4px #000;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  animation: textGlow 1s infinite alternate;
+}
+
+@keyframes textGlow {
+  from { opacity: 0.85; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1.02); }
+}
+
+.supercar-svg-box {
+  width: 320px;
+  margin: 0 auto;
+  position: relative;
+  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.6));
+}
+
+.supercar-svg-box svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.car-headlight-glow {
+  position: absolute;
+  top: 40px;
+  right: -80px;
+  width: 160px;
+  height: 60px;
+  background: radial-gradient(ellipse at left, rgba(255, 255, 200, 0.7) 0%, transparent 80%);
+  pointer-events: none;
+  transform: rotate(-10deg);
+}
+
+.car-exhaust-flames {
+  position: absolute;
+  bottom: 25px;
+  left: -35px;
+  font-size: 24px;
+  animation: exhaustFlicker 0.15s infinite alternate;
+}
+
+@keyframes exhaustFlicker {
+  0% { transform: scale(0.8) rotate(-5deg); opacity: 0.7; }
+  100% { transform: scale(1.3) rotate(5deg); opacity: 1; }
+}
+
+/* Rocket Animation */
+.stage-rocket-wrap {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  animation: rocketLaunch 2.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  z-index: 10006;
+}
+
+@keyframes rocketLaunch {
+  0% { transform: translate3d(-50%, 100px, 0) scale(0.8); opacity: 1; }
+  45% { transform: translate3d(-50%, -45vh, 0) scale(1.2); opacity: 1; }
+  50% { transform: translate3d(-50%, -50vh, 0) scale(1.4); opacity: 0; }
+  100% { transform: translate3d(-50%, -50vh, 0) scale(1.4); opacity: 0; }
+}
+
+.rocket-body {
+  font-size: 65px;
+  filter: drop-shadow(0 0 15px rgba(255, 65, 108, 0.8));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rocket-flame {
+  font-size: 30px;
+  margin-top: -15px;
+  animation: exhaustFlicker 0.1s infinite alternate;
+}
+
+/* Heart Fireworks Burst */
+.stage-firework-burst {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+  z-index: 10007;
+}
+
+.firework-spark {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  animation: sparkBurst 1.8s ease-out forwards;
+}
+
+@keyframes sparkBurst {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+}
+
+/* Castle Animation */
+.stage-castle-wrap {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+  animation: castleRise 3.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  z-index: 10006;
+}
+
+@keyframes castleRise {
+  0% { transform: translate(-50%, 40px) scale(0.4); opacity: 0; }
+  20% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+  30% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  85% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -80px) scale(0.8); opacity: 0; }
+}
+
+.castle-icon {
+  font-size: 90px;
+  filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.9));
+  margin-bottom: 10px;
+}
+
+.castle-rays {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 280px;
+  height: 280px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.35) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: -1;
+  animation: spinRays 8s linear infinite;
+}
+
+@keyframes spinRays {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Diamond Ring Animation */
+.stage-diamond-wrap {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+  animation: diamondShine 3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  z-index: 10006;
+}
+
+@keyframes diamondShine {
+  0% { transform: translate(-50%, -50%) scale(0.2) rotate(-90deg); opacity: 0; }
+  25% { transform: translate(-50%, -50%) scale(1.15) rotate(10deg); opacity: 1; }
+  40% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+  85% { transform: translate(-50%, -50%) scale(1.05) rotate(5deg); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(0.6) rotate(180deg); opacity: 0; }
+}
+
+.diamond-icon {
+  font-size: 85px;
+  filter: drop-shadow(0 0 30px rgba(0, 242, 254, 0.9));
+}
+
+/* Crown Animation */
+.stage-crown-wrap {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+  animation: crownDescend 3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  z-index: 10006;
+}
+
+@keyframes crownDescend {
+  0% { transform: translate(-50%, -150px) scale(0.5); opacity: 0; }
+  25% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+  40% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  85% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -30px) scale(0.7); opacity: 0; }
+}
+
+.crown-icon {
+  font-size: 90px;
+  filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.95));
+}
+
+/* Money Rain */
+.stage-money-item {
+  position: absolute;
+  pointer-events: none;
+  font-size: 28px;
+  animation: moneyFall 2.8s linear forwards;
+}
+
+@keyframes moneyFall {
+  0% { transform: translate3d(0, -60px, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate3d(var(--drift-x, 30px), 105vh, 0) rotate(720deg); opacity: 0.9; }
+}
+
+/* Jet Airplane Animation */
+.stage-jet-wrap {
+  position: absolute;
+  top: 25%;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  animation: jetFlyAcross 3.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  z-index: 10006;
+}
+
+@keyframes jetFlyAcross {
+  0% { transform: translate3d(-120%, 0, 0); opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translate3d(140%, -40px, 0); opacity: 0; }
+}
+
+.jet-banner-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.jet-airplane {
+  font-size: 55px;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+  transform: scaleX(-1);
+}
+
+.jet-trailing-banner {
+  background: linear-gradient(90deg, #ff2c55, #ffd700);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 6px 16px;
+  border-radius: 8px;
+  white-space: nowrap;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  letter-spacing: 1px;
+}
+
+/* Bottom Sheet Tray */
+.tiktok-tray-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  z-index: 10002;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.tiktok-tray-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tiktok-tray-card {
+  width: 100%;
+  max-width: 450px;
+  background: #1c1417;
+  border-radius: 24px 24px 0 0;
+  padding: 14px 18px 24px;
+  border-top: 2px solid var(--accent-gold);
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.tiktok-tray-overlay.active .tiktok-tray-card {
+  transform: translateY(0);
+}
+
+.tray-handle {
+  width: 40px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+  margin: 0 auto 12px;
+}
+
+.tray-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.tray-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.tray-live-badge {
+  background: #ff2c55;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.tray-close-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #edd9b5;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.tray-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.tray-sender-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 10px;
+  padding: 6px 12px;
+  margin-bottom: 14px;
+}
+
+.tray-sender-label {
+  font-size: 11.5px;
+  color: #edd9b5;
+  white-space: nowrap;
+}
+
+.tray-sender-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffd700;
+  font-weight: 700;
+  font-size: 12.5px;
+  flex: 1;
+}
+
+.tray-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tray-item {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 10px 4px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.tray-item:hover, .tray-item.active {
+  background: rgba(255, 44, 85, 0.15);
+  border-color: #ff2c55;
+  transform: translateY(-2px);
+}
+
+.tray-item-tag {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 7px;
+  font-weight: 800;
+  color: #fff;
+  background: #ff4b2b;
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+.tray-item-tag.vip {
+  background: #d4af37;
+}
+
+.tray-item-icon {
+  font-size: 28px;
+  margin-bottom: 3px;
+}
+
+.tray-item-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+
+.tray-item-combo {
+  font-size: 9px;
+  color: #edd9b5;
+}
+
+.tray-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.tray-multi-btns {
+  display: flex;
+  gap: 5px;
+}
+
+.btn-multi-combo {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  color: #ffd700;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 6px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-multi-combo.active {
+  background: #ffd700;
+  color: #1c1417;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.btn-send-gift {
+  flex: 1;
+  background: linear-gradient(135deg, #ff2c55, #ee1d52);
+  border: none;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 10px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(255, 44, 85, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-send-gift:active {
+  transform: scale(0.96);
+}

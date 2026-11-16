@@ -1,0 +1,50 @@
+{
+    "activities": [
+        {
+            "id": "act_1794835769_904",
+            "avatar": "🌸",
+            "sender": "Bạn Thân Mai Phương",
+            "gift": "🌹 Hoa Hồng x10",
+            "time": "Vừa xong",
+            "timestamp": 1794835769
+        },
+        {
+            "id": "act_1794835704_562",
+            "avatar": "👑",
+            "sender": "Hoàng Ninh",
+            "gift": "👑 Vương Miện Hoàng Gia x1",
+            "time": "Vừa xong",
+            "timestamp": 1794835704
+        },
+        {
+            "id": "act_1",
+            "avatar": "🌸",
+            "sender": "Chị Ngọc Lan",
+            "gift": "🌹 Hoa Hồng x99",
+            "time": "Vừa xong",
+            "timestamp": 1794835644
+        },
+        {
+            "id": "act_2",
+            "avatar": "🎩",
+            "sender": "Anh Minh Khoa",
+            "gift": "🏎️ Siêu Xe Cưới x10",
+            "time": "1 phút trước",
+            "timestamp": 1794835614
+        },
+        {
+            "id": "act_3",
+            "avatar": "👑",
+            "sender": "Gia đình Bác Hùng",
+            "gift": "🏰 Lâu Đài Vàng x1",
+            "time": "2 phút trước",
+            "timestamp": 1794835554
+        }
+    ],
+    "stats": {
+        "rose": 1530,
+        "car": 89,
+        "rocket": 168,
+        "castle": 52
+    }
+}

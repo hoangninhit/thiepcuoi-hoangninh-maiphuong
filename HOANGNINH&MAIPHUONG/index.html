@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>THƯ MỜI CƯỚI HOÀNG NINH &amp; MAI PHƯƠNG</title>
+
+  <!-- Open Graph / SEO / Facebook / Zalo -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="THƯ MỜI CƯỚI HOÀNG NINH &amp; MAI PHƯƠNG">
+  <meta property="og:description"
+    content="Trân trọng kính mời quý khách đến dự lễ thành hôn của HOÀNG NINH &amp; MAI PHƯƠNG vào ngày 17.01.2027!">
+  <meta property="og:image" content="image/chinh.jpg">
+  <meta property="og:url" content="https://www.ewedinvite.online/VANHUY&amp;MYDUYEN">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png"
+    href="https://statics.pancake.vn/web-media/57/9d/b4/54/8062abb209fa7d1a4f616d71addf48e4b528644d159a733f58090902-w:100-h:100-l:7010-t:image/png.png">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Golden Scroll Progress Bar -->
+  <div class="scroll-progress-bar" id="scroll-progress-bar"></div>
+
+  <!-- Falling Canvas (Rose Petals & Golden Hearts) -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Background Music Audio Element -->
+  <audio id="wedding-audio" loop preload="auto">
+    <source
+      src="https://statics.pancake.vn/web-media/5e/ee/bf/4a/afa10d3bdf98ca17ec3191ebbfd3c829d135d06939ee1f1b712d731d-w:0-h:0-l:2938934-t:audio/mpeg.mp3"
+      type="audio/mpeg">
+  </audio>
+
+  <!-- Floating Music Toggle Button -->
+  <div class="floating-music-btn" id="music-toggle-btn" title="Phát nhạc nền">
+    <div class="music-disc">
+      <i class="fa-solid fa-compact-disc music-icon"></i>
+    </div>
+  </div>
+
+  <!-- Floating Back to Top Button -->
+  <div class="floating-scroll-top" id="scroll-top-btn" title="Lên đầu trang">
+    <i class="fa-solid fa-arrow-up"></i>
+  </div>
+
+  <!-- Floating Guest Link Creator Tool Button (for Bride & Groom) -->
+  <div class="floating-tool-btn" id="floating-tool-btn" title="Tạo link mời riêng cho từng khách">
+    <i class="fa-solid fa-wand-magic-sparkles" style="color: #c59b4c; font-size: 18px;"></i>
+  </div>
+
+  <!-- Floating TikTok Live Gift Button (Bắn Quà Live) -->
+  <div class="floating-gift-btn" id="floating-gift-btn" title="Bắn quà Live TikTok chúc phúc Dâu Rể">
+    <div class="gift-btn-glow"></div>
+    <div class="gift-btn-inner">
+      <span class="gift-btn-icon">🎁</span>
+      <span class="gift-btn-label">Tặng Quà</span>
+      <span class="gift-live-pulse-dot"></span>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       IMPERIAL PALACE GATE OPENING TRANSITION (CỬA CUNG ĐÌNH HOÀNG GIA)
+       ===================================================================== -->
+  <div class="palace-gate-overlay" id="envelope-overlay">
+    <!-- Top Bar with Imperial Badge & Skip Button -->
+    <div class="palace-top-bar">
+      <div class="palace-top-badge">
+        <i class="fa-solid fa-crown" style="color: #d4af37; margin-right: 6px;"></i>
+        HOÀNG GIA HỶ SỰ &bull; HOÀNG NINH &amp; MAI PHƯƠNG
+      </div>
+      <button class="btn-skip-intro" id="btn-skip-intro" title="Vào trực tiếp thiệp cưới">
+        Bỏ qua <i class="fa-solid fa-angles-right" style="font-size: 11px; margin-left: 3px;"></i>
+      </button>
+    </div>
+
+    <!-- Golden Ray Backdrop / Palace Interior Glow -->
+    <div class="palace-interior-glow" id="palace-glow">
+      <div class="palace-light-beam"></div>
+    </div>
+
+    <!-- The Palace Gate Arch & Double Doors Container -->
+    <div class="palace-gate-container" id="palace-gate-container">
+
+      <!-- Imperial Roof Cornice & Plaque (Hoành phi hoàng gia sơn son thếp vàng) -->
+      <div class="palace-roof-cornice">
+        <div class="palace-roof-eaves">
+          <div class="eave-ornament eave-left"></div>
+          <div class="eave-ridge">
+            <span class="roof-tile-ornament">❖</span>
+            <span class="roof-tile-ornament">❖</span>
+            <span class="roof-tile-ornament">❖</span>
+          </div>
+          <div class="eave-ornament eave-right"></div>
+        </div>
+        <div class="palace-plaque">
+          <div class="plaque-border">
+            <span class="plaque-sub">TRÂN TRỌNG BÁO TIN</span>
+            <h2 class="plaque-title">LỄ THÀNH HÔN</h2>
+            <div class="plaque-guest">
+              <span>Kính mời:</span> <strong id="envelope-guest-name">Quý Khách</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3D Door Portal (Khung cửa cung đình phối cảnh 3D) -->
+      <div class="palace-door-portal" id="palace-door-portal">
+
+        <!-- Cánh Cửa Trái (Left Palace Door) -->
+        <div class="palace-door door-left" id="door-left">
+          <div class="door-frame-inner">
+            <!-- Brass Corner Filigree -->
+            <div class="door-corner lt"></div>
+            <div class="door-corner lb"></div>
+
+            <!-- Top Rivets Matrix (Đinh tán bằng đồng hoàng gia) -->
+            <div class="rivets-grid">
+              <span class="rivet"></span><span class="rivet"></span><span class="rivet"></span>
+              <span class="rivet"></span><span class="rivet"></span><span class="rivet"></span>
+            </div>
+
+            <!-- Imperial Brass Lion Knocker with Ring (Tay nắm cửa sư tử ngậm khuyên vàng) -->
+            <div class="door-knocker-wrap">
+              <div class="knocker-mask">
+                <i class="fa-solid fa-shield-cat"></i>
+              </div>
+              <div class="knocker-ring"></div>
+            </div>
+
+            <!-- Bottom Rivets Matrix -->
+            <div class="rivets-grid">
+              <span class="rivet"></span><span class="rivet"></span><span class="rivet"></span>
+              <span class="rivet"></span><span class="rivet"></span><span class="rivet"></span>
+            </div>
+
+            <!-- Traditional Imperial Carving Inlay -->
+            <div class="door-carving">
+              <div class="carving-filigree"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cánh Cửa Phải (Right Palace Door) -->
+        <div class="palace-door door-right" id="door-right">
+          <div class="door-frame-inner">
+            <!-- Brass Corner Filigree -->
+            <div class="door-corner rt"></div>
+            <div class="door-corner rb"></div>
+
+            <!-- Top Rivets Matrix (Đinh tán bằng đồng hoàng gia) -->
+            <div class="rivets-grid">
+              <span class="rivet"></span><span class="rivet"></span><span class="rivet"></span>
+              <span class="rivet"></span><span class="rivet"></span><span class="rivet"></span>
+            </div>
+
+            <!-- Imperial Brass Lion Knocker with Ring (Tay nắm cửa sư tử ngậm khuyên vàng) -->
+            <div class="door-knocker-wrap">
+              <div class="knocker-mask">
+                <i class="fa-solid fa-shield-cat"></i>
+              </div>
+              <div class="knocker-ring"></div>
+            </div>
+
+            <!-- Bottom Rivets Matrix -->
+            <div class="rivets-grid">
+              <span class="rivet"></span><span class="rivet"></span><span class="rivet"></span>
+              <span class="rivet"></span><span class="rivet"></span><span class="rivet"></span>
+            </div>
+
+            <!-- Traditional Imperial Carving Inlay -->
+            <div class="door-carving">
+              <div class="carving-filigree"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Khóa Ngọc Hoàng Gia / Biểu Tượng Chạm Mở (Center Palace Lock Trigger) -->
+        <div class="palace-center-lock" id="env-wax-seal" title="Chạm nhẹ để đẩy cửa cung đình">
+          <div class="lock-ornament">
+            <div class="lock-ring-glow"></div>
+            <div class="lock-circle">
+              <div class="lock-double-happiness">囍</div>
+              <div class="lock-monogram">N &bull; P</div>
+            </div>
+          </div>
+          <div class="palace-touch-hint">
+            <i class="fa-solid fa-hand-pointer tap-icon"></i>
+            <span>Chạm mở cửa cung đình</span>
+          </div>
+        </div>
+
+      </div> <!-- End palace-door-portal -->
+
+      <!-- Imperial Plinth / Stone Threshold (Bậc thềm cung điện đá hoa cương viền vàng) -->
+      <div class="palace-threshold">
+        <div class="threshold-step"></div>
+        <div class="threshold-meta">
+          <span>NGÀY ĐẠI HỶ</span>
+          <strong>18 . 12 . 2015</strong>
+        </div>
+      </div>
+
+    </div> <!-- End palace-gate-container -->
+  </div> <!-- End palace-gate-overlay -->
+
+  <!-- =====================================================================
+       MAIN DESKTOP CONTAINER (MOBILE-FIRST 450px)
+       ===================================================================== -->
+  <div class="desktop-wrapper" id="main-content">
+
+    <!-- SECTION 1: HERO & BÌA THIỆP -->
+    <section class="section-hero" id="section-hero">
+      <div class="hero-badge" data-aos="fade-down" data-aos-duration="900">THIỆP MỜI CƯỚI</div>
+      <h1 class="hero-names" data-aos="zoom-in" data-aos-delay="100">
+        <span class="name-line">HOÀNG NINH</span>
+        <span class="and">&amp;</span>
+        <span class="name-line">MAI PHƯƠNG</span>
+      </h1>
+
+      <div class="hero-photo-wrapper" data-aos="zoom-in" data-aos-delay="200">
+        <img src="image/chinh.jpg" alt="HOÀNG NINH &amp; MAI PHƯƠNG">
+      </div>
+
+      <div class="hero-date-banner" data-aos="fade-up" data-aos-delay="250">18 . 12 . 2035</div>
+
+      <!-- Personalized Guest Invitation Card -->
+      <div class="guest-invitation-card" data-aos="flip-up" data-aos-delay="300">
+        <div class="guest-card-corner top-left"></div>
+        <div class="guest-card-corner top-right"></div>
+        <div class="guest-card-corner bottom-left"></div>
+        <div class="guest-card-corner bottom-right"></div>
+
+        <div class="invite-label">Trân Trọng Kính Mời:</div>
+        <div class="guest-highlight-name" id="hero-guest-name">Quý Khách</div>
+        <div class="invite-line"></div>
+        <div class="invite-sub">Đến dự buổi tiệc chung vui cùng gia đình chúng tôi</div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: LỜI BÁO TIN & THÔNG TIN HAI GIA ĐÌNH -->
+    <section class="section-families" id="section-families">
+      <span class="sec-subtitle" data-aos="fade-up">Love Story</span>
+      <h2 class="sec-title" data-aos="fade-up" data-aos-delay="100">Lời Báo Tin</h2>
+
+      <div class="section-divider" data-aos="zoom-in" data-aos-delay="150">
+        <i class="fa-solid fa-heart"></i>
+      </div>
+
+      <p class="announcement-text" data-aos="fade-up" data-aos-delay="200">
+        "Tình yêu không phải là tìm một người hoàn hảo,<br>
+        mà là học cách nhìn thấy những điều tuyệt vời<br>
+        từ một người không hoàn hảo."<br><br>
+        <strong>Trân Trọng Báo Tin Lễ Thành Hôn Của Chúng Tôi</strong>
+      </p>
+
+      <!-- Hai Gia Đình -->
+      <div class="families-container">
+        <!-- Nhà Trai (Slide from Left) -->
+        <div class="family-column" data-aos="fade-right" data-aos-delay="200">
+          <div class="family-title">NHÀ TRAI</div>
+          <div class="parent-names">
+            ÔNG HOÀNG VĂN HIỂN<br>
+            BÀ NGUYỄN THỊ HÀ
+          </div>
+          <div class="family-address">
+            <i class="fa-solid fa-location-dot" style="color: #c59b4c;"></i> Quận 12, TP. Hồ Chí Minh
+          </div>
+        </div>
+
+        <!-- Nhà Gái (Slide from Right) -->
+        <div class="family-column" data-aos="fade-left" data-aos-delay="200">
+          <div class="family-title">NHÀ GÁI</div>
+          <div class="parent-names">
+            ÔNG NGÔ VĂN CỔN<br>
+            BÀ NGUYỄN THỊ BÌNH
+          </div>
+          <div class="family-address">
+            <i class="fa-solid fa-location-dot" style="color: #c59b4c;"></i> Xã Bà Điểm, TP. Hồ Chí Minh
+          </div>
+        </div>
+      </div>
+
+      <!-- Couple Photo & Names -->
+      <div class="couple-feature">
+        <div class="couple-arch-photo" data-aos="zoom-in" data-aos-delay="250">
+          <img src="image/188A6221.JPG" alt="Chú rể Hoàng Ninh &amp; Cô dâu Mai Phương">
+        </div>
+
+        <div class="couple-names-wrap" data-aos="fade-up" data-aos-delay="300">
+          <div class="groom-box">
+            <span class="role-tag">Thứ Nam</span>
+            <div class="person-name">Hoàng Ninh</div>
+          </div>
+
+          <div class="couple-heart-amp">&amp;</div>
+
+          <div class="bride-box">
+            <span class="role-tag">Thứ Nữ</span>
+            <div class="person-name">Mai Phương</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3 & 4: CHI TIẾT SỰ KIỆN CƯỚI -->
+    <section class="section-events" id="section-events">
+      <span class="sec-subtitle" data-aos="fade-up">Save The Date</span>
+      <h2 class="sec-title" data-aos="fade-up" data-aos-delay="100">Chương Trình Hôn Lễ</h2>
+
+      <div class="section-divider" data-aos="zoom-in" data-aos-delay="150">
+        <i class="fa-solid fa-ring"></i>
+      </div>
+
+      <div class="events-wrapper">
+        <!-- Sự kiện 1: TIỆC MỪNG LỄ VU QUY (Nhà Gái) -->
+        <div class="event-card" data-aos="fade-right" data-aos-delay="150">
+          <span class="event-badge">NHÀ GÁI</span>
+          <h3 class="event-title">TIỆC MỪNG LỄ VU QUY</h3>
+
+          <div class="event-datetime-box">
+            <div class="event-time">09:00 - Thứ Bảy</div>
+            <div class="event-date">18 . 12 . 2035</div>
+            <div class="event-lunar">(Tức Ngày 09 Tháng 12 Năm Bính Ngọ)</div>
+          </div>
+
+          <div class="event-venue-name">Tại Tư Gia Nhà Gái</div>
+          <div class="event-address">
+            Xã Bà Điểm . TP. Hồ Chí Minh
+          </div>
+
+          <div class="event-actions">
+            <a href="https://www.google.com/maps?q=10.3214920,106.2009957" target="_blank" rel="noopener"
+              class="btn-map">
+              <i class="fa-solid fa-location-arrow"></i> Xem Chỉ Đường
+            </a>
+            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ti%E1%BB%87c+Vu+Quy+Ho%C3%A0ng+Ninh+%26+Mai+Ph%C6%B0%C6%A1ng&dates=20270116T020000Z/20270116T060000Z&details=L%E1%BB%85+Vu+Quy+t%E1%BA%A1i+T%C6%B0+Gia+Nh%C3%A0+G%C3%A1i&location=22+T%E1%BB%95+1,+%E1%BA%A4p+%C4%90%C3%B4ng+H%C3%B2a,+X%C3%A3+Ng%C5%A9+Hi%E1%BB%87p,+T%E1%BB%89nh+%C4%90%E1%BB%93ng+Th%C3%A1p"
+              target="_blank" rel="noopener" class="btn-calendar">
+              <i class="fa-regular fa-calendar-plus"></i> Thêm Lịch
+            </a>
+          </div>
+        </div>
+
+        <!-- Sự kiện 2: LỄ THÀNH HÔN (Nhà Trai) -->
+        <div class="event-card" data-aos="fade-left" data-aos-delay="200">
+          <span class="event-badge">NHÀ TRAI</span>
+          <h3 class="event-title">LỄ THÀNH HÔN</h3>
+
+          <div class="event-datetime-box">
+            <div class="event-time">11:00 - Chủ Nhật</div>
+            <div class="event-date">18 . 12 . 2035</div>
+            <div class="event-lunar">(Tức Ngày 10 Tháng 12 Năm Bính Ngọ)</div>
+          </div>
+
+          <div class="event-venue-name">Tại Tư Gia Nhà Trai</div>
+          <div class="event-address">
+            Xã Bà Điểm, Huyện Hóc Môn, TP. Hồ Chí Minh
+          </div>
+        </div>
+
+        <!-- Sự kiện 3: TIỆC MỪNG LỄ THÀNH HÔN (Đãi Tiệc Nhà Hàng) -->
+        <div class="event-card event-highlight" style="border: 2px solid var(--accent-gold);" data-aos="zoom-in"
+          data-aos-delay="250">
+          <span class="event-badge" style="background: linear-gradient(135deg, #c59b4c, #9a7329);">TIỆC CƯỚI
+            CHÍNH</span>
+          <h3 class="event-title">TIỆC MỪNG LỄ THÀNH HÔN</h3>
+
+          <div class="event-datetime-box" style="background: #fdf5e6;">
+            <div class="event-time" style="color: var(--primary-red);">17:30 - Chủ Nhật</div>
+            <div class="event-date">18 . 12 . 2035</div>
+            <div class="event-lunar">(Tức Ngày 10 Tháng 12 Năm Bính Ngọ)</div>
+          </div>
+
+          <div class="event-venue-name">NHÀ HÀNG HIM LAM - SẢNH ROSE</div>
+          <div class="event-address">
+            SÂN GOLF TÂN SƠN NHẤT, TP. Hồ Chí Minh
+          </div>
+
+          <div class="event-actions">
+            <a href="https://www.google.com/maps/place/Trung+T%C3%A2m+Ti%E1%BB%87c+C%C6%B0%E1%BB%9Bi+H%E1%BB%99i+Ngh%E1%BB%8B+Melisa+Center/@10.782358,106.6368441,925m/data=!3m2!1e3!4b1!4m6!3m5!1s0x31752eaf6658609f:0x1e97038f274d4237!8m2!3d10.782358!4d106.6368441!16s%2Fg%2F1q674bwl4"
+              target="_blank" rel="noopener" class="btn-map">
+              <i class="fa-solid fa-location-arrow"></i> Xem Chỉ Đường
+            </a>
+            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ti%E1%BB%87c+C%C6%B0%E1%BB%9Bi+Ho%C3%A0ng+Ninh+%26+Mai+Ph%C6%B0%C6%A1ng&dates=20270117T103000Z/20270117T143000Z&details=Ti%E1%BB%87c+M%E1%BB%ABng+Th%C3%A0nh+H%C3%B4n+t%E1%BA%A1i+Melisa+Center&location=85+Tho%E1%BA%A1i+Ng%E1%BB%8Dc+H%E1%BA%A7u,+T%C3%A2n+Ph%C3%BA,+TP.+H%E1%BB%93+Ch%C3%AD+Minh"
+              target="_blank" rel="noopener" class="btn-calendar">
+              <i class="fa-regular fa-calendar-plus"></i> Thêm Lịch
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: LỊCH NGÀY CƯỚI & ĐỒNG HỒ ĐẾM NGƯỢC -->
+    <section class="section-calendar" id="section-calendar">
+      <span class="sec-subtitle" data-aos="fade-up">Countdown</span>
+      <h2 class="sec-title" data-aos="fade-up" data-aos-delay="100">Ngày Hạnh Phúc</h2>
+
+      <div class="section-divider" data-aos="zoom-in" data-aos-delay="150">
+        <i class="fa-solid fa-calendar-heart"></i>
+      </div>
+
+      <!-- Calendar Widget (Flip up animation) -->
+      <div class="wedding-calendar-card" data-aos="flip-up" data-aos-delay="200">
+        <div class="calendar-header">THÁNG 1 - 2027</div>
+        <div class="cal-grid" id="calendar-grid">
+          <!-- Calendar is dynamically generated via script.js -->
+        </div>
+      </div>
+
+      <!-- Countdown Clock -->
+      <div class="countdown-container" data-aos="fade-up" data-aos-delay="250">
+        <div class="countdown-title">Cùng đếm ngược thời gian nhé!</div>
+        <div class="countdown-boxes">
+          <div class="countdown-item" data-aos="zoom-in" data-aos-delay="100">
+            <span class="countdown-number" id="count-days">00</span>
+            <span class="countdown-label">Ngày</span>
+          </div>
+          <div class="countdown-item" data-aos="zoom-in" data-aos-delay="200">
+            <span class="countdown-number" id="count-hours">00</span>
+            <span class="countdown-label">Giờ</span>
+          </div>
+          <div class="countdown-item" data-aos="zoom-in" data-aos-delay="300">
+            <span class="countdown-number" id="count-minutes">00</span>
+            <span class="countdown-label">Phút</span>
+          </div>
+          <div class="countdown-item" data-aos="zoom-in" data-aos-delay="400">
+            <span class="countdown-number" id="count-seconds">00</span>
+            <span class="countdown-label">Giây</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: XÁC NHẬN THAM DỰ & TRAO GỬI YÊU THƯƠNG -->
+    <section class="section-rsvp" id="section-rsvp">
+      <span class="sec-subtitle" data-aos="fade-up">RSVP &amp; Wishes</span>
+      <h2 class="sec-title" data-aos="fade-up" data-aos-delay="100">Xác Nhận Tham Dự &amp; Lời Chúc</h2>
+
+      <div class="section-divider" data-aos="zoom-in" data-aos-delay="150">
+        <i class="fa-solid fa-envelope"></i>
+      </div>
+
+      <div class="rsvp-card" data-aos="fade-up" data-aos-delay="200">
+        <!-- Trao Gửi Yêu Thương Button (Open Bank Gift Modal) -->
+        <button class="btn-open-gift trigger-gift-modal" data-aos="zoom-in" data-aos-delay="250">
+          <i class="fa-solid fa-gift"></i> Trao Gửi Yêu Thương
+        </button>
+
+        <!-- RSVP Form -->
+        <form class="rsvp-form-wrap" id="rsvp-form" data-aos="fade-up" data-aos-delay="300">
+          <div class="form-group">
+            <label class="form-label" for="rsvp-guest-name">Tên của bạn là? *</label>
+            <input type="text" id="rsvp-guest-name" class="form-input" placeholder="Nhập họ và tên..." required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="rsvp-relation">Bạn là gì của Dâu Rể nhỉ?</label>
+            <select id="rsvp-relation" class="form-select">
+              <option value="Bạn Chú Rể">Bạn Chú Rể</option>
+              <option value="Bạn Cô Dâu">Bạn Cô Dâu</option>
+              <option value="Đồng Nghiệp">Đồng Nghiệp</option>
+              <option value="Họ Hàng / Người Thân">Họ Hàng / Người Thân</option>
+              <option value="Bạn Thân">Bạn Thân</option>
+              <option value="Khách Quý">Khách Quý</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="rsvp-attendance">Bạn có tham dự được không?</label>
+            <select id="rsvp-attendance" class="form-select" required>
+              <option value="yes">Chắc chắn sẽ tham dự</option>
+              <option value="no">Rất tiếc không thể tham dự</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="rsvp-message">Gửi lời chúc đến Dâu Rể nhé!</label>
+            <textarea id="rsvp-message" class="form-textarea"
+              placeholder="Nhập lời chúc ý nghĩa của bạn tại đây..."></textarea>
+          </div>
+
+          <div class="rsvp-email-notice">
+            <i class="fa-solid fa-envelope-circle-check" style="color: var(--accent-gold);"></i> Lời chúc &amp; xác nhận sẽ được gửi trực tiếp tới email Dâu Rể (ninhphuong247@gmail.com)
+          </div>
+
+          <button type="submit" class="btn-submit-rsvp" id="btn-submit-rsvp">
+            <i class="fa-solid fa-paper-plane"></i> GỬI NGAY
+          </button>
+        </form>
+
+        <!-- Sổ Lưu Bút (Guestbook) -->
+        <div class="guestbook-section" data-aos="fade-up" data-aos-delay="350">
+          <div class="guestbook-title">
+            <span>Sổ Lưu Bút Yêu Thương</span>
+            <span class="guestbook-badge" id="wishes-count">3 lời chúc</span>
+          </div>
+
+          <div class="wishes-list" id="wishes-list">
+            <!-- Wishes will be loaded here from script.js -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         SECTION 6.5: BẮN QUÀ LIVE TIKTOK CHÚC PHÚC DÂU RỂ
+         ===================================================================== -->
+    <section class="section-tiktok-gifts" id="section-tiktok-gifts">
+      <span class="sec-subtitle" data-aos="fade-up">Live Gifting</span>
+      <h2 class="sec-title" data-aos="fade-up" data-aos-delay="100">Bắn Quà Chúc Phúc</h2>
+
+      <div class="section-divider" data-aos="zoom-in" data-aos-delay="150">
+        <i class="fa-solid fa-gift"></i>
+      </div>
+
+      <div class="tiktok-live-badge-wrap" data-aos="fade-up" data-aos-delay="180">
+        <span class="tiktok-live-dot"></span>
+        <span class="tiktok-live-tag">TIKTOK LIVE WEDDING &bull; ĐANG DIỄN RA</span>
+      </div>
+
+      <p class="tiktok-desc" data-aos="fade-up" data-aos-delay="200">
+        Chạm liên tục vào quà tặng bên dưới để bắn <strong>Hoa Hồng, Siêu Xe, Lâu Đài, Pháo Hoa</strong> ngập tràn màn hình chúc mừng đôi uyên ương Hoàng Ninh &amp; Mai Phương!
+      </p>
+
+      <!-- Live Gift Stats Counter -->
+      <div class="tiktok-gift-stats" data-aos="fade-up" data-aos-delay="220">
+        <div class="stat-pill"><span class="stat-icon">🌹</span> <strong id="stat-count-rose">1.5K</strong> <span>Hoa Hồng</span></div>
+        <div class="stat-pill"><span class="stat-icon">🏎️</span> <strong id="stat-count-car">88</strong> <span>Siêu Xe</span></div>
+        <div class="stat-pill"><span class="stat-icon">🚀</span> <strong id="stat-count-rocket">168</strong> <span>Tên Lửa</span></div>
+        <div class="stat-pill"><span class="stat-icon">🏰</span> <strong id="stat-count-castle">52</strong> <span>Lâu Đài</span></div>
+      </div>
+
+      <!-- Quick Sender Name Input -->
+      <div class="tiktok-sender-bar" data-aos="fade-up" data-aos-delay="240">
+        <i class="fa-solid fa-user-pen" style="color: var(--accent-gold); margin-right: 8px;"></i>
+        <label for="tiktok-guest-input" style="font-size: 12px; color: var(--text-muted); margin-right: 6px;">Tên người tặng:</label>
+        <input type="text" id="tiktok-guest-input" class="tiktok-guest-input" placeholder="Nhập tên bạn (Ví dụ: Bạn Nam, Chị Lan)..." value="Quý Khách">
+      </div>
+
+      <!-- Grid of Interactive Gifts -->
+      <div class="tiktok-gifts-grid" data-aos="zoom-in" data-aos-delay="260">
+        <!-- 1. Hoa Hồng -->
+        <button class="gift-card" data-gift="rose" type="button" title="Bắn Hoa Hồng (Combo nảy số)">
+          <div class="gift-card-icon">🌹</div>
+          <div class="gift-card-name">Hoa Hồng</div>
+          <div class="gift-card-sub">Combo nảy số</div>
+          <div class="gift-card-tap-badge">Chạm để bắn</div>
+        </button>
+
+        <!-- 2. Siêu Xe -->
+        <button class="gift-card gift-highlight" data-gift="car" type="button" title="Lao Siêu Xe Mui Trần qua màn hình">
+          <div class="gift-badge-hot">HOT 🔥</div>
+          <div class="gift-card-icon">🏎️</div>
+          <div class="gift-card-name">Siêu Xe Cưới</div>
+          <div class="gift-card-sub">Gầm rú rước dâu</div>
+          <div class="gift-card-tap-badge">Chạm để bắn</div>
+        </button>
+
+        <!-- 3. Tên Lửa -->
+        <button class="gift-card" data-gift="rocket" type="button" title="Phóng Tên Lửa nổ Pháo Hoa Trái Tim">
+          <div class="gift-card-icon">🚀</div>
+          <div class="gift-card-name">Tên Lửa</div>
+          <div class="gift-card-sub">Pháo hoa trái tim</div>
+          <div class="gift-card-tap-badge">Chạm để bắn</div>
+        </button>
+
+        <!-- 4. Lâu Đài Cổ Tích -->
+        <button class="gift-card gift-highlight" data-gift="castle" type="button" title="Dựng Lâu Đài Cổ Tích nguy nga">
+          <div class="gift-badge-vip">VIP 👑</div>
+          <div class="gift-card-icon">🏰</div>
+          <div class="gift-card-name">Lâu Đài Vàng</div>
+          <div class="gift-card-sub">Tổ ấm viên mãn</div>
+          <div class="gift-card-tap-badge">Chạm để bắn</div>
+        </button>
+
+        <!-- 5. Nhẫn Kim Cương -->
+        <button class="gift-card" data-gift="ring" type="button" title="Tỏa sáng Nhẫn Kim Cương xoay 3D">
+          <div class="gift-card-icon">💍</div>
+          <div class="gift-card-name">Nhẫn Kim Cương</div>
+          <div class="gift-card-sub">Tình yêu vĩnh cửu</div>
+          <div class="gift-card-tap-badge">Chạm để bắn</div>
+        </button>
+
+        <!-- 6. Vương Miện -->
+        <button class="gift-card" data-gift="crown" type="button" title="Trao Vương Miện Hoàng Gia">
+          <div class="gift-card-icon">👑</div>
+          <div class="gift-card-name">Vương Miện</div>
+          <div class="gift-card-sub">Hoàng gia hỷ sự</div>
+          <div class="gift-card-tap-badge">Chạm để bắn</div>
+        </button>
+
+        <!-- 7. Chuyên Cơ -->
+        <button class="gift-card" data-gift="jet" type="button" title="Chuyên cơ kéo banner chúc mừng">
+          <div class="gift-card-icon">✈️</div>
+          <div class="gift-card-name">Chuyên Cơ</div>
+          <div class="gift-card-sub">Kéo cờ hạnh phúc</div>
+          <div class="gift-card-tap-badge">Chạm để bắn</div>
+        </button>
+
+        <!-- 8. Mưa Tiền Vàng -->
+        <button class="gift-card" data-gift="money" type="button" title="Cơn Mưa Tiền Vàng tài lộc">
+          <div class="gift-card-icon">💰</div>
+          <div class="gift-card-name">Mưa Tiền Vàng</div>
+          <div class="gift-card-sub">Tài lộc tấn tới</div>
+          <div class="gift-card-tap-badge">Chạm để bắn</div>
+        </button>
+      </div>
+
+      <!-- Live Recent Gift Activity Feed -->
+      <div class="tiktok-recent-box" data-aos="fade-up" data-aos-delay="300">
+        <div class="recent-title">
+          <i class="fa-solid fa-bolt" style="color: #ff2c55; margin-right: 6px;"></i> Hoạt động tặng quà vừa diễn ra:
+        </div>
+        <div class="tiktok-feed-list" id="tiktok-feed-list">
+          <div class="feed-item">
+            <span class="feed-avatar">🌸</span>
+            <span class="feed-text"><strong>Chị Ngọc Lan</strong> vừa tặng <strong>🌹 Hoa Hồng x99</strong></span>
+            <span class="feed-time">Vừa xong</span>
+          </div>
+          <div class="feed-item">
+            <span class="feed-avatar">🎩</span>
+            <span class="feed-text"><strong>Anh Minh Khoa</strong> vừa tặng <strong>🏎️ Siêu Xe Cưới x10</strong></span>
+            <span class="feed-time">1 phút trước</span>
+          </div>
+          <div class="feed-item">
+            <span class="feed-avatar">👑</span>
+            <span class="feed-text"><strong>Gia đình Bác Hùng</strong> vừa tặng <strong>🏰 Lâu Đài Vàng x1</strong></span>
+            <span class="feed-time">2 phút trước</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: ALBUM HÌNH CƯỚI -->
+    <section class="section-gallery" id="section-gallery">
+      <span class="sec-subtitle" data-aos="fade-up">Memories</span>
+      <h2 class="sec-title" data-aos="fade-up" data-aos-delay="100">Album Hình Cưới</h2>
+
+      <div class="section-divider" data-aos="zoom-in" data-aos-delay="150">
+        <i class="fa-solid fa-camera"></i>
+      </div>
+
+      <div class="gallery-grid">
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+          <img src="image/chinh.jpg" alt="Ảnh cưới Hoàng Ninh &amp; Mai Phương 1" loading="lazy">
+          <div class="gallery-item-overlay"><i class="fa-solid fa-expand"></i></div>
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+          <img src="image/188A6221.JPG" alt="Ảnh cưới Hoàng Ninh &amp; Mai Phương 2" loading="lazy">
+          <div class="gallery-item-overlay"><i class="fa-solid fa-expand"></i></div>
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+          <img src="image/7011dac3cd2c4d72143d6.jpg" alt="Ảnh cưới Hoàng Ninh &amp; Mai Phương 3" loading="lazy">
+          <div class="gallery-item-overlay"><i class="fa-solid fa-expand"></i></div>
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+          <img src="image/8e73104a07a587fbdeb44.jpg" alt="Ảnh cưới Hoàng Ninh &amp; Mai Phương 4" loading="lazy">
+          <div class="gallery-item-overlay"><i class="fa-solid fa-expand"></i></div>
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+          <img src="image/8519062011cf9191c8de1.jpg" alt="Ảnh cưới Hoàng Ninh &amp; Mai Phương 5" loading="lazy">
+          <div class="gallery-item-overlay"><i class="fa-solid fa-expand"></i></div>
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+          <img src="image/325cb065a78a27d47e9b2.jpg" alt="Ảnh cưới Hoàng Ninh &amp; Mai Phương 6" loading="lazy">
+          <div class="gallery-item-overlay"><i class="fa-solid fa-expand"></i></div>
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+          <img src="image/188A6536.JPG" alt="Ảnh cưới Hoàng Ninh &amp; Mai Phương 7" loading="lazy">
+          <div class="gallery-item-overlay"><i class="fa-solid fa-expand"></i></div>
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+          <img src="image/188A5904.JPG" alt="Ảnh cưới Hoàng Ninh &amp; Mai Phương 8" loading="lazy">
+          <div class="gallery-item-overlay"><i class="fa-solid fa-expand"></i></div>
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+          <img src="image/f292674370acf0f2a9bd5.jpg" alt="Ảnh cưới Hoàng Ninh &amp; Mai Phương 9" loading="lazy">
+          <div class="gallery-item-overlay"><i class="fa-solid fa-expand"></i></div>
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+          <img src="image/188A6174.JPG" alt="Ảnh cưới Hoàng Ninh &amp; Mai Phương 10" loading="lazy">
+          <div class="gallery-item-overlay"><i class="fa-solid fa-expand"></i></div>
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+          <img src="image/ed4e6d777a98fac6a3893.jpg" alt="Ảnh cưới Hoàng Ninh &amp; Mai Phương 11" loading="lazy">
+          <div class="gallery-item-overlay"><i class="fa-solid fa-expand"></i></div>
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+          <img src="image/188A6465.JPG" alt="Ảnh cưới Hoàng Ninh &amp; Mai Phương 12" loading="lazy">
+          <div class="gallery-item-overlay"><i class="fa-solid fa-expand"></i></div>
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+          <img src="image/188A6455.JPG" alt="Ảnh cưới Hoàng Ninh &amp; Mai Phương 13" loading="lazy">
+          <div class="gallery-item-overlay"><i class="fa-solid fa-expand"></i></div>
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+          <img src="image/188A6210.JPG" alt="Ảnh cưới Hoàng Ninh &amp; Mai Phương 14" loading="lazy">
+          <div class="gallery-item-overlay"><i class="fa-solid fa-expand"></i></div>
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+          <img src="image/188A5908.JPG" alt="Ảnh cưới Hoàng Ninh &amp; Mai Phương 15" loading="lazy">
+          <div class="gallery-item-overlay"><i class="fa-solid fa-expand"></i></div>
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+          <img src="image/188A6590.JPG" alt="Ảnh cưới Hoàng Ninh &amp; Mai Phương 16" loading="lazy">
+          <div class="gallery-item-overlay"><i class="fa-solid fa-expand"></i></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 8: LỜI CẢM ƠN (THANK YOU) -->
+    <section class="section-thankyou" id="section-thankyou">
+      <div class="thankyou-photo" data-aos="zoom-in" data-aos-delay="100">
+        <img src="image/8519062011cf9191c8de1.jpg" alt="Thank you HOÀNG NINH &amp; MAI PHƯƠNG">
+      </div>
+
+      <div class="thankyou-heading" data-aos="fade-up" data-aos-delay="200">Thank You</div>
+      <div class="thankyou-message" data-aos="fade-up" data-aos-delay="250">Rất hân hạnh được đón tiếp!</div>
+
+      <div class="footer-credit" data-aos="fade-up" data-aos-delay="300">
+        <p>THƯ MỜI CƯỚI HOÀNG NINH &amp; MAI PHƯƠNG &bull; 17.01.2027</p>
+      </div>
+    </section>
+
+  </div> <!-- End desktop-wrapper -->
+
+  <!-- =====================================================================
+       MODAL 1: TRAO GỬI YÊU THƯƠNG (BANKING & QR CODE)
+       ===================================================================== -->
+  <div class="modal-overlay" id="gift-modal">
+    <div class="gift-modal-card">
+      <button class="modal-close-btn" id="close-gift-modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="gift-modal-title">Trao Gửi Yêu Thương</div>
+
+      <!-- QR Code Image -->
+      <div class="gift-qr-box">
+        <img
+          src="image/qr_acb.svg"
+          alt="Mã QR Mừng Cưới ACB HOANG VAN NINH 873588">
+      </div>
+
+      <!-- Bank Details -->
+      <div class="bank-info-box">
+        <div class="bank-row">
+          <span class="label">Ngân hàng:</span>
+          <span class="val">ACB (Á Châu)</span>
+        </div>
+        <div class="bank-row">
+          <span class="label">Chủ tài khoản:</span>
+          <span class="val">HOANG VAN NINH</span>
+        </div>
+        <div class="bank-row">
+          <span class="label">Số tài khoản:</span>
+          <span class="val">873588</span>
+        </div>
+        <div class="bank-row">
+          <span class="label">Nội dung:</span>
+          <span class="val" style="font-size: 11.5px;">Mừng cưới Hoàng Ninh - Mai Phương</span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <button class="btn-copy-account" id="btn-copy-account">
+          <i class="fa-regular fa-copy"></i> Sao chép số tài khoản
+        </button>
+        <button class="btn-copy-account" id="btn-copy-message"
+          style="background: transparent; color: var(--earth-brown); border: 1px solid var(--accent-gold); box-shadow: none;">
+          <i class="fa-regular fa-copy"></i> Sao chép nội dung chuyển khoản
+        </button>
+      </div>
+
+      <!-- Form Xác Nhận Trao Gửi Yêu Thương (Mừng Cưới) gửi email tới ninhphuong247@gmail.com -->
+      <div class="gift-notify-box">
+        <div class="gift-notify-header">
+          <i class="fa-solid fa-heart-circle-check"></i>
+          <span>Xác Nhận Đã Mừng Cưới</span>
+        </div>
+        <p class="gift-notify-desc">Gửi thông báo trao gửi yêu thương trực tiếp tới email Dâu Rể (<strong>ninhphuong247@gmail.com</strong>):</p>
+        <form id="gift-notify-form" class="gift-notify-form">
+          <div class="gift-form-group">
+            <input type="text" id="gift-sender-name" class="gift-input" placeholder="Tên của bạn là gì? *" required>
+          </div>
+          <div class="gift-form-row">
+            <input type="text" id="gift-sender-relation" class="gift-input" placeholder="Quan hệ (Bạn bè, Họ hàng...)">
+            <input type="text" id="gift-sender-amount" class="gift-input" placeholder="Số tiền mừng (tuỳ chọn)">
+          </div>
+          <div class="gift-form-group">
+            <textarea id="gift-sender-note" class="gift-textarea" placeholder="Gửi lời chúc trao gửi yêu thương tới Hoàng Ninh & Mai Phương..."></textarea>
+          </div>
+          <button type="submit" class="btn-submit-gift-notify" id="btn-submit-gift-notify">
+            <i class="fa-solid fa-paper-plane"></i> GỬI THÔNG BÁO TỚI DÂU RỂ
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       MODAL 2: FULLSCREEN LIGHTBOX GALLERY
+       ===================================================================== -->
+  <div class="lightbox-overlay" id="gallery-lightbox">
+    <button class="lightbox-close-btn" id="lightbox-close">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <button class="lightbox-nav-btn prev" id="lightbox-prev">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <div class="lightbox-img-wrap">
+      <img src="" alt="Zoom Image" class="lightbox-img" id="lightbox-image">
+    </div>
+    <button class="lightbox-nav-btn next" id="lightbox-next">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+    <div class="lightbox-counter" id="lightbox-counter">1 / 12</div>
+  </div>
+
+  <!-- =====================================================================
+       MODAL 3: GUEST LINK CREATOR (Dành cho Dâu Rể tạo link riêng)
+       ===================================================================== -->
+  <div class="modal-overlay" id="creator-modal">
+    <div class="creator-modal-card">
+      <button class="modal-close-btn" id="close-creator-modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="creator-modal-title">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color: #c59b4c;"></i> Tạo Link Mời Khách Riêng
+      </div>
+      <p class="creator-modal-desc">
+        Nhập tên khách mời (hoặc gia đình) bên dưới để tạo đường link có tên trang trọng, khách mở ra sẽ thấy thiệp đề
+        đích danh tên họ!
+      </p>
+
+      <div class="form-group">
+        <label class="form-label" for="input-creator-name">Tên khách mời hoặc xưng hô:</label>
+        <input type="text" id="input-creator-name" class="form-input"
+          placeholder="Ví dụ: Anh Tuấn &amp; Chị Lan, Bạn Nam...">
+      </div>
+
+      <div class="generated-link-box" id="generated-link-display">
+        <!-- Generated link will be shown here -->
+      </div>
+
+      <button class="btn-copy-account" id="btn-copy-generated-link">
+        <i class="fa-regular fa-copy"></i> Sao Chép Link Gửi Khách
+      </button>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       FULLSCREEN TIKTOK LIVE GIFT OVERLAY (ANIMATIONS & COMBO NOTIFICATIONS)
+       ===================================================================== -->
+  <div class="tiktok-gift-overlay" id="tiktok-gift-overlay">
+    <!-- TikTok Live Gift Banner Notification (Slides in from left) -->
+    <div class="tiktok-gift-banner" id="tiktok-gift-banner">
+      <div class="banner-avatar" id="gift-banner-avatar">🎁</div>
+      <div class="banner-content">
+        <div class="banner-sender" id="gift-banner-sender">Quý Khách</div>
+        <div class="banner-action" id="gift-banner-action">Vừa gửi tặng Siêu Xe Cưới</div>
+      </div>
+      <div class="banner-gift-icon" id="gift-banner-icon">🏎️</div>
+      <div class="banner-combo-wrap">
+        <span class="combo-label">COMBO</span>
+        <span class="combo-num" id="gift-banner-combo">x1</span>
+      </div>
+    </div>
+
+    <!-- Container for dynamic full-screen visual animations -->
+    <div class="tiktok-stage" id="tiktok-stage"></div>
+  </div>
+
+  <!-- =====================================================================
+       TIKTOK LIVE GIFT TRAY (BOTTOM SHEET TRAY)
+       ===================================================================== -->
+  <div class="tiktok-tray-overlay" id="tiktok-tray-overlay">
+    <div class="tiktok-tray-card" id="tiktok-tray-card">
+      <div class="tray-handle"></div>
+      <div class="tray-header">
+        <div class="tray-title">
+          <span class="tray-live-badge">LIVE</span>
+          <span>Tặng Quà Chúc Phúc Dâu Rể</span>
+        </div>
+        <button class="tray-close-btn" id="close-tray-btn" type="button">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="tray-sender-row">
+        <span class="tray-sender-label">Tên bạn:</span>
+        <input type="text" id="tray-sender-name" class="tray-sender-input" value="Quý Khách" placeholder="Nhập tên người tặng...">
+      </div>
+
+      <div class="tray-grid" id="tray-grid">
+        <div class="tray-item active" data-gift="rose">
+          <div class="tray-item-icon">🌹</div>
+          <div class="tray-item-name">Hoa Hồng</div>
+          <div class="tray-item-combo">Combo x99</div>
+        </div>
+        <div class="tray-item" data-gift="car">
+          <div class="tray-item-tag">HOT</div>
+          <div class="tray-item-icon">🏎️</div>
+          <div class="tray-item-name">Siêu Xe</div>
+          <div class="tray-item-combo">Rước Dâu</div>
+        </div>
+        <div class="tray-item" data-gift="rocket">
+          <div class="tray-item-icon">🚀</div>
+          <div class="tray-item-name">Tên Lửa</div>
+          <div class="tray-item-combo">Pháo Hoa</div>
+        </div>
+        <div class="tray-item" data-gift="castle">
+          <div class="tray-item-tag vip">VIP</div>
+          <div class="tray-item-icon">🏰</div>
+          <div class="tray-item-name">Lâu Đài</div>
+          <div class="tray-item-combo">Viên Mãn</div>
+        </div>
+        <div class="tray-item" data-gift="ring">
+          <div class="tray-item-icon">💍</div>
+          <div class="tray-item-name">Kim Cương</div>
+          <div class="tray-item-combo">Vĩnh Cửu</div>
+        </div>
+        <div class="tray-item" data-gift="crown">
+          <div class="tray-item-icon">👑</div>
+          <div class="tray-item-name">Vương Miện</div>
+          <div class="tray-item-combo">Hoàng Gia</div>
+        </div>
+        <div class="tray-item" data-gift="jet">
+          <div class="tray-item-icon">✈️</div>
+          <div class="tray-item-name">Chuyên Cơ</div>
+          <div class="tray-item-combo">Trăng Mật</div>
+        </div>
+        <div class="tray-item" data-gift="money">
+          <div class="tray-item-icon">💰</div>
+          <div class="tray-item-name">Mưa Vàng</div>
+          <div class="tray-item-combo">Tài Lộc</div>
+        </div>
+      </div>
+
+      <div class="tray-footer">
+        <div class="tray-multi-btns">
+          <button class="btn-multi-combo active" data-mult="1" type="button">x1</button>
+          <button class="btn-multi-combo" data-mult="10" type="button">x10</button>
+          <button class="btn-multi-combo" data-mult="99" type="button">x99</button>
+        </div>
+        <button class="btn-send-gift" id="btn-tray-send" type="button">
+          <i class="fa-solid fa-paper-plane"></i> BẮN QUÀ NGAY 💖
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript File -->
+  <script src="script.js"></script>
+</body>
+
+</html>

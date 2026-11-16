@@ -1,0 +1,8 @@
+# OS / System files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+
+# Local logs
+wishes_log.json

@@ -37,6 +37,8 @@
 html {
   font-size: 15px;
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 body {
@@ -50,35 +52,44 @@ body {
   color: var(--text-dark);
   line-height: 1.6;
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  margin: 0;
   padding: 0;
   overflow-x: hidden;
+  overflow-y: auto;
   touch-action: pan-y;
   -webkit-overflow-scrolling: touch;
 }
 
-/* Outer Desktop Frame */
+/* Main Container (Centered with margin: 0 auto - 100% single native scroll, no inner scroll container) */
 .desktop-wrapper {
   width: 100%;
   max-width: var(--container-width);
+  margin: 0 auto;
   min-height: 100vh;
   background-color: var(--warm-bg);
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
   position: relative;
-  overflow-x: hidden;
+  overflow: visible !important;
   opacity: 1;
-  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .desktop-wrapper.revealed {
-  animation: mainContentReveal 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  opacity: 1;
 }
 
-@keyframes mainContentReveal {
-  from { opacity: 0; transform: translateY(30px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+@media (max-width: 480px) {
+  body {
+    background-color: var(--warm-bg);
+    background-image: none;
+    background-attachment: scroll;
+  }
+  .desktop-wrapper {
+    max-width: 100%;
+    margin: 0;
+    box-shadow: none;
+    border: none;
+    overflow: visible !important;
+  }
 }
 
 /* Petals Falling Canvas */

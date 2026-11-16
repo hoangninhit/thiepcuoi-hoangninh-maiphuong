@@ -125,22 +125,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 5. Complete transition: dissolve palace gate overlay, reveal wedding invitation
     setTimeout(() => {
-      if (palaceOverlay) palaceOverlay.classList.add('hidden');
+      if (palaceOverlay) {
+        palaceOverlay.classList.add('hidden');
+        palaceOverlay.style.display = 'none';
+      }
       if (mainContent) mainContent.classList.add('revealed');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 1800);
+    }, 1500);
   }
 
   function skipIntroDirectly() {
     if (hasOpened) return;
     hasOpened = true;
     playAudio();
-    if (palaceOverlay) palaceOverlay.classList.add('hidden');
+    if (palaceOverlay) {
+      palaceOverlay.classList.add('hidden');
+      palaceOverlay.style.display = 'none';
+    }
     if (mainContent) mainContent.classList.add('revealed');
   }
 
   if (palaceLockBtn) palaceLockBtn.addEventListener('click', triggerOpenPalaceGate);
   if (skipIntroBtn) skipIntroBtn.addEventListener('click', skipIntroDirectly);
+
+  // Wheel scroll or touch swipe gesture on palace gate opens doors smoothly
+  if (palaceOverlay) {
+    let touchStartY = 0;
+    palaceOverlay.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaY) > 8) {
+        triggerOpenPalaceGate();
+      }
+    }, { passive: true });
+
+    palaceOverlay.addEventListener('touchstart', (e) => {
+      if (e.touches && e.touches[0]) {
+        touchStartY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    palaceOverlay.addEventListener('touchend', (e) => {
+      if (e.changedTouches && e.changedTouches[0]) {
+        const touchEndY = e.changedTouches[0].clientY;
+        if (Math.abs(touchEndY - touchStartY) > 20) {
+          triggerOpenPalaceGate();
+        }
+      }
+    }, { passive: true });
+  }
 
   // 4. Personalized Guest Name via URL Parameter
   const urlParams = new URLSearchParams(window.location.search);
@@ -777,24 +807,31 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollElements.forEach(el => observer.observe(el));
   }
 
-  // 15. Scroll Progress Bar & Back to Top Button
+  // 15. Scroll Progress Bar & Back to Top Button (Optimized with requestAnimationFrame)
   function initScrollProgress() {
     const progressBar = document.getElementById('scroll-progress-bar');
     const scrollTopBtn = document.getElementById('scroll-top-btn');
 
+    let ticking = false;
     window.addEventListener('scroll', () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (totalHeight > 0 && progressBar) {
-        const progress = (window.scrollY / totalHeight) * 100;
-        progressBar.style.width = progress + '%';
-      }
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+          if (totalHeight > 0 && progressBar) {
+            const progress = (window.scrollY / totalHeight) * 100;
+            progressBar.style.width = progress + '%';
+          }
 
-      if (scrollTopBtn) {
-        if (window.scrollY > 350) {
-          scrollTopBtn.classList.add('visible');
-        } else {
-          scrollTopBtn.classList.remove('visible');
-        }
+          if (scrollTopBtn) {
+            if (window.scrollY > 350) {
+              scrollTopBtn.classList.add('visible');
+            } else {
+              scrollTopBtn.classList.remove('visible');
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     }, { passive: true });
 

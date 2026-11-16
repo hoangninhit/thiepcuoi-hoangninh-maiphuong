@@ -35,8 +35,8 @@
 }
 
 html {
-  scroll-behavior: smooth;
   font-size: 15px;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -55,6 +55,8 @@ body {
   align-items: flex-start;
   padding: 0;
   overflow-x: hidden;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Outer Desktop Frame */
@@ -216,7 +218,8 @@ body {
   opacity: 0;
   visibility: hidden;
   transform: scale(1.15);
-  pointer-events: none;
+  pointer-events: none !important;
+  display: none !important;
 }
 
 /* Top Bar & Skip Button */
@@ -1627,8 +1630,7 @@ section {
    ===================================================================== */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.75);
@@ -1640,12 +1642,14 @@ section {
   padding: 20px;
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .modal-overlay.active {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
 }
 
 .gift-modal-card {
@@ -1917,8 +1921,7 @@ section {
 /* Lightbox Modal */
 .lightbox-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.92);
@@ -1929,12 +1932,14 @@ section {
   justify-content: center;
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .lightbox-overlay.active {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
 }
 
 .lightbox-img-wrap {
@@ -2132,19 +2137,17 @@ section {
   background: linear-gradient(135deg, #a31c26, #6b1117);
 }
 
-/* 3. Base AOS Animation States */
+/* 3. Base AOS Animation States (Optimized for 60-120fps Smooth Scrolling) */
 [data-aos] {
   opacity: 0;
-  filter: blur(4px);
-  transition-property: transform, opacity, filter;
-  transition-duration: 0.9s;
+  transition-property: transform, opacity;
+  transition-duration: 0.75s;
   transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform, opacity, filter;
+  will-change: transform, opacity;
 }
 
 [data-aos].aos-animate {
   opacity: 1;
-  filter: blur(0px) !important;
   transform: translate3d(0, 0, 0) scale(1) rotate(0) !important;
 }
 
@@ -2600,9 +2603,13 @@ section {
   inset: 0;
   width: 100vw;
   height: 100vh;
-  pointer-events: none;
+  pointer-events: none !important;
   z-index: 10005;
   overflow: hidden;
+}
+
+.tiktok-gift-overlay * {
+  pointer-events: none !important;
 }
 
 /* TikTok Live Gift Notification Banner */
@@ -3041,12 +3048,14 @@ section {
   justify-content: center;
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
   transition: opacity 0.35s ease, visibility 0.35s ease;
 }
 
 .tiktok-tray-overlay.active {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
 }
 
 .tiktok-tray-card {

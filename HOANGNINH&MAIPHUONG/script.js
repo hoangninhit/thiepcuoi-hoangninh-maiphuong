@@ -106,6 +106,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (hasOpened) return;
     hasOpened = true;
 
+    // Immediately release pointer events so touches pass directly to the wedding card without waiting
+    if (palaceOverlay) {
+      palaceOverlay.classList.add('doors-opened');
+      palaceOverlay.style.pointerEvents = 'none';
+    }
+    if (mainContent) mainContent.classList.add('revealed');
+
     // 1. Play deep palace gong & crystal chime, start wedding music
     playPalaceOpeningAudio();
     playAudio();
@@ -113,24 +120,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Unlock the center medallion
     if (palaceLockBtn) palaceLockBtn.classList.add('unlocked');
 
-    // 3. 3D Palace Doors swing open wide to both sides
-    setTimeout(() => {
-      if (palaceOverlay) palaceOverlay.classList.add('doors-opened');
-    }, 200);
-
-    // 4. Burst of golden confetti & rose petals from within the palace
+    // 3. Burst of golden confetti & rose petals from within the palace
     setTimeout(() => {
       launchConfetti();
-    }, 600);
+    }, 350);
 
-    // 5. Complete transition: dissolve palace gate overlay, reveal wedding invitation
+    // 4. Complete transition: dissolve palace gate overlay completely
     setTimeout(() => {
       if (palaceOverlay) {
         palaceOverlay.classList.add('hidden');
         palaceOverlay.style.display = 'none';
       }
-      if (mainContent) mainContent.classList.add('revealed');
-    }, 1500);
+    }, 700);
   }
 
   function skipIntroDirectly() {
@@ -138,6 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     hasOpened = true;
     playAudio();
     if (palaceOverlay) {
+      palaceOverlay.style.pointerEvents = 'none';
       palaceOverlay.classList.add('hidden');
       palaceOverlay.style.display = 'none';
     }
@@ -147,11 +149,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if (palaceLockBtn) palaceLockBtn.addEventListener('click', triggerOpenPalaceGate);
   if (skipIntroBtn) skipIntroBtn.addEventListener('click', skipIntroDirectly);
 
-  // Wheel scroll or touch swipe gesture on palace gate opens doors smoothly
+  // Wheel scroll or touch swipe gesture on palace gate opens doors instantly
   if (palaceOverlay) {
     let touchStartY = 0;
     palaceOverlay.addEventListener('wheel', (e) => {
-      if (Math.abs(e.deltaY) > 8) {
+      if (Math.abs(e.deltaY) > 6) {
         triggerOpenPalaceGate();
       }
     }, { passive: true });
@@ -162,10 +164,19 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }, { passive: true });
 
+    palaceOverlay.addEventListener('touchmove', (e) => {
+      if (e.touches && e.touches[0]) {
+        const moveY = e.touches[0].clientY;
+        if (Math.abs(moveY - touchStartY) > 10) {
+          triggerOpenPalaceGate();
+        }
+      }
+    }, { passive: true });
+
     palaceOverlay.addEventListener('touchend', (e) => {
       if (e.changedTouches && e.changedTouches[0]) {
         const touchEndY = e.changedTouches[0].clientY;
-        if (Math.abs(touchEndY - touchStartY) > 20) {
+        if (Math.abs(touchEndY - touchStartY) > 10) {
           triggerOpenPalaceGate();
         }
       }

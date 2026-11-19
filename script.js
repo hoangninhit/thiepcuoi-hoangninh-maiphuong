@@ -332,12 +332,20 @@ document.addEventListener('DOMContentLoaded', () => {
         return null;
       });
 
-      // 2. Also log to local send-rsvp.php in parallel
-      const localPhpPromise = fetch('send-rsvp.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      }).then(res => res.json()).catch(() => null);
+      // 2. Also log to local send-rsvp.php in parallel if running on a PHP host (skip on static hosts)
+      const isStaticHost = location.hostname.endsWith('workers.dev') ||
+                           location.hostname.endsWith('pages.dev') ||
+                           location.hostname.endsWith('github.io');
+      const localPhpPromise = isStaticHost
+        ? Promise.resolve(null)
+        : fetch('send-rsvp.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          }).then(res => {
+            if (!res.ok) return null;
+            return res.json().catch(() => null);
+          }).catch(() => null);
 
       const [fsRes] = await Promise.all([formSubmitPromise, localPhpPromise]);
       return fsRes;
@@ -1185,43 +1193,63 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load saved gift activities from server file gift_activity.json (and localStorage fallback)
     async function loadSavedGiftActivities() {
-      // 1. Instant load from localStorage so feed never flickers
+      // 1. Instant load from localStorage so feed never flickers and user gifts persist across F5
+      let cachedActs = [];
       try {
         const cached = localStorage.getItem('wedding_gift_activities_v1');
         if (cached) {
           const parsed = JSON.parse(cached);
           if (Array.isArray(parsed) && parsed.length) {
-            renderFeedActivities(parsed);
+            cachedActs = parsed;
+            renderFeedActivities(cachedActs);
           }
         }
       } catch (err) { }
 
-      // 2. Fetch latest data from server file gift_activity.json (or gift-activity.php on PHP server)
+      // 2. Fetch latest seed / server data directly from gift_activity.json (works on static hosting & Cloudflare)
       try {
-        let res = await fetch('gift-activity.php').catch(() => null);
-        if (!res || !res.ok) {
-          res = await fetch('gift_activity.json').catch(() => null);
-        }
+        const res = await fetch('gift_activity.json').catch(() => null);
         if (res && res.ok) {
-          const data = await res.json();
-          if (data && data.success !== false) {
-            const activities = data.activities || (Array.isArray(data) ? data : []);
-            if (activities.length) {
-              renderFeedActivities(activities);
-              localStorage.setItem('wedding_gift_activities_v1', JSON.stringify(activities));
-            }
-            if (data.stats) {
-              Object.assign(stats, data.stats);
-              updateStatDisplays();
+          const text = await res.text();
+          // Safeguard: only parse if response is valid JSON (prevents PHP source or HTML error pages from crashing)
+          const trimmed = text.trim();
+          if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+            const data = JSON.parse(trimmed);
+            if (data && data.success !== false) {
+              const serverActivities = data.activities || (Array.isArray(data) ? data : []);
+              if (serverActivities.length) {
+                if (!cachedActs.length) {
+                  renderFeedActivities(serverActivities);
+                  localStorage.setItem('wedding_gift_activities_v1', JSON.stringify(serverActivities));
+                } else {
+                  // Merge without duplicating
+                  const existingKeys = new Set(cachedActs.map(a => `${a.sender}_${a.gift}`));
+                  const newItems = serverActivities.filter(a => !existingKeys.has(`${a.sender}_${a.gift}`));
+                  if (newItems.length && cachedActs.length < 8) {
+                    const merged = [...cachedActs, ...newItems].slice(0, 15);
+                    renderFeedActivities(merged);
+                    localStorage.setItem('wedding_gift_activities_v1', JSON.stringify(merged));
+                  }
+                }
+              }
+              if (data.stats) {
+                Object.keys(data.stats).forEach(k => {
+                  if (stats[k] === undefined || isNaN(stats[k]) || (localStorage.getItem('gift_stat_' + k) === null)) {
+                    stats[k] = data.stats[k];
+                    localStorage.setItem('gift_stat_' + k, stats[k]);
+                  }
+                });
+                updateStatDisplays();
+              }
             }
           }
         }
       } catch (e) {
-        console.warn('Notice: loadSavedGiftActivities offline fallback:', e);
+        // Silently fallback to localStorage cache
       }
     }
 
-    // Add Live Feed Item & Persist to server file gift_activity.json + localStorage
+    // Add Live Feed Item & Persist to localStorage + optional PHP server file
     const feedAvatars = ['🌸', '💖', '👑', '🎉', '💐', '💎', '🚀', '✨', '🏎️', '🎩'];
     function addFeedActivity(sender, giftDesc, giftKey, multiplier) {
       const feedList = document.getElementById('tiktok-feed-list');
@@ -1260,19 +1288,27 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('wedding_gift_activities_v1', JSON.stringify(cached));
       } catch (e) { }
 
-      // 3. Save directly to server file gift_activity.json via gift-activity.php
-      fetch('gift-activity.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newAct)
-      }).then(res => res.json()).then(data => {
-        if (data && data.stats) {
-          Object.assign(stats, data.stats);
-          updateStatDisplays();
-        }
-      }).catch(err => {
-        console.warn('Notice: server file save error:', err);
-      });
+      // 3. Save directly to server file via gift-activity.php ONLY if running on a PHP server
+      // (Skip on static hosts like Cloudflare Pages/Workers or GitHub Pages to prevent 405 Method Not Allowed)
+      const isStaticHost = location.hostname.endsWith('workers.dev') ||
+                           location.hostname.endsWith('pages.dev') ||
+                           location.hostname.endsWith('github.io');
+
+      if (!isStaticHost) {
+        fetch('gift-activity.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newAct)
+        }).then(res => {
+          if (!res.ok) return null;
+          return res.json().catch(() => null);
+        }).then(data => {
+          if (data && data.stats) {
+            Object.assign(stats, data.stats);
+            updateStatDisplays();
+          }
+        }).catch(() => { });
+      }
     }
 
     // Fullscreen Visual Effects Creator

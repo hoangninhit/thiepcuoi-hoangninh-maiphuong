@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 4. Personalized Guest Name via URL Parameter
   const urlParams = new URLSearchParams(window.location.search);
   const guestParam = urlParams.get('guest') || urlParams.get('to') || urlParams.get('u') || urlParams.get('khach');
-  
+
   const guestEnvelopeEl = document.getElementById('envelope-guest-name');
   const guestHeroEl = document.getElementById('hero-guest-name');
   const guestInputEl = document.getElementById('rsvp-guest-name');
@@ -1192,7 +1192,7 @@ document.addEventListener('DOMContentLoaded', () => {
             renderFeedActivities(parsed);
           }
         }
-      } catch (err) {}
+      } catch (err) { }
 
       // 2. Fetch latest data from server file gift_activity.json (or gift-activity.php on PHP server)
       try {
@@ -1224,7 +1224,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function addFeedActivity(sender, giftDesc, giftKey, multiplier) {
       const feedList = document.getElementById('tiktok-feed-list');
       const randomAvatar = feedAvatars[Math.floor(Math.random() * feedAvatars.length)];
-      
+
       const newAct = {
         avatar: randomAvatar,
         sender: sender,
@@ -1256,7 +1256,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cached.unshift(newAct);
         if (cached.length > 25) cached = cached.slice(0, 25);
         localStorage.setItem('wedding_gift_activities_v1', JSON.stringify(cached));
-      } catch (e) {}
+      } catch (e) { }
 
       // 3. Save directly to server file gift_activity.json via gift-activity.php
       fetch('gift-activity.php', {

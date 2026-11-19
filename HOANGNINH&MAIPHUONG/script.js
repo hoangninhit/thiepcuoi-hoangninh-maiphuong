@@ -110,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (palaceOverlay) {
       palaceOverlay.classList.add('doors-opened');
       palaceOverlay.style.pointerEvents = 'none';
+      palaceOverlay.style.touchAction = 'none';
     }
     if (mainContent) mainContent.classList.add('revealed');
 
@@ -140,6 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
     playAudio();
     if (palaceOverlay) {
       palaceOverlay.style.pointerEvents = 'none';
+      palaceOverlay.style.touchAction = 'none';
       palaceOverlay.classList.add('hidden');
       palaceOverlay.style.display = 'none';
     }

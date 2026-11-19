@@ -40,8 +40,7 @@ html {
   width: 100%;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
-  overscroll-behavior-y: none;
+  overflow-x: clip;
 }
 
 body {
@@ -57,8 +56,10 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  overflow-x: hidden;
   position: relative;
+  overflow: visible !important;
+  overflow-x: clip;
+  touch-action: pan-y;
 }
 
 /* Main Container (Centered with margin: 0 auto - 100% single native scroll, no inner scroll container) */
@@ -71,6 +72,7 @@ body {
   position: relative;
   overflow: visible !important;
   opacity: 1;
+  touch-action: pan-y;
 }
 
 .desktop-wrapper.revealed {
@@ -82,7 +84,8 @@ body {
     background-color: var(--warm-bg);
     background-image: none;
     background-attachment: scroll;
-    overflow-x: hidden;
+    overflow: visible !important;
+    overflow-x: clip;
   }
   .desktop-wrapper {
     max-width: 100%;
@@ -90,6 +93,7 @@ body {
     box-shadow: none;
     border: none;
     overflow: visible !important;
+    touch-action: pan-y;
   }
 }
 
@@ -229,6 +233,7 @@ body {
 .palace-gate-overlay.doors-opened,
 .palace-gate-overlay.doors-opened * {
   pointer-events: none !important;
+  touch-action: none !important;
 }
 
 .palace-gate-overlay.hidden {
@@ -739,6 +744,8 @@ section {
   padding: 30px 15px 40px;
   background: #ffffff;
   position: relative;
+  overflow: visible !important;
+  touch-action: pan-y;
 }
 
 .hero-ornament-top {

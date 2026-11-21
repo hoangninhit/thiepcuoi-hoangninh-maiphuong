@@ -2111,3 +2111,15 @@ body {
   color: #1a4268;
   border: 1px solid #b8d4ee;
 }
+
+.theme-tag-lavender {
+  background: #f4ecf8;
+  color: #59296e;
+  border: 1px solid #d8bfe3;
+}
+
+.theme-tag-champagne {
+  background: #fbf5ee;
+  color: #825224;
+  border: 1px solid #e8d0b8;
+}

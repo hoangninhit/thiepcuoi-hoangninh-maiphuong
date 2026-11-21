@@ -1562,6 +1562,18 @@ document.addEventListener('DOMContentLoaded', () => {
       dark: '#0d1e36',
       gold: '#c59b4c',
       lightGold: '#e8d39f'
+    },
+    lavender: {
+      primary: '#59296e',
+      dark: '#381647',
+      gold: '#d4af37',
+      lightGold: '#eedcf5'
+    },
+    champagne: {
+      primary: '#825224',
+      dark: '#4f3012',
+      gold: '#d4af37',
+      lightGold: '#faebd7'
     }
   };
 

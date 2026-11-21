@@ -560,7 +560,9 @@ document.addEventListener('DOMContentLoaded', () => {
             royal: '👑 Hoàng Gia',
             rose: '🌸 Lãng Mạn',
             emerald: '🌿 Emerald',
-            sapphire: '🌊 Sapphire'
+            sapphire: '🌊 Sapphire',
+            lavender: '💜 Lavender',
+            champagne: '🥂 Champagne'
           };
           barActiveThemeTag.textContent = themeLabels[theme] || '👑 Hoàng Gia';
         }
@@ -1585,7 +1587,9 @@ document.addEventListener('DOMContentLoaded', () => {
         royal: '<span class="invitation-theme-tag theme-tag-royal">👑 Hoàng Gia</span>',
         rose: '<span class="invitation-theme-tag theme-tag-rose">🌸 Lãng Mạn</span>',
         emerald: '<span class="invitation-theme-tag theme-tag-emerald">🌿 Emerald</span>',
-        sapphire: '<span class="invitation-theme-tag theme-tag-sapphire">🌊 Sapphire</span>'
+        sapphire: '<span class="invitation-theme-tag theme-tag-sapphire">🌊 Sapphire</span>',
+        lavender: '<span class="invitation-theme-tag theme-tag-lavender">💜 Lavender</span>',
+        champagne: '<span class="invitation-theme-tag theme-tag-champagne">🥂 Champagne</span>'
       };
 
       let html = '';

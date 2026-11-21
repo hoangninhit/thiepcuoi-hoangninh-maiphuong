@@ -59,6 +59,45 @@
       <a href="index.html" target="_blank" class="btn-header btn-header-primary" id="btn-open-fullscreen" title="Mở xem toàn màn hình thiệp cưới trong tab mới">
         <i class="fa-solid fa-up-right-from-square"></i> <span>Xem Full</span>
       </a>
+
+      <!-- User Account Widget (Đăng nhập / Đăng ký / Thông tin tài khoản) -->
+      <div class="header-user-widget" id="header-user-widget">
+        <!-- Logged out view -->
+        <div class="user-guest-view" id="user-guest-view" style="display: flex; gap: 8px;">
+          <button type="button" class="btn-header btn-header-outline" id="btn-open-login">
+            <i class="fa-solid fa-right-to-bracket"></i> <span>Đăng Nhập</span>
+          </button>
+          <button type="button" class="btn-header btn-header-gold" id="btn-open-register">
+            <i class="fa-solid fa-user-plus"></i> <span>Đăng Ký</span>
+          </button>
+        </div>
+
+        <!-- Logged in view -->
+        <div class="user-dropdown-wrap" id="user-logged-view" style="display: none;">
+          <button type="button" class="btn-user-badge" id="btn-user-menu">
+            <span class="user-avatar-circle" id="user-avatar-initial">H</span>
+            <span class="user-name-text" id="user-display-name">Hoàng Ninh</span>
+            <i class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: 2px;"></i>
+          </button>
+          <div class="user-dropdown-menu" id="user-dropdown-menu">
+            <div class="user-dropdown-header">
+              <strong id="dropdown-user-name">Hoàng Ninh</strong>
+              <span id="dropdown-user-email">ninhphuong247@gmail.com</span>
+            </div>
+            <div class="user-dropdown-divider"></div>
+            <button type="button" class="user-dropdown-item" id="btn-my-invitations">
+              <i class="fa-solid fa-envelope-open-text" style="color: var(--accent-gold);"></i> Danh Sách Thiệp Của Tôi
+            </button>
+            <button type="button" class="user-dropdown-item" id="btn-create-new-invitation">
+              <i class="fa-solid fa-circle-plus" style="color: #4cd964;"></i> Tạo Thêm Thiệp Mới
+            </button>
+            <div class="user-dropdown-divider"></div>
+            <button type="button" class="user-dropdown-item text-danger" id="btn-logout">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng Xuất
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -88,6 +127,17 @@
 
       <!-- Tabs Content Form -->
       <div class="tab-content">
+
+        <!-- Guest Alert Banner (Hiện khi chưa đăng nhập) -->
+        <div class="auth-guest-banner" id="auth-guest-banner">
+          <div>
+            <i class="fa-solid fa-crown" style="color: var(--accent-gold); margin-right: 6px;"></i>
+            <span>Bạn đang dùng thử. <strong>Đăng ký / Đăng nhập</strong> để lưu thiệp cưới vào tài khoản vĩnh viễn và quản lý nhiều thiệp!</span>
+          </div>
+          <button type="button" class="btn-banner-login" id="btn-banner-auth">
+            Đăng Nhập / Đăng Ký
+          </button>
+        </div>
 
         <!-- ==================== TAB 1: DÂU RỂ & NGÀY CƯỚI ==================== -->
         <div class="tab-pane active" id="tab-names">
@@ -464,6 +514,130 @@
         <a href="#" target="_blank" class="btn-header btn-header-secondary" id="btn-test-share-link" style="padding: 12px 18px;">
           <i class="fa-solid fa-arrow-up-right-from-square"></i> Mở Thử
         </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Authentication Modal (Đăng Nhập / Đăng Ký) -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal-card auth-modal-card">
+      <button type="button" class="modal-close" id="btn-close-auth-modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div style="text-align: center; margin-bottom: 12px;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #8b1820, #540d12); border: 1.5px solid var(--accent-gold); display: inline-flex; align-items: center; justify-content: center; color: var(--accent-light-gold); font-size: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.25);">
+          <i class="fa-solid fa-crown"></i>
+        </div>
+        <h3 class="modal-title" style="margin-top: 8px;">TÀI KHOẢN DÂU RỂ HOÀNG GIA</h3>
+        <p class="modal-desc" style="margin-bottom: 10px;" id="auth-modal-subtitle">
+          Đăng nhập hoặc đăng ký tài khoản để lưu thiệp cưới vĩnh viễn và quản lý nhiều mẫu thiệp!
+        </p>
+      </div>
+
+      <!-- Auth Switch Tabs -->
+      <div class="auth-nav">
+        <button type="button" class="auth-tab-btn active" id="tab-auth-login">Đăng Nhập</button>
+        <button type="button" class="auth-tab-btn" id="tab-auth-register">Đăng Ký</button>
+      </div>
+
+      <!-- Error Message Banner -->
+      <div class="auth-error-msg" id="auth-error-msg"></div>
+
+      <!-- A. Form Đăng Nhập -->
+      <form id="form-auth-login">
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label" for="auth-login-account">Email hoặc Số điện thoại:</label>
+          <input type="text" id="auth-login-account" class="form-input" placeholder="Ví dụ: ninhphuong247@gmail.com hoặc 090..." required>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label class="form-label" for="auth-login-pwd">Mật khẩu:</label>
+          <div class="password-input-wrap">
+            <input type="password" id="auth-login-pwd" class="form-input" placeholder="Nhập mật khẩu..." required>
+            <button type="button" class="btn-toggle-pwd" data-target="auth-login-pwd" title="Hiện/ẩn mật khẩu">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-header btn-header-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 13.5px;">
+          <i class="fa-solid fa-right-to-bracket"></i> ĐĂNG NHẬP NGAY
+        </button>
+
+        <div class="auth-switch-text">
+          Chưa có tài khoản? <a id="link-switch-register">Đăng ký tài khoản miễn phí</a>
+        </div>
+      </form>
+
+      <!-- B. Form Đăng Ký -->
+      <form id="form-auth-register" style="display: none;">
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label class="form-label" for="auth-reg-fullname">Họ và Tên (Cô Dâu / Chú Rể):</label>
+          <input type="text" id="auth-reg-fullname" class="form-input" placeholder="Ví dụ: Hoàng Ninh hoặc Mai Phương" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label class="form-label" for="auth-reg-account">Email hoặc Số điện thoại:</label>
+          <input type="text" id="auth-reg-account" class="form-input" placeholder="Ví dụ: ninhphuong247@gmail.com" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label class="form-label" for="auth-reg-pwd">Mật khẩu (Tối thiểu 6 ký tự):</label>
+          <div class="password-input-wrap">
+            <input type="password" id="auth-reg-pwd" class="form-input" placeholder="Tạo mật khẩu..." required minlength="6">
+            <button type="button" class="btn-toggle-pwd" data-target="auth-reg-pwd" title="Hiện/ẩn mật khẩu">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label class="form-label" for="auth-reg-pwd2">Xác nhận lại mật khẩu:</label>
+          <div class="password-input-wrap">
+            <input type="password" id="auth-reg-pwd2" class="form-input" placeholder="Nhập lại mật khẩu..." required minlength="6">
+            <button type="button" class="btn-toggle-pwd" data-target="auth-reg-pwd2" title="Hiện/ẩn mật khẩu">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-header btn-header-gold" style="width: 100%; justify-content: center; padding: 12px; font-size: 13.5px;">
+          <i class="fa-solid fa-user-plus"></i> ĐĂNG KÝ TÀI KHOẢN MỚI
+        </button>
+
+        <div class="auth-switch-text">
+          Đã có tài khoản? <a id="link-switch-login">Đăng nhập ngay</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. My Invitations Modal (Danh sách thiệp cưới của tài khoản) -->
+  <div class="modal-overlay" id="my-invitations-modal">
+    <div class="modal-card invitations-modal-card">
+      <button type="button" class="modal-close" id="btn-close-invitations-modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <h3 class="modal-title">
+        <i class="fa-solid fa-envelope-open-text" style="color: var(--accent-gold);"></i> Danh Sách Thiệp Cưới Của Tôi
+      </h3>
+      <p class="modal-desc" style="margin-bottom: 10px;">
+        Các mẫu thiệp bạn đã tạo và lưu trong tài khoản. Bạn có thể mở ra chỉnh sửa tiếp, xem thiệp hoặc sao chép link gửi khách bất cứ lúc nào!
+      </p>
+
+      <div class="invitations-list" id="invitations-container">
+        <!-- Dynamically rendered invitations -->
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border-color); padding-top: 14px; margin-top: 10px;">
+        <button type="button" class="btn-header btn-header-secondary" id="btn-close-invitations-bottom">
+          Đóng
+        </button>
+        <button type="button" class="btn-header btn-header-primary" id="btn-create-inv-action">
+          <i class="fa-solid fa-plus-circle"></i> Tạo Thêm Thiệp Cưới Mới
+        </button>
       </div>
     </div>
   </div>

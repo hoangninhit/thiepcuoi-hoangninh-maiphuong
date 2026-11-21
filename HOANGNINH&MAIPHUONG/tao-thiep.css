@@ -731,6 +731,396 @@ body {
   transform: translateX(-50%) translateY(0);
 }
 
+/* =====================================================================
+   6. USER AUTHENTICATION & MULTI-INVITATION SYSTEM
+   ===================================================================== */
+.header-user-widget {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 6px;
+  padding-left: 10px;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.btn-header-outline {
+  background: transparent;
+  border: 1px solid var(--accent-gold);
+  color: var(--accent-light-gold);
+}
+
+.btn-header-outline:hover {
+  background: rgba(197, 155, 76, 0.15);
+  color: #fff;
+}
+
+.btn-header-gold {
+  background: linear-gradient(135deg, #c59b4c, #9a7329);
+  color: #170d0e;
+  font-weight: 700;
+  border: 1px solid #ffe299;
+  box-shadow: 0 2px 10px rgba(197, 155, 76, 0.3);
+}
+
+.btn-header-gold:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+/* User Dropdown Profile Badge */
+.user-dropdown-wrap {
+  position: relative;
+}
+
+.btn-user-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid var(--accent-gold);
+  padding: 5px 12px 5px 6px;
+  border-radius: 24px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-user-badge:hover {
+  background: rgba(197, 155, 76, 0.2);
+}
+
+.user-avatar-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-red), var(--primary-dark-red));
+  border: 1px solid var(--accent-light-gold);
+  color: var(--accent-light-gold);
+  font-weight: 700;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-name-text {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--accent-light-gold);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 230px;
+  background: #241215;
+  border: 1.5px solid var(--accent-gold);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  padding: 8px 0;
+  z-index: 1000;
+  display: none;
+  animation: fadeIn 0.2s ease;
+}
+
+.user-dropdown-menu.show {
+  display: block;
+}
+
+.user-dropdown-header {
+  padding: 8px 16px;
+}
+
+.user-dropdown-header strong {
+  display: block;
+  font-size: 13.5px;
+  color: #fff;
+  font-family: var(--font-serif);
+}
+
+.user-dropdown-header span {
+  font-size: 11px;
+  color: var(--accent-light-gold);
+  opacity: 0.85;
+}
+
+.user-dropdown-divider {
+  height: 1px;
+  background: rgba(197, 155, 76, 0.25);
+  margin: 6px 0;
+}
+
+.user-dropdown-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  color: #ebdcd5;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.user-dropdown-item:hover {
+  background: rgba(197, 155, 76, 0.15);
+  color: #fff;
+}
+
+.user-dropdown-item.text-danger {
+  color: #ff8b94;
+}
+
+.user-dropdown-item.text-danger:hover {
+  background: rgba(220, 53, 69, 0.2);
+  color: #ff6b75;
+}
+
+/* Guest Alert Banner in Editor */
+.auth-guest-banner {
+  background: linear-gradient(135deg, #fff8ea, #fbf2df);
+  border: 1.5px solid var(--accent-gold);
+  border-radius: 10px;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--earth-brown);
+  box-shadow: 0 2px 8px rgba(197, 155, 76, 0.1);
+}
+
+.btn-banner-login {
+  background: linear-gradient(135deg, #8b1820, #5c0f14);
+  color: #fff;
+  border: 1px solid var(--accent-gold);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: filter 0.2s ease;
+}
+
+.btn-banner-login:hover {
+  filter: brightness(1.15);
+}
+
+/* Auth Modal Specifics */
+.auth-modal-card {
+  max-width: 440px;
+  padding: 28px 24px 24px;
+}
+
+.auth-nav {
+  display: flex;
+  border-bottom: 2px solid #ede1d3;
+  margin-bottom: 20px;
+}
+
+.auth-tab-btn {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-bottom: 2.5px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.auth-tab-btn.active {
+  color: var(--primary-red);
+  border-bottom-color: var(--primary-red);
+}
+
+.password-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrap .form-input {
+  padding-right: 38px;
+}
+
+.btn-toggle-pwd {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 6px;
+}
+
+.btn-toggle-pwd:hover {
+  color: var(--text-dark);
+}
+
+.auth-error-msg {
+  background: rgba(220, 53, 69, 0.08);
+  border: 1px solid rgba(220, 53, 69, 0.3);
+  color: #dc3545;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  margin-bottom: 14px;
+  display: none;
+}
+
+.auth-switch-text {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 14px;
+}
+
+.auth-switch-text a {
+  color: var(--primary-red);
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* My Invitations Modal */
+.invitations-modal-card {
+  max-width: 680px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.invitations-list {
+  flex: 1;
+  overflow-y: auto;
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 400px;
+}
+
+.invitation-card-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fdfbf7;
+  border: 1.5px solid var(--border-color);
+  border-radius: 10px;
+  padding: 12px 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.invitation-card-item:hover, .invitation-card-item.active {
+  border-color: var(--accent-gold);
+  box-shadow: 0 4px 15px rgba(197, 155, 76, 0.15);
+}
+
+.invitation-item-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.invitation-thumb-mini {
+  width: 50px;
+  height: 60px;
+  border-radius: 6px;
+  border: 1px solid var(--accent-gold);
+  object-fit: cover;
+  background: #eae2d6;
+}
+
+.invitation-item-title {
+  font-family: var(--font-serif);
+  font-size: 14.5px;
+  color: var(--primary-red);
+  font-weight: 700;
+}
+
+.invitation-item-date {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.invitation-item-badge {
+  display: inline-block;
+  background: rgba(197, 155, 76, 0.2);
+  color: #6b4c10;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 10px;
+  margin-left: 6px;
+}
+
+.invitation-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-inv-action {
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.btn-inv-load {
+  background: linear-gradient(135deg, var(--accent-gold), #9b7226);
+  color: #170d0e;
+}
+
+.btn-inv-load:hover {
+  filter: brightness(1.1);
+}
+
+.btn-inv-delete {
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+  border-color: rgba(220, 53, 69, 0.3);
+}
+
+.btn-inv-delete:hover {
+  background: #dc3545;
+  color: #fff;
+}
+
+.btn-inv-secondary {
+  background: #fdf2e9;
+  color: var(--primary-red);
+  border: 1px solid #e8cdb5;
+}
+
+.btn-inv-secondary:hover {
+  background: #f7e2d0;
+  border-color: var(--accent-gold);
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 991px) {
   .builder-workspace {

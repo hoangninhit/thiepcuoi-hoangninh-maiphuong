@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     accountNumber: '873588',
     accountHolder: 'HOANG VAN NINH',
     transferNote: 'Mừng cưới Hoàng Ninh - Mai Phương',
+    invitationGreeting: 'Đến dự buổi tiệc chung vui cùng gia đình chúng tôi.',
     gallery: [
       'image/chinh.jpg',
       'image/188A6221.JPG',
@@ -70,6 +71,26 @@ document.addEventListener('DOMContentLoaded', () => {
     HDB: 'HDBank',
     OCB: 'OCB'
   };
+
+  const PRESET_WEDDING_PHOTOS = [
+    'image/chinh.jpg',
+    'image/188A6221.JPG',
+    'image/188A5904.JPG',
+    'image/188A5908.JPG',
+    'image/188A5926.JPG',
+    'image/188A5994.JPG',
+    'image/188A5995.JPG',
+    'image/188A6174.JPG',
+    'image/188A6176.JPG',
+    'image/188A6210.JPG',
+    'image/188A6228.JPG',
+    'image/188A6449.JPG',
+    'image/188A6455.JPG',
+    'image/188A6465.JPG',
+    'image/188A6491.JPG',
+    'image/188A6536.JPG',
+    'image/188A6590.JPG'
+  ];
 
   // Helper utils
   function escapeHtml(str) {
@@ -254,28 +275,26 @@ document.addEventListener('DOMContentLoaded', () => {
   function getInvitationShareUrl(cfg, invId) {
     const baseUrl = window.location.origin + window.location.pathname.replace('tao-thiep.html', 'index.html');
     
-    // Nếu có mã ID thiệp cưới thì ưu tiên tạo link trực tiếp theo ID
-    if (invId) {
-      return `${baseUrl}?inv=${encodeURIComponent(invId)}`;
-    }
-
-    // Nếu người dùng đang đăng nhập và có activeInvitationId
-    const session = getCurrentSession();
-    if (session) {
-      const db = getUsersDB();
-      const user = db.find(u => u.id === session.userId);
-      if (user && user.activeInvitationId) {
-        return `${baseUrl}?inv=${encodeURIComponent(user.activeInvitationId)}`;
+    let activeId = invId;
+    if (!activeId) {
+      const session = getCurrentSession();
+      if (session) {
+        const db = getUsersDB();
+        const user = db.find(u => u.id === session.userId);
+        if (user && user.activeInvitationId) {
+          activeId = user.activeInvitationId;
+        }
       }
     }
 
-    // Fallback: Link chứa tham số Base64
     const shareData = {
+      invId: activeId,
       groomName: cfg.groomName,
       brideName: cfg.brideName,
       weddingDate: cfg.weddingDate,
       lunarDate: cfg.lunarDate,
       themeStyle: cfg.themeStyle || 'royal',
+      invitationGreeting: cfg.invitationGreeting || '',
       bgMusicUrl: cfg.bgMusicUrl,
       groomParents: cfg.groomParents,
       groomAddress: cfg.groomAddress,
@@ -298,8 +317,16 @@ document.addEventListener('DOMContentLoaded', () => {
       shareData.qrCode = cfg.qrCode;
     }
 
-    const encodedJson = btoa(unescape(encodeURIComponent(JSON.stringify(shareData))));
-    return `${baseUrl}?cfg=${encodedJson}`;
+    try {
+      const encodedJson = btoa(unescape(encodeURIComponent(JSON.stringify(shareData))));
+      if (activeId) {
+        return `${baseUrl}?inv=${encodeURIComponent(activeId)}#cfg=${encodedJson}`;
+      }
+      return `${baseUrl}#cfg=${encodedJson}`;
+    } catch (e) {
+      if (activeId) return `${baseUrl}?inv=${encodeURIComponent(activeId)}`;
+      return baseUrl;
+    }
   }
 
   // State hiện tại (được tải từ localStorage nếu đã lưu trước đó hoặc từ tài khoản người dùng)
@@ -342,15 +369,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const inpLunarDate = document.getElementById('inp-lunar-date');
   const selBgMusic = document.getElementById('sel-bg-music');
   const inpCustomMusic = document.getElementById('inp-custom-music');
+  const inpInvitationGreeting = document.getElementById('inp-invitation-greeting');
+
+  // Active Invitation Bar
+  const activeInvitationBar = document.getElementById('active-invitation-bar');
+  const barActiveInvTitle = document.getElementById('bar-active-inv-title');
+  const barActiveThemeTag = document.getElementById('bar-active-theme-tag');
+  const btnBarSwitchInv = document.getElementById('btn-bar-switch-inv');
+  const btnBarCloneInv = document.getElementById('btn-bar-clone-inv');
 
   // Photos elements
   const imgPreviewHero = document.getElementById('img-preview-hero');
   const fileHeroPhoto = document.getElementById('file-hero-photo');
   const inpUrlHero = document.getElementById('inp-url-hero');
+  const btnGalleryHero = document.getElementById('btn-gallery-hero');
 
   const imgPreviewCouple = document.getElementById('img-preview-couple');
   const fileCouplePhoto = document.getElementById('file-couple-photo');
   const inpUrlCouple = document.getElementById('inp-url-couple');
+  const btnGalleryCouple = document.getElementById('btn-gallery-couple');
 
   const imgPreviewQr = document.getElementById('img-preview-qr');
   const fileQrPhoto = document.getElementById('file-qr-photo');
@@ -391,6 +428,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCloseModal = document.getElementById('btn-close-modal');
   const btnCopyShareLink = document.getElementById('btn-copy-share-link');
   const btnTestShareLink = document.getElementById('btn-test-share-link');
+  const imgShareQr = document.getElementById('img-share-qr');
+  const btnDownloadQr = document.getElementById('btn-download-qr');
+
+  // Photo Preset Modal
+  const photoPresetModal = document.getElementById('photo-preset-modal');
+  const presetGalleryGrid = document.getElementById('preset-gallery-grid');
+  const btnClosePresetModal = document.getElementById('btn-close-preset-modal');
+  const btnClosePresetBottom = document.getElementById('btn-close-preset-bottom');
+
+  // Create / Clone New Invitation Modal
+  const newInvitationModal = document.getElementById('new-invitation-modal');
+  const formNewInvitation = document.getElementById('form-new-invitation');
+  const inpNewInvTitle = document.getElementById('inp-new-inv-title');
+  const btnCloseNewInvModal = document.getElementById('btn-close-new-inv-modal');
+  const btnCancelNewInv = document.getElementById('btn-cancel-new-inv');
+  const newInvModalTitle = document.getElementById('new-inv-modal-title');
+  const radioSourceCurrent = document.getElementById('radio-source-current');
+  const radioSourceBlank = document.getElementById('radio-source-blank');
+  const labelSourceCurrent = document.getElementById('label-source-current');
+  const labelSourceBlank = document.getElementById('label-source-blank');
 
   // 3. Hiển thị thông báo Toast
   let toastTimer = null;
@@ -478,6 +535,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Helper: Cập nhật thanh hiển thị mẫu thiệp đang chỉnh sửa (Active Invitation Bar)
+  function updateActiveInvitationBar() {
+    if (!activeInvitationBar) return;
+    const session = getCurrentSession();
+    const guestBanner = document.getElementById('auth-guest-banner');
+    if (!session) {
+      activeInvitationBar.style.display = 'none';
+      if (guestBanner) guestBanner.style.display = 'flex';
+      return;
+    }
+    if (guestBanner) guestBanner.style.display = 'none';
+    activeInvitationBar.style.display = 'flex';
+
+    const db = getUsersDB();
+    const user = db.find(u => u.id === session.userId);
+    if (user && user.invitations && user.invitations.length > 0) {
+      const activeInv = user.invitations.find(i => i.id === user.activeInvitationId) || user.invitations[0];
+      if (activeInv) {
+        if (barActiveInvTitle) barActiveInvTitle.textContent = activeInv.title;
+        if (barActiveThemeTag) {
+          const theme = (activeInv.config && activeInv.config.themeStyle) || 'royal';
+          const themeLabels = {
+            royal: '👑 Hoàng Gia',
+            rose: '🌸 Lãng Mạn',
+            emerald: '🌿 Emerald',
+            sapphire: '🌊 Sapphire'
+          };
+          barActiveThemeTag.textContent = themeLabels[theme] || '👑 Hoàng Gia';
+        }
+      }
+    }
+  }
+
   // 6. Cập nhật giao diện Form theo State
   function populateFormFromConfig(cfg) {
     // Theme Style
@@ -545,8 +635,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (inpAccountNumber) inpAccountNumber.value = cfg.accountNumber || '';
     if (inpAccountHolder) inpAccountHolder.value = cfg.accountHolder || '';
     if (inpTransferNote) inpTransferNote.value = cfg.transferNote || '';
+    if (inpInvitationGreeting) inpInvitationGreeting.value = cfg.invitationGreeting || '';
 
     renderGalleryThumbs();
+    updateActiveInvitationBar();
   }
 
   // 7. Render danh sách thumbnail Album ảnh cưới
@@ -620,7 +712,8 @@ document.addEventListener('DOMContentLoaded', () => {
       { el: inpBankName, key: 'bankName' },
       { el: inpAccountNumber, key: 'accountNumber' },
       { el: inpAccountHolder, key: 'accountHolder' },
-      { el: inpTransferNote, key: 'transferNote' }
+      { el: inpTransferNote, key: 'transferNote' },
+      { el: inpInvitationGreeting, key: 'invitationGreeting' }
     ];
 
     textInputs.forEach(item => {
@@ -996,13 +1089,44 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // E. Tạo Link chia sẻ (Share Link Modal)
+    // E. Tạo Link chia sẻ (Share Link Modal & Dynamic QR Code)
+    function openShareModal(invId = null, cfg = null) {
+      const activeCfg = cfg || currentConfig;
+      const shareUrl = getInvitationShareUrl(activeCfg, invId);
+      if (shareLinkText) shareLinkText.textContent = shareUrl;
+      if (btnTestShareLink) btnTestShareLink.href = shareUrl;
+      if (imgShareQr) {
+        const qrApi = 'https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=8&data=' + encodeURIComponent(shareUrl);
+        imgShareQr.src = qrApi;
+      }
+      if (shareModal) shareModal.classList.add('active');
+    }
+
     if (btnShareLink && shareModal) {
-      btnShareLink.addEventListener('click', () => {
-        const shareUrl = getInvitationShareUrl(currentConfig);
-        if (shareLinkText) shareLinkText.textContent = shareUrl;
-        if (btnTestShareLink) btnTestShareLink.href = shareUrl;
-        shareModal.classList.add('active');
+      btnShareLink.addEventListener('click', () => openShareModal());
+    }
+
+    if (btnDownloadQr) {
+      btnDownloadQr.addEventListener('click', async () => {
+        if (!imgShareQr || !imgShareQr.src) return;
+        try {
+          showToast('Đang tải ảnh mã QR...');
+          const resp = await fetch(imgShareQr.src);
+          const blob = await resp.blob();
+          const blobUrl = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = blobUrl;
+          a.download = `QR-Thiep-Cuoi-${(currentConfig.groomName || 'chu-re')}-${(currentConfig.brideName || 'co-dau')}.png`
+            .toLowerCase()
+            .replace(/[\s\.]+/g, '-');
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(blobUrl);
+          showToast('Đã tải mã QR về máy thành công!');
+        } catch (e) {
+          window.open(imgShareQr.src, '_blank');
+        }
       });
     }
 
@@ -1194,6 +1318,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
           const initial = getAvatarInitial(user.fullname);
           if (userAvatarInitial) userAvatarInitial.textContent = initial;
+
+          updateActiveInvitationBar();
           return;
         }
       }
@@ -1203,6 +1329,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (userLoggedView) userLoggedView.style.display = 'none';
       if (authGuestBanner) authGuestBanner.style.display = 'flex';
       if (userDropdownMenu) userDropdownMenu.classList.remove('show');
+      updateActiveInvitationBar();
     }
 
     // Event listeners for open modal buttons
@@ -1427,7 +1554,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // My Invitations Modal Functionality
+    // My Invitations Modal Functionality (Kho Thiệp Của Tôi)
     function renderUserInvitations() {
       if (!invitationsContainer) return;
       const session = getCurrentSession();
@@ -1454,6 +1581,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      const themeTagMap = {
+        royal: '<span class="invitation-theme-tag theme-tag-royal">👑 Hoàng Gia</span>',
+        rose: '<span class="invitation-theme-tag theme-tag-rose">🌸 Lãng Mạn</span>',
+        emerald: '<span class="invitation-theme-tag theme-tag-emerald">🌿 Emerald</span>',
+        sapphire: '<span class="invitation-theme-tag theme-tag-sapphire">🌊 Sapphire</span>'
+      };
+
       let html = '';
       user.invitations.forEach((inv) => {
         const isCurrent = (inv.id === user.activeInvitationId);
@@ -1461,6 +1595,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const weddingDate = (inv.config && inv.config.weddingDate) ? inv.config.weddingDate : 'Chưa định ngày';
         const title = inv.title || 'Thiệp Cưới';
         const timeFormatted = formatTime(inv.updatedAt);
+        const theme = (inv.config && inv.config.themeStyle) || 'royal';
+        const themeBadge = themeTagMap[theme] || themeTagMap.royal;
 
         html += `
           <div class="invitation-card-item ${isCurrent ? 'active' : ''}">
@@ -1469,6 +1605,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <div>
                 <div class="invitation-item-title">
                   ${escapeHtml(title)}
+                  ${themeBadge}
                   ${isCurrent ? '<span class="invitation-item-badge"><i class="fa-solid fa-check"></i> Đang sửa</span>' : ''}
                 </div>
                 <div class="invitation-item-date">
@@ -1480,13 +1617,19 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="invitation-item-actions">
               ${isCurrent
-                ? '<button type="button" class="btn-inv-action btn-inv-load" style="opacity: 0.7; cursor: default;"><i class="fa-solid fa-pen-nib"></i> Đang mở</button>'
+                ? '<button type="button" class="btn-inv-action btn-inv-load" style="opacity: 0.7; cursor: default;"><i class="fa-solid fa-pen-nib"></i> Đang sửa</button>'
                 : `<button type="button" class="btn-inv-action btn-inv-load btn-load-inv" data-id="${inv.id}"><i class="fa-solid fa-pencil"></i> Mở sửa</button>`
               }
+              <button type="button" class="btn-inv-action btn-duplicate-inv" data-id="${inv.id}" title="Tạo bản sao từ thiệp cưới này">
+                <i class="fa-solid fa-copy"></i> Nhân bản
+              </button>
+              <button type="button" class="btn-inv-action btn-rename-inv" data-id="${inv.id}" title="Đổi tên thiệp cưới">
+                <i class="fa-solid fa-pen-to-square"></i> Đổi tên
+              </button>
               <button type="button" class="btn-inv-action btn-inv-secondary btn-view-inv" data-id="${inv.id}" title="Xem toàn màn hình thiệp này">
                 <i class="fa-solid fa-eye"></i>
               </button>
-              <button type="button" class="btn-inv-action btn-inv-secondary btn-share-inv" data-id="${inv.id}" title="Lấy link chia sẻ">
+              <button type="button" class="btn-inv-action btn-inv-secondary btn-share-inv" data-id="${inv.id}" title="Lấy link & mã QR chia sẻ">
                 <i class="fa-solid fa-share-nodes"></i>
               </button>
               ${user.invitations.length > 1
@@ -1512,8 +1655,41 @@ document.addEventListener('DOMContentLoaded', () => {
             populateFormFromConfig(currentConfig);
             renderGalleryThumbs();
             syncToPreviewAndStore();
+            updateActiveInvitationBar();
             if (myInvitationsModal) myInvitationsModal.classList.remove('active');
             showToast(`Đã mở thiệp cưới: ${targetInv.title}`);
+          }
+        });
+      });
+
+      // Event: Duplicate Invitation
+      invitationsContainer.querySelectorAll('.btn-duplicate-inv').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          openNewInvitationModal('clone', id);
+        });
+      });
+
+      // Event: Rename Invitation
+      invitationsContainer.querySelectorAll('.btn-rename-inv').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          const targetInv = user.invitations.find(i => i.id === id);
+          if (!targetInv) return;
+          const newTitle = prompt('Nhập tên mới cho thiệp cưới:', targetInv.title);
+          if (newTitle && newTitle.trim() && newTitle.trim() !== targetInv.title) {
+            targetInv.title = newTitle.trim();
+            targetInv.updatedAt = new Date().toISOString();
+            saveUsersDB(db);
+            saveToPublicRegistry(targetInv.id, {
+              id: targetInv.id,
+              title: targetInv.title,
+              author: user.fullname,
+              config: targetInv.config
+            });
+            renderUserInvitations();
+            updateActiveInvitationBar();
+            showToast('Đã đổi tên thiệp cưới thành công!');
           }
         });
       });
@@ -1530,17 +1706,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
 
-      // Event: Share Invitation Link
+      // Event: Share Invitation Link & QR
       invitationsContainer.querySelectorAll('.btn-share-inv').forEach(btn => {
         btn.addEventListener('click', () => {
           const id = btn.getAttribute('data-id');
           const targetInv = user.invitations.find(i => i.id === id);
           if (targetInv && targetInv.config) {
-            const shareUrl = getInvitationShareUrl(targetInv.config, id);
-            if (shareLinkText) shareLinkText.textContent = shareUrl;
-            if (btnTestShareLink) btnTestShareLink.href = shareUrl;
             if (myInvitationsModal) myInvitationsModal.classList.remove('active');
-            if (shareModal) shareModal.classList.add('active');
+            openShareModal(id, targetInv.config);
           }
         });
       });
@@ -1562,6 +1735,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             saveUsersDB(db);
             syncToPreviewAndStore();
+            updateActiveInvitationBar();
             renderUserInvitations();
             showToast('Đã xóa thiệp cưới!');
           }
@@ -1596,14 +1770,14 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Helper: Create new invitation
-    function createNewInvitation() {
+    // Modal Create / Clone New Invitation
+    let cloneSourceInvId = null;
+    function openNewInvitationModal(mode = 'new', sourceInvId = null) {
       const session = getCurrentSession();
       if (!session) {
         openAuthModal('login');
         return;
       }
-
       const db = getUsersDB();
       const user = db.find(u => u.id === session.userId);
       if (!user) {
@@ -1611,50 +1785,210 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      cloneSourceInvId = sourceInvId || user.activeInvitationId;
       const count = (user.invitations ? user.invitations.length : 0) + 1;
-      const defaultTitle = `Thiệp Cưới Mới #${count} - ${user.fullname || 'Hoàng Gia'}`;
-      const title = prompt('Nhập tên cho thiệp cưới mới của bạn:', defaultTitle);
-      if (title === null) return; // User cancelled
+      
+      if (inpNewInvTitle) {
+        if (mode === 'clone') {
+          const target = user.invitations.find(i => i.id === cloneSourceInvId) || user.invitations[0];
+          inpNewInvTitle.value = `Bản sao - ${target ? target.title : 'Thiệp Cưới'}`;
+        } else {
+          inpNewInvTitle.value = `Thiệp Cưới Mới #${count} - ${user.fullname || 'Dâu Rể'}`;
+        }
+      }
 
-      const newId = 'inv_' + Date.now();
-      const newInvConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
-      newInvConfig.groomName = user.fullname.toUpperCase();
-      newInvConfig.transferNote = `Mừng cưới ${user.fullname}`;
-      const newInv = {
-        id: newId,
-        title: title.trim() || defaultTitle,
-        updatedAt: new Date().toISOString(),
-        config: newInvConfig
-      };
+      if (newInvModalTitle) {
+        newInvModalTitle.innerHTML = (mode === 'clone')
+          ? '<i class="fa-solid fa-copy" style="color: var(--accent-gold);"></i> Nhân Bản Mẫu Thiệp Cưới'
+          : '<i class="fa-solid fa-circle-plus" style="color: #4cd964;"></i> Tạo Mẫu Thiệp Cưới Mới';
+      }
 
-      if (!user.invitations) user.invitations = [];
-      user.invitations.unshift(newInv);
-      user.activeInvitationId = newId;
-      saveUsersDB(db);
+      if (radioSourceCurrent && radioSourceBlank) {
+        if (mode === 'clone') {
+          radioSourceCurrent.checked = true;
+          if (labelSourceCurrent) labelSourceCurrent.classList.add('active');
+          if (labelSourceBlank) labelSourceBlank.classList.remove('active');
+        } else {
+          radioSourceBlank.checked = true;
+          if (labelSourceBlank) labelSourceBlank.classList.add('active');
+          if (labelSourceCurrent) labelSourceCurrent.classList.remove('active');
+        }
+      }
 
-      saveToPublicRegistry(newId, {
-        id: newId,
-        title: newInv.title,
-        author: user.fullname,
-        config: newInvConfig
+      const activeTheme = currentConfig.themeStyle || 'royal';
+      document.querySelectorAll('.chip-theme').forEach(chip => {
+        const r = chip.querySelector('input');
+        if (r) {
+          r.checked = (r.value === activeTheme);
+          if (r.value === activeTheme) chip.classList.add('active');
+          else chip.classList.remove('active');
+        }
       });
 
-      currentConfig = JSON.parse(JSON.stringify(newInv.config));
-      populateFormFromConfig(currentConfig);
-      renderGalleryThumbs();
-      syncToPreviewAndStore();
-
-      if (myInvitationsModal) myInvitationsModal.classList.remove('active');
-      if (userDropdownMenu) userDropdownMenu.classList.remove('show');
-
-      showToast(`Đã tạo thành công: ${newInv.title}`);
+      if (newInvitationModal) newInvitationModal.classList.add('active');
     }
 
     if (btnCreateNewInvitation) {
-      btnCreateNewInvitation.addEventListener('click', createNewInvitation);
+      btnCreateNewInvitation.addEventListener('click', () => openNewInvitationModal('new'));
     }
     if (btnCreateInvAction) {
-      btnCreateInvAction.addEventListener('click', createNewInvitation);
+      btnCreateInvAction.addEventListener('click', () => openNewInvitationModal('new'));
+    }
+
+    // Active Invitation Bar buttons
+    if (btnBarSwitchInv) {
+      btnBarSwitchInv.addEventListener('click', () => {
+        renderUserInvitations();
+        if (myInvitationsModal) myInvitationsModal.classList.add('active');
+      });
+    }
+
+    if (btnBarCloneInv) {
+      btnBarCloneInv.addEventListener('click', () => openNewInvitationModal('clone'));
+    }
+
+    // New Invitation Form Submit
+    if (formNewInvitation) {
+      formNewInvitation.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const session = getCurrentSession();
+        if (!session) return;
+        const db = getUsersDB();
+        const user = db.find(u => u.id === session.userId);
+        if (!user) return;
+
+        const title = (inpNewInvTitle ? inpNewInvTitle.value.trim() : '') || 'Thiệp Cưới Mới';
+        const isClone = (radioSourceCurrent && radioSourceCurrent.checked);
+        const selectedThemeRadio = document.querySelector('input[name="new-inv-theme"]:checked');
+        const selectedTheme = selectedThemeRadio ? selectedThemeRadio.value : (currentConfig.themeStyle || 'royal');
+
+        const newId = 'inv_' + Date.now();
+        let newConfig;
+        if (isClone) {
+          const sourceInv = user.invitations.find(i => i.id === cloneSourceInvId);
+          const baseSource = sourceInv ? sourceInv.config : currentConfig;
+          newConfig = JSON.parse(JSON.stringify(baseSource));
+          newConfig.themeStyle = selectedTheme;
+        } else {
+          newConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+          newConfig.groomName = user.fullname.toUpperCase();
+          newConfig.transferNote = `Mừng cưới ${user.fullname}`;
+          newConfig.themeStyle = selectedTheme;
+        }
+
+        const newInv = {
+          id: newId,
+          title: title,
+          updatedAt: new Date().toISOString(),
+          config: newConfig
+        };
+
+        if (!user.invitations) user.invitations = [];
+        user.invitations.unshift(newInv);
+        user.activeInvitationId = newId;
+        saveUsersDB(db);
+
+        saveToPublicRegistry(newId, {
+          id: newId,
+          title: newInv.title,
+          author: user.fullname,
+          config: newConfig
+        });
+
+        currentConfig = JSON.parse(JSON.stringify(newConfig));
+        populateFormFromConfig(currentConfig);
+        renderGalleryThumbs();
+        syncToPreviewAndStore();
+        updateActiveInvitationBar();
+
+        if (newInvitationModal) newInvitationModal.classList.remove('active');
+        if (myInvitationsModal) myInvitationsModal.classList.remove('active');
+        if (userDropdownMenu) userDropdownMenu.classList.remove('show');
+
+        showToast(`Đã tạo thành công: ${newInv.title}`);
+      });
+    }
+
+    if (btnCloseNewInvModal) {
+      btnCloseNewInvModal.addEventListener('click', () => newInvitationModal && newInvitationModal.classList.remove('active'));
+    }
+    if (btnCancelNewInv) {
+      btnCancelNewInv.addEventListener('click', () => newInvitationModal && newInvitationModal.classList.remove('active'));
+    }
+
+    document.querySelectorAll('.chip-theme').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.chip-theme').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        const r = chip.querySelector('input');
+        if (r) r.checked = true;
+      });
+    });
+
+    if (radioSourceCurrent) {
+      radioSourceCurrent.addEventListener('change', () => {
+        if (labelSourceCurrent) labelSourceCurrent.classList.add('active');
+        if (labelSourceBlank) labelSourceBlank.classList.remove('active');
+      });
+    }
+    if (radioSourceBlank) {
+      radioSourceBlank.addEventListener('change', () => {
+        if (labelSourceBlank) labelSourceBlank.classList.add('active');
+        if (labelSourceCurrent) labelSourceCurrent.classList.remove('active');
+      });
+    }
+
+    // Photo Preset Picker Modal Functionality
+    let presetPhotoTarget = 'hero';
+    function openPhotoPresetModal(target) {
+      presetPhotoTarget = target;
+      if (!presetGalleryGrid) return;
+      presetGalleryGrid.innerHTML = '';
+
+      PRESET_WEDDING_PHOTOS.forEach((src, idx) => {
+        const item = document.createElement('div');
+        item.className = 'preset-photo-card';
+        item.innerHTML = `
+          <img src="${src}" alt="Ảnh cưới mẫu #${idx + 1}" loading="lazy">
+          <span class="preset-photo-badge">Ảnh mẫu #${idx + 1}</span>
+        `;
+        item.addEventListener('click', () => {
+          if (presetPhotoTarget === 'hero') {
+            currentConfig.heroPhoto = src;
+            if (imgPreviewHero) imgPreviewHero.src = src;
+            if (inpUrlHero) inpUrlHero.value = src;
+            showToast(`Đã áp dụng ảnh bìa mẫu #${idx + 1}`);
+          } else if (presetPhotoTarget === 'couple') {
+            currentConfig.couplePhoto = src;
+            if (imgPreviewCouple) imgPreviewCouple.src = src;
+            if (inpUrlCouple) inpUrlCouple.value = src;
+            showToast(`Đã áp dụng ảnh đôi mẫu #${idx + 1}`);
+          }
+          syncToPreviewAndStore();
+          if (photoPresetModal) photoPresetModal.classList.remove('active');
+        });
+        presetGalleryGrid.appendChild(item);
+      });
+
+      if (photoPresetModal) photoPresetModal.classList.add('active');
+    }
+
+    if (btnGalleryHero) {
+      btnGalleryHero.addEventListener('click', () => openPhotoPresetModal('hero'));
+    }
+    if (btnGalleryCouple) {
+      btnGalleryCouple.addEventListener('click', () => openPhotoPresetModal('couple'));
+    }
+    if (btnClosePresetModal) {
+      btnClosePresetModal.addEventListener('click', () => photoPresetModal && photoPresetModal.classList.remove('active'));
+    }
+    if (btnClosePresetBottom) {
+      btnClosePresetBottom.addEventListener('click', () => photoPresetModal && photoPresetModal.classList.remove('active'));
+    }
+    if (photoPresetModal) {
+      photoPresetModal.addEventListener('click', (e) => {
+        if (e.target === photoPresetModal) photoPresetModal.classList.remove('active');
+      });
     }
 
     // Initial Auth UI update

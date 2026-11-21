@@ -1632,6 +1632,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (thresholdDate) thresholdDate.textContent = dateStr;
     }
 
+    // 2b. Invitation Greeting / Message
+    if (cfg.invitationGreeting) {
+      document.querySelectorAll('.invite-sub').forEach(el => el.textContent = cfg.invitationGreeting);
+    }
+
     // 3. Images
     if (cfg.heroPhoto) {
       const heroImg = document.querySelector('.hero-photo-wrapper img');
@@ -1828,6 +1833,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (customData) {
       applyCustomWeddingData(customData);
+
+      // Tự động lưu bản sao vào Public Registry của thiết bị khách mời
+      const activeId = invId || customData.invId;
+      if (activeId) {
+        try {
+          const pubRaw = localStorage.getItem('wedding_public_invitations');
+          let reg = pubRaw ? JSON.parse(pubRaw) : {};
+          if (!reg || typeof reg !== 'object') reg = {};
+          reg[activeId] = {
+            id: activeId,
+            title: `Thiệp Cưới ${(customData.groomName || 'Chú Rể')} & ${(customData.brideName || 'Cô Dâu')}`,
+            updatedAt: new Date().toISOString(),
+            config: customData
+          };
+          localStorage.setItem('wedding_public_invitations', JSON.stringify(reg));
+        } catch (e) {}
+      }
     }
 
     // Auto-open gate when in preview mode (?preview=1 or ?skipIntro=1)

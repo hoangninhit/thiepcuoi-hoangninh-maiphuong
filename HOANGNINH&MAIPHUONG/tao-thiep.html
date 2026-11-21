@@ -158,6 +158,28 @@
           </button>
         </div>
 
+        <!-- Active User Invitation Banner (Hiện khi đã đăng nhập) -->
+        <div class="active-invitation-bar" id="active-invitation-bar" style="display: none;">
+          <div class="active-inv-info">
+            <span class="active-inv-pulse"></span>
+            <div class="active-inv-text">
+              <div class="active-inv-sub">Mẫu thiệp đang chỉnh sửa:</div>
+              <div class="active-inv-name-wrap">
+                <strong class="active-inv-title" id="bar-active-inv-title">Thiệp Cưới Mẫu</strong>
+                <span class="active-inv-theme-badge" id="bar-active-theme-tag">👑 Hoàng Gia</span>
+              </div>
+            </div>
+          </div>
+          <div class="active-inv-actions">
+            <button type="button" class="btn-inv-bar" id="btn-bar-switch-inv" title="Xem danh sách hoặc đổi mẫu thiệp khác">
+              <i class="fa-solid fa-folder-open"></i> <span>Kho Thiệp</span>
+            </button>
+            <button type="button" class="btn-inv-bar btn-inv-bar-primary" id="btn-bar-clone-inv" title="Nhân bản từ mẫu này sang mẫu mới">
+              <i class="fa-solid fa-copy"></i> <span>Nhân Bản</span>
+            </button>
+          </div>
+        </div>
+
         <!-- ==================== TAB 1: DÂU RỂ & NGÀY CƯỚI ==================== -->
         <div class="tab-pane active" id="tab-names">
           
@@ -260,6 +282,14 @@
               </div>
             </div>
 
+            <div class="form-row single" style="margin-top: 6px;">
+              <div class="form-group">
+                <label class="form-label" for="inp-invitation-greeting"><i class="fa-solid fa-scroll" style="color: var(--accent-gold);"></i> Lời Ngỏ / Thông Điệp Mời Cưới:</label>
+                <input type="text" id="inp-invitation-greeting" class="form-input" placeholder="Ví dụ: Đến dự buổi tiệc chung vui cùng gia đình chúng tôi." value="Đến dự buổi tiệc chung vui cùng gia đình chúng tôi.">
+                <span class="form-hint">Hiển thị trang trọng ngay dưới tên khách mời ở cổng thiệp</span>
+              </div>
+            </div>
+
             <div class="step-nav-buttons">
               <div></div>
               <button type="button" class="btn-step-next" data-next="tab-images">
@@ -292,8 +322,11 @@
                     <i class="fa-solid fa-cloud-arrow-up"></i> Tải ảnh từ máy
                     <input type="file" id="file-hero-photo" accept="image/*">
                   </label>
+                  <button type="button" class="btn-default-photo btn-open-gallery-picker" data-target="hero" id="btn-gallery-hero">
+                    <i class="fa-solid fa-images"></i> Kho ảnh mẫu
+                  </button>
                   <button type="button" class="btn-default-photo" data-restore="hero">
-                    <i class="fa-solid fa-wand-magic"></i> Dùng ảnh mẫu
+                    <i class="fa-solid fa-wand-magic"></i> Mặc định
                   </button>
                 </div>
                 <div class="form-group">
@@ -323,8 +356,11 @@
                     <i class="fa-solid fa-cloud-arrow-up"></i> Tải ảnh từ máy
                     <input type="file" id="file-couple-photo" accept="image/*">
                   </label>
+                  <button type="button" class="btn-default-photo btn-open-gallery-picker" data-target="couple" id="btn-gallery-couple">
+                    <i class="fa-solid fa-images"></i> Kho ảnh mẫu
+                  </button>
                   <button type="button" class="btn-default-photo" data-restore="couple">
-                    <i class="fa-solid fa-wand-magic"></i> Dùng ảnh mẫu
+                    <i class="fa-solid fa-wand-magic"></i> Mặc định
                   </button>
                 </div>
                 <div class="form-group">
@@ -629,10 +665,25 @@
         <i class="fa-solid fa-xmark"></i>
       </button>
 
-      <h3 class="modal-title"><i class="fa-solid fa-link" style="color: var(--accent-gold);"></i> Link Thiệp Cưới Của Bạn Đã Sẵn Sàng!</h3>
+      <h3 class="modal-title"><i class="fa-solid fa-link" style="color: var(--accent-gold);"></i> Link &amp; Mã QR Thiệp Cưới Sẵn Sàng!</h3>
       <p class="modal-desc">
-        Đường link dưới đây chứa toàn bộ tên cô dâu, chú rể và hình ảnh bạn vừa tùy biến. Bất kỳ ai mở link này đều sẽ thấy đúng thông tin bạn vừa tạo mà không cần cài đặt gì thêm!
+        Bất kỳ ai mở đường link hoặc quét mã QR này đều sẽ xem trọn vẹn thiệp cưới của riêng bạn trên mọi điện thoại (Zalo, Messenger, SMS, Safari, Chrome).
       </p>
+
+      <!-- QR Code Box -->
+      <div class="share-qr-section">
+        <div class="share-qr-box">
+          <img id="img-share-qr" src="" alt="Mã QR mở thiệp cưới" class="share-qr-img">
+        </div>
+        <div class="share-qr-meta">
+          <div class="share-qr-tip">
+            <i class="fa-solid fa-qrcode" style="color: var(--accent-gold);"></i> Quét mã bằng Camera hoặc Zalo để mở thiệp trên điện thoại khác
+          </div>
+          <button type="button" class="btn-download-qr" id="btn-download-qr">
+            <i class="fa-solid fa-download"></i> Tải Ảnh Mã QR Về Máy
+          </button>
+        </div>
+      </div>
 
       <div class="share-link-box" id="share-link-text">
         <!-- Generated link text -->
@@ -848,6 +899,102 @@
           </div>
         </a>
       </div>
+    </div>
+  </div>
+
+  <!-- 8. Photo Preset Picker Modal (Kho Ảnh Cưới Tuyển Chọn) -->
+  <div class="modal-overlay" id="photo-preset-modal">
+    <div class="modal-card photo-preset-modal-card">
+      <button type="button" class="modal-close" id="btn-close-preset-modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <h3 class="modal-title">
+        <i class="fa-solid fa-photo-film" style="color: var(--accent-gold);"></i> Kho Ảnh Cưới Hoàng Gia Tuyển Chọn
+      </h3>
+      <p class="modal-desc" style="margin-bottom: 12px;">
+        Chọn một bức ảnh cưới tuyệt đẹp bên dưới để áp dụng trực tiếp cho thiệp cưới của bạn:
+      </p>
+
+      <div class="preset-gallery-grid" id="preset-gallery-grid">
+        <!-- Renders 16 preset wedding photos -->
+      </div>
+
+      <div style="text-align: right; margin-top: 14px; border-top: 1px dashed var(--border-color); padding-top: 12px;">
+        <button type="button" class="btn-header btn-header-secondary" id="btn-close-preset-bottom">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. Create / Clone Invitation Modal (Tạo & Nhân Bản Mẫu Thiệp Mới) -->
+  <div class="modal-overlay" id="new-invitation-modal">
+    <div class="modal-card">
+      <button type="button" class="modal-close" id="btn-close-new-inv-modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <h3 class="modal-title" id="new-inv-modal-title">
+        <i class="fa-solid fa-circle-plus" style="color: #4cd964;"></i> Tạo Mẫu Thiệp Cưới Mới
+      </h3>
+      <p class="modal-desc" style="margin-bottom: 14px;">
+        Tạo một mẫu thiệp cưới riêng biệt cho lễ vu quy nhà gái, tân hôn nhà trai hoặc tiệc báo hỷ bạn bè.
+      </p>
+
+      <form id="form-new-invitation">
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label" for="inp-new-inv-title">Tên Mẫu Thiệp: *</label>
+          <input type="text" id="inp-new-inv-title" class="form-input" placeholder="Ví dụ: Thiệp Tiệc Nhà Gái / Thiệp Bạn Bè..." required>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label">Khởi tạo dữ liệu từ:</label>
+          <div class="radio-source-options">
+            <label class="radio-option-card active" id="label-source-current">
+              <input type="radio" name="new-inv-source" id="radio-source-current" value="current" checked>
+              <div>
+                <strong>Sao chép từ mẫu hiện tại (Nhân bản)</strong>
+                <span>Giữ nguyên tên dâu rể, ảnh và gia đình, chỉ tạo bản thiệp riêng để đổi phong cách hoặc tiệc</span>
+              </div>
+            </label>
+            <label class="radio-option-card" id="label-source-blank">
+              <input type="radio" name="new-inv-source" id="radio-source-blank" value="blank">
+              <div>
+                <strong>Bắt đầu mẫu mới hoàn toàn</strong>
+                <span>Khởi tạo mẫu thiệp cưới trống mặc định ban đầu</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label class="form-label">Chọn phong cách chủ đạo:</label>
+          <div class="theme-select-chips">
+            <label class="chip-theme active" data-theme="royal">
+              <input type="radio" name="new-inv-theme" value="royal" checked>
+              <span>👑 Hoàng Gia</span>
+            </label>
+            <label class="chip-theme" data-theme="rose">
+              <input type="radio" name="new-inv-theme" value="rose">
+              <span>🌸 Lãng Mạn Rose</span>
+            </label>
+            <label class="chip-theme" data-theme="emerald">
+              <input type="radio" name="new-inv-theme" value="emerald">
+              <span>🌿 Emerald Rừng Cây</span>
+            </label>
+            <label class="chip-theme" data-theme="sapphire">
+              <input type="radio" name="new-inv-theme" value="sapphire">
+              <span>🌊 Sapphire Biển Sâu</span>
+            </label>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button type="button" class="btn-header btn-header-secondary" id="btn-cancel-new-inv">Hủy</button>
+          <button type="submit" class="btn-header btn-header-primary" id="btn-submit-new-inv">
+            <i class="fa-solid fa-check"></i> Tạo Mẫu Thiệp
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 

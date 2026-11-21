@@ -25,38 +25,41 @@
   <!-- 1. Header Bar -->
   <header class="builder-header">
     <div class="brand-wrap">
+      <a href="index.html" class="btn-back-home" title="Quay về trang chủ thiệp cưới">
+        <i class="fa-solid fa-arrow-left"></i>
+      </a>
       <div class="brand-icon">
         <i class="fa-solid fa-crown"></i>
       </div>
       <div>
-        <h1 class="brand-title">TẠO THIỆP CƯỚI HOÀNG GIA</h1>
+        <h1 class="brand-title">TẠO THIỆP HOÀNG GIA</h1>
         <div class="brand-sub">Hệ thống tùy biến tên dâu rể &amp; hình ảnh trực tiếp</div>
       </div>
     </div>
 
     <div class="header-actions">
-      <button type="button" class="btn-header btn-header-secondary" id="btn-reset-default" title="Khôi phục dữ liệu gốc">
+      <button type="button" class="btn-header btn-header-secondary desktop-only-btn" id="btn-reset-default" title="Khôi phục dữ liệu gốc">
         <i class="fa-solid fa-rotate-left"></i> <span>Mặc Định</span>
       </button>
 
-      <button type="button" class="btn-header btn-header-secondary" id="btn-import-trigger" title="Nhập cấu hình từ file JSON">
+      <button type="button" class="btn-header btn-header-secondary desktop-only-btn" id="btn-import-trigger" title="Nhập cấu hình từ file JSON">
         <i class="fa-solid fa-file-import"></i> <span>Nhập JSON</span>
       </button>
       <input type="file" id="file-import-json" accept=".json" style="display: none;">
 
-      <button type="button" class="btn-header btn-header-secondary" id="btn-export-json" title="Tải file cấu hình JSON về máy">
+      <button type="button" class="btn-header btn-header-secondary desktop-only-btn" id="btn-export-json" title="Tải file cấu hình JSON về máy">
         <i class="fa-solid fa-download"></i> <span>Xuất JSON</span>
       </button>
 
-      <button type="button" class="btn-header btn-header-secondary" id="btn-export-html" title="Tải file website HTML thiệp cưới độc lập">
+      <button type="button" class="btn-header btn-header-secondary desktop-only-btn" id="btn-export-html" title="Tải file website HTML thiệp cưới độc lập">
         <i class="fa-solid fa-file-code"></i> <span>Tải File Web</span>
       </button>
 
-      <button type="button" class="btn-header btn-header-primary" id="btn-share-link" title="Tạo link chia sẻ gửi bạn bè">
+      <button type="button" class="btn-header btn-header-primary desktop-only-btn" id="btn-share-link" title="Tạo link chia sẻ gửi bạn bè">
         <i class="fa-solid fa-share-nodes"></i> <span>Lấy Link Thiệp</span>
       </button>
 
-      <a href="index.html" target="_blank" class="btn-header btn-header-primary" id="btn-open-fullscreen" title="Mở xem toàn màn hình thiệp cưới trong tab mới">
+      <a href="index.html" target="_blank" class="btn-header btn-header-primary desktop-only-btn" id="btn-open-fullscreen" title="Mở xem toàn màn hình thiệp cưới trong tab mới">
         <i class="fa-solid fa-up-right-from-square"></i> <span>Xem Full</span>
       </a>
 
@@ -98,11 +101,27 @@
           </div>
         </div>
       </div>
+
+      <!-- Mobile More Tools Button -->
+      <button type="button" class="btn-header btn-header-secondary mobile-only-btn" id="btn-open-more-menu" title="Tùy chọn công cụ khác">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+      </button>
     </div>
   </header>
 
+  <!-- Mobile Mode Switcher (Chuyển chế độ [Chỉnh Sửa] / [Xem Thiệp Live] mượt mà trên Mobile) -->
+  <div class="mobile-mode-switcher" id="mobile-mode-switcher">
+    <button type="button" class="mobile-mode-btn active" id="btn-mode-edit" data-mode="edit">
+      <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Chỉnh Sửa Thiệp</span>
+    </button>
+    <button type="button" class="mobile-mode-btn" id="btn-mode-preview" data-mode="preview">
+      <i class="fa-solid fa-eye"></i> <span>Xem Thiệp Trực Tiếp</span>
+      <span class="preview-badge-live">LIVE</span>
+    </button>
+  </div>
+
   <!-- 2. Main Builder Workspace -->
-  <main class="builder-workspace">
+  <main class="builder-workspace" id="builder-workspace" data-mobile-mode="edit">
 
     <!-- Left Column: Editor Controls -->
     <section class="editor-panel">
@@ -183,6 +202,13 @@
                 </select>
                 <input type="text" id="inp-custom-music" class="form-input" placeholder="Dán đường link file nhạc MP3 (https://...) tại đây..." style="display: none; margin-top: 8px;">
               </div>
+            </div>
+
+            <div class="step-nav-buttons">
+              <div></div>
+              <button type="button" class="btn-step-next" data-next="tab-images">
+                Tiếp: Hình Ảnh &amp; Album <i class="fa-solid fa-arrow-right"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -308,6 +334,15 @@
             <div class="gallery-thumbs-grid" id="gallery-thumbs-container">
               <!-- Dynamically populated thumbnails -->
             </div>
+
+            <div class="step-nav-buttons">
+              <button type="button" class="btn-step-prev" data-prev="tab-names">
+                <i class="fa-solid fa-arrow-left"></i> Bước trước
+              </button>
+              <button type="button" class="btn-step-next" data-next="tab-family">
+                Tiếp: Hai Gia Đình <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
           </div>
 
         </div>
@@ -343,6 +378,15 @@
                 <label class="form-label" for="inp-bride-address">Địa Chỉ Nhà Gái:</label>
                 <input type="text" id="inp-bride-address" class="form-input" placeholder="Xã Bà Điểm, TP. Hồ Chí Minh" value="Xã Bà Điểm, TP. Hồ Chí Minh">
               </div>
+            </div>
+
+            <div class="step-nav-buttons">
+              <button type="button" class="btn-step-prev" data-prev="tab-images">
+                <i class="fa-solid fa-arrow-left"></i> Bước trước
+              </button>
+              <button type="button" class="btn-step-next" data-next="tab-events">
+                Tiếp: Tiệc Cưới <i class="fa-solid fa-arrow-right"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -386,6 +430,15 @@
                 <label class="form-label" for="inp-ev2-address">Địa Chỉ Chi Tiết:</label>
                 <input type="text" id="inp-ev2-address" class="form-input" value="Quận 12, TP. Hồ Chí Minh">
               </div>
+            </div>
+
+            <div class="step-nav-buttons">
+              <button type="button" class="btn-step-prev" data-prev="tab-family">
+                <i class="fa-solid fa-arrow-left"></i> Bước trước
+              </button>
+              <button type="button" class="btn-step-next" data-next="tab-bank">
+                Tiếp: Mừng Cưới &amp; QR <i class="fa-solid fa-arrow-right"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -445,6 +498,15 @@
               </button>
               <span class="form-hint" style="display: block; text-align: center; margin-top: 6px;">Hệ thống sẽ sinh mã QR chuẩn liên ngân hàng NAPAS kèm sẵn số tài khoản &amp; tên chủ thẻ</span>
             </div>
+
+            <div class="step-nav-buttons">
+              <button type="button" class="btn-step-prev" data-prev="tab-events">
+                <i class="fa-solid fa-arrow-left"></i> Bước trước
+              </button>
+              <button type="button" class="btn-step-finish" id="btn-finish-and-share">
+                <i class="fa-solid fa-crown"></i> Hoàn Tất &amp; Lấy Link Thiệp
+              </button>
+            </div>
           </div>
         </div>
 
@@ -452,7 +514,20 @@
     </section>
 
     <!-- Right Column: Live Phone Mockup Preview -->
-    <section class="preview-panel">
+    <section class="preview-panel" id="preview-panel">
+      <!-- Mobile Preview Top Controls (Hiện khi đang ở chế độ Xem Thiệp trên Mobile) -->
+      <div class="mobile-preview-top-controls" id="mobile-preview-top-controls">
+        <button type="button" class="btn-preview-back-edit" id="btn-preview-back-edit">
+          <i class="fa-solid fa-arrow-left"></i> <span>Quay Lại Sửa</span>
+        </button>
+        <button type="button" class="btn-preview-gate-trigger" id="btn-preview-gate-mobile">
+          <i class="fa-solid fa-door-open"></i> <span>Mở Cổng</span>
+        </button>
+        <button type="button" class="btn-preview-share-direct" id="btn-preview-share-direct">
+          <i class="fa-solid fa-share-nodes"></i> <span>Lấy Link</span>
+        </button>
+      </div>
+
       <!-- Preview Control Toolbar -->
       <div class="preview-toolbar">
         <span class="preview-toolbar-title">
@@ -638,6 +713,84 @@
         <button type="button" class="btn-header btn-header-primary" id="btn-create-inv-action">
           <i class="fa-solid fa-plus-circle"></i> Tạo Thêm Thiệp Cưới Mới
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Mobile Sticky Bottom Action Bar -->
+  <nav class="mobile-bottom-bar" id="mobile-bottom-bar">
+    <button type="button" class="mobile-bottom-btn" id="btn-mobile-quick-prev" title="Bước trước">
+      <i class="fa-solid fa-chevron-left"></i>
+      <span>Trước</span>
+    </button>
+    
+    <button type="button" class="mobile-bottom-btn" id="btn-mobile-toggle-preview" title="Xem thiệp trực tiếp">
+      <i class="fa-solid fa-eye"></i>
+      <span id="txt-mobile-view-btn">Xem Thử</span>
+    </button>
+
+    <button type="button" class="mobile-bottom-btn btn-highlight" id="btn-mobile-share" title="Lấy link thiệp cưới gửi khách">
+      <i class="fa-solid fa-share-nodes"></i>
+      <span>Lấy Link</span>
+    </button>
+
+    <button type="button" class="mobile-bottom-btn" id="btn-mobile-quick-next" title="Bước tiếp">
+      <i class="fa-solid fa-chevron-right"></i>
+      <span>Tiếp</span>
+    </button>
+  </nav>
+
+  <!-- 7. Mobile More Tools Bottom Sheet -->
+  <div class="modal-overlay" id="mobile-more-sheet">
+    <div class="modal-card mobile-sheet-card">
+      <button type="button" class="modal-close" id="btn-close-more-sheet">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <h3 class="modal-title" style="font-size: 16px; margin-bottom: 14px;">
+        <i class="fa-solid fa-sliders" style="color: var(--accent-gold);"></i> Công Cụ &amp; Tùy Chọn
+      </h3>
+
+      <div class="mobile-sheet-menu">
+        <button type="button" class="sheet-menu-item" id="sheet-btn-reset">
+          <i class="fa-solid fa-rotate-left"></i>
+          <div>
+            <strong>Khôi phục mẫu mặc định</strong>
+            <span>Đặt lại toàn bộ nội dung mẫu ban đầu</span>
+          </div>
+        </button>
+
+        <button type="button" class="sheet-menu-item" id="sheet-btn-import">
+          <i class="fa-solid fa-file-import"></i>
+          <div>
+            <strong>Nhập cấu hình từ file JSON</strong>
+            <span>Nạp file sao lưu đã lưu trước đó</span>
+          </div>
+        </button>
+
+        <button type="button" class="sheet-menu-item" id="sheet-btn-export-json">
+          <i class="fa-solid fa-download"></i>
+          <div>
+            <strong>Xuất file JSON về máy</strong>
+            <span>Lưu file dữ liệu thiệp cưới để dự phòng</span>
+          </div>
+        </button>
+
+        <button type="button" class="sheet-menu-item" id="sheet-btn-export-html">
+          <i class="fa-solid fa-file-code"></i>
+          <div>
+            <strong>Tải File Web thiệp độc lập</strong>
+            <span>Tải file .html mở xem được offline không cần mạng</span>
+          </div>
+        </button>
+
+        <a href="index.html" target="_blank" class="sheet-menu-item" id="sheet-btn-open-full">
+          <i class="fa-solid fa-up-right-from-square"></i>
+          <div>
+            <strong>Mở xem toàn màn hình tab mới</strong>
+            <span>Xem thiệp thực tế trong tab trình duyệt riêng</span>
+          </div>
+        </a>
       </div>
     </div>
   </div>

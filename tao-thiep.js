@@ -1543,6 +1543,236 @@ document.addEventListener('DOMContentLoaded', () => {
     updateAuthUI();
   }
 
+  // 15. Hệ thống Giao diện Di Động Thân Thiện & Trải nghiệm App Đẳng Cấp
+  function bindMobileAppExperience() {
+    const workspace = document.getElementById('builder-workspace');
+    const tabContent = document.querySelector('.tab-content');
+    const btnModeEdit = document.getElementById('btn-mode-edit');
+    const btnModePreview = document.getElementById('btn-mode-preview');
+    const btnPreviewBackEdit = document.getElementById('btn-preview-back-edit');
+    const btnPreviewGateMobile = document.getElementById('btn-preview-gate-mobile');
+    const btnPreviewShareDirect = document.getElementById('btn-preview-share-direct');
+
+    const btnMobileQuickPrev = document.getElementById('btn-mobile-quick-prev');
+    const btnMobileQuickNext = document.getElementById('btn-mobile-quick-next');
+    const btnMobileTogglePreview = document.getElementById('btn-mobile-toggle-preview');
+    const txtMobileViewBtn = document.getElementById('txt-mobile-view-btn');
+    const btnMobileShare = document.getElementById('btn-mobile-share');
+
+    const btnOpenMoreMenu = document.getElementById('btn-open-more-menu');
+    const mobileMoreSheet = document.getElementById('mobile-more-sheet');
+    const btnCloseMoreSheet = document.getElementById('btn-close-more-sheet');
+    const sheetBtnReset = document.getElementById('sheet-btn-reset');
+    const sheetBtnImport = document.getElementById('sheet-btn-import');
+    const sheetBtnExportJson = document.getElementById('sheet-btn-export-json');
+    const sheetBtnExportHtml = document.getElementById('sheet-btn-export-html');
+
+    const btnFinishAndShare = document.getElementById('btn-finish-and-share');
+
+    const tabOrder = ['tab-names', 'tab-images', 'tab-family', 'tab-events', 'tab-bank'];
+
+    // Helper: Chuyển đổi giữa chế độ Chỉnh Sửa và Xem Thiệp trên Mobile
+    function setMobileMode(mode) {
+      if (!workspace) return;
+      workspace.setAttribute('data-mobile-mode', mode);
+
+      if (mode === 'preview') {
+        if (btnModeEdit) btnModeEdit.classList.remove('active');
+        if (btnModePreview) btnModePreview.classList.add('active');
+        if (btnMobileTogglePreview) {
+          btnMobileTogglePreview.classList.add('active');
+          const icon = btnMobileTogglePreview.querySelector('i');
+          if (icon) {
+            icon.className = 'fa-solid fa-pen-to-square';
+          }
+        }
+        if (txtMobileViewBtn) txtMobileViewBtn.textContent = 'Sửa Thiệp';
+
+        // Đồng bộ tức thì cấu hình sang iframe xem trước
+        syncToPreviewAndStore();
+        showToast('Đang mở bản xem trước thiệp cưới thực tế!');
+      } else {
+        if (btnModePreview) btnModePreview.classList.remove('active');
+        if (btnModeEdit) btnModeEdit.classList.add('active');
+        if (btnMobileTogglePreview) {
+          btnMobileTogglePreview.classList.remove('active');
+          const icon = btnMobileTogglePreview.querySelector('i');
+          if (icon) {
+            icon.className = 'fa-solid fa-eye';
+          }
+        }
+        if (txtMobileViewBtn) txtMobileViewBtn.textContent = 'Xem Thử';
+      }
+    }
+
+    // Event: Click tab switcher top
+    if (btnModeEdit) {
+      btnModeEdit.addEventListener('click', () => setMobileMode('edit'));
+    }
+    if (btnModePreview) {
+      btnModePreview.addEventListener('click', () => setMobileMode('preview'));
+    }
+
+    // Event: Nút quay lại từ màn hình preview mobile
+    if (btnPreviewBackEdit) {
+      btnPreviewBackEdit.addEventListener('click', () => setMobileMode('edit'));
+    }
+
+    // Event: Nút mở cổng trên màn hình preview mobile
+    if (btnPreviewGateMobile && previewIframe) {
+      btnPreviewGateMobile.addEventListener('click', () => {
+        if (previewIframe.contentWindow) {
+          previewIframe.contentWindow.postMessage({ type: 'OPEN_GATE' }, '*');
+          showToast('Đang mở cánh cổng hoàng gia...');
+        }
+      });
+    }
+
+    // Event: Nút lấy link trực tiếp từ preview mobile
+    if (btnPreviewShareDirect && btnShareLink) {
+      btnPreviewShareDirect.addEventListener('click', () => {
+        btnShareLink.click();
+      });
+    }
+
+    // Helper: Kích hoạt Tab theo ID
+    function activateTabById(tabId) {
+      const targetBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+      if (targetBtn) {
+        targetBtn.click();
+        targetBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+      if (tabContent) {
+        tabContent.scrollTop = 0;
+      }
+    }
+
+    // Helper: Tìm tab hiện tại đang active
+    function getActiveTabId() {
+      const activeBtn = document.querySelector('.tab-btn.active');
+      return activeBtn ? activeBtn.getAttribute('data-tab') : tabOrder[0];
+    }
+
+    // Step Navigation Buttons (Prev / Next trong từng tab)
+    document.querySelectorAll('.btn-step-next').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const nextTabId = btn.getAttribute('data-next');
+        if (nextTabId) activateTabById(nextTabId);
+      });
+    });
+
+    document.querySelectorAll('.btn-step-prev').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const prevTabId = btn.getAttribute('data-prev');
+        if (prevTabId) activateTabById(prevTabId);
+      });
+    });
+
+    if (btnFinishAndShare && btnShareLink) {
+      btnFinishAndShare.addEventListener('click', () => {
+        btnShareLink.click();
+      });
+    }
+
+    // Mobile Bottom Sticky Bar Actions
+    if (btnMobileQuickPrev) {
+      btnMobileQuickPrev.addEventListener('click', () => {
+        if (workspace && workspace.getAttribute('data-mobile-mode') === 'preview') {
+          setMobileMode('edit');
+          return;
+        }
+        const currentId = getActiveTabId();
+        const curIdx = tabOrder.indexOf(currentId);
+        if (curIdx > 0) {
+          activateTabById(tabOrder[curIdx - 1]);
+        }
+      });
+    }
+
+    if (btnMobileQuickNext) {
+      btnMobileQuickNext.addEventListener('click', () => {
+        if (workspace && workspace.getAttribute('data-mobile-mode') === 'preview') {
+          setMobileMode('edit');
+          return;
+        }
+        const currentId = getActiveTabId();
+        const curIdx = tabOrder.indexOf(currentId);
+        if (curIdx < tabOrder.length - 1) {
+          activateTabById(tabOrder[curIdx + 1]);
+        } else if (btnShareLink) {
+          btnShareLink.click();
+        }
+      });
+    }
+
+    if (btnMobileTogglePreview) {
+      btnMobileTogglePreview.addEventListener('click', () => {
+        const curMode = workspace ? (workspace.getAttribute('data-mobile-mode') || 'edit') : 'edit';
+        setMobileMode(curMode === 'edit' ? 'preview' : 'edit');
+      });
+    }
+
+    if (btnMobileShare && btnShareLink) {
+      btnMobileShare.addEventListener('click', () => {
+        btnShareLink.click();
+      });
+    }
+
+    // Mobile More Tools Bottom Sheet
+    if (btnOpenMoreMenu && mobileMoreSheet) {
+      btnOpenMoreMenu.addEventListener('click', () => {
+        mobileMoreSheet.classList.add('active');
+      });
+    }
+
+    if (btnCloseMoreSheet && mobileMoreSheet) {
+      btnCloseMoreSheet.addEventListener('click', () => {
+        mobileMoreSheet.classList.remove('active');
+      });
+    }
+
+    if (mobileMoreSheet) {
+      mobileMoreSheet.addEventListener('click', (e) => {
+        if (e.target === mobileMoreSheet) {
+          mobileMoreSheet.classList.remove('active');
+        }
+      });
+    }
+
+    // Actions inside More Sheet
+    if (sheetBtnReset) {
+      sheetBtnReset.addEventListener('click', () => {
+        const btnReset = document.getElementById('btn-reset-default');
+        if (btnReset) btnReset.click();
+        if (mobileMoreSheet) mobileMoreSheet.classList.remove('active');
+      });
+    }
+
+    if (sheetBtnImport) {
+      sheetBtnImport.addEventListener('click', () => {
+        const fileImport = document.getElementById('file-import-json');
+        if (fileImport) fileImport.click();
+        if (mobileMoreSheet) mobileMoreSheet.classList.remove('active');
+      });
+    }
+
+    if (sheetBtnExportJson) {
+      sheetBtnExportJson.addEventListener('click', () => {
+        const btnExport = document.getElementById('btn-export-json');
+        if (btnExport) btnExport.click();
+        if (mobileMoreSheet) mobileMoreSheet.classList.remove('active');
+      });
+    }
+
+    if (sheetBtnExportHtml) {
+      sheetBtnExportHtml.addEventListener('click', () => {
+        const btnExportHtml = document.getElementById('btn-export-html');
+        if (btnExportHtml) btnExportHtml.click();
+        if (mobileMoreSheet) mobileMoreSheet.classList.remove('active');
+      });
+    }
+  }
+
   // 14. Khởi tạo toàn bộ
   populateFormFromConfig(currentConfig);
   bindTextInputListeners();
@@ -1550,5 +1780,6 @@ document.addEventListener('DOMContentLoaded', () => {
   bindHeaderActionListeners();
   bindPreviewToolbar();
   bindAuthAndInvitationsSystem();
+  bindMobileAppExperience();
 
 });

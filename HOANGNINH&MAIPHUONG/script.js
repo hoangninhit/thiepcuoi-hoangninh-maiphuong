@@ -1538,8 +1538,56 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
 
   // 16. Dynamic Wedding Data & Live Preview Customizer (Hỗ trợ tùy biến thiệp cưới)
+  const THEME_PRESETS = {
+    royal: {
+      primary: '#8b1820',
+      dark: '#580c10',
+      gold: '#c59b4c',
+      lightGold: '#e8d39f'
+    },
+    rose: {
+      primary: '#a83b56',
+      dark: '#731e34',
+      gold: '#d9919f',
+      lightGold: '#f5d6dc'
+    },
+    emerald: {
+      primary: '#1b4938',
+      dark: '#0f2d22',
+      gold: '#c59b4c',
+      lightGold: '#e8d39f'
+    },
+    sapphire: {
+      primary: '#183359',
+      dark: '#0d1e36',
+      gold: '#c59b4c',
+      lightGold: '#e8d39f'
+    }
+  };
+
+  function applyThemeColors(themeName) {
+    const theme = THEME_PRESETS[themeName] || THEME_PRESETS.royal;
+    const root = document.documentElement;
+    root.style.setProperty('--primary-red', theme.primary);
+    root.style.setProperty('--primary-dark-red', theme.dark);
+    root.style.setProperty('--accent-gold', theme.gold);
+    root.style.setProperty('--accent-light-gold', theme.lightGold);
+
+    // Cập nhật con dấu sáp nếu có
+    const waxEl = document.querySelector('.envelope-wax-seal');
+    if (waxEl) {
+      waxEl.style.background = `radial-gradient(circle, ${theme.primary} 30%, ${theme.dark} 90%)`;
+      waxEl.style.borderColor = theme.gold;
+    }
+  }
+
   function applyCustomWeddingData(cfg) {
     if (!cfg || typeof cfg !== 'object') return;
+
+    // Áp dụng phong cách tông màu nếu có
+    if (cfg.themeStyle) {
+      applyThemeColors(cfg.themeStyle);
+    }
 
     const groom = (cfg.groomName || (cfg.groom && cfg.groom.name) || '').trim();
     const bride = (cfg.brideName || (cfg.bride && cfg.bride.name) || '').trim();
@@ -1692,16 +1740,52 @@ document.addEventListener('DOMContentLoaded', () => {
       customData = window.EMBEDDED_WEDDING_CONFIG;
     }
 
-    // Check URL query param ?cfg=...
     const urlParams = new URLSearchParams(window.location.search);
+
+    // 1. Check URL query param ?inv=... hoặc ?id=... (Nạp mẫu thiệp theo ID của từng user!)
+    const invId = urlParams.get('inv') || urlParams.get('id');
+    if (invId && !customData) {
+      try {
+        // A. Tìm trong Public Registry
+        const pubRaw = localStorage.getItem('wedding_public_invitations');
+        if (pubRaw) {
+          const pubRegistry = JSON.parse(pubRaw);
+          if (pubRegistry && pubRegistry[invId]) {
+            customData = pubRegistry[invId].config || pubRegistry[invId];
+          }
+        }
+        // B. Nếu chưa thấy, tìm trong Users Database
+        if (!customData) {
+          const dbRaw = localStorage.getItem('wedding_users_db');
+          if (dbRaw) {
+            const db = JSON.parse(dbRaw);
+            if (Array.isArray(db)) {
+              for (const u of db) {
+                if (u.invitations && Array.isArray(u.invitations)) {
+                  const match = u.invitations.find(i => i.id === invId);
+                  if (match && match.config) {
+                    customData = match.config;
+                    break;
+                  }
+                }
+              }
+            }
+          }
+        }
+      } catch (e) {
+        console.warn('Lỗi đọc thiệp theo mã ID:', e);
+      }
+    }
+
+    // 2. Check URL query param ?cfg=... (Base64)
     const cfgParam = urlParams.get('cfg');
-    if (cfgParam) {
+    if (cfgParam && !customData) {
       try {
         customData = JSON.parse(decodeURIComponent(escape(atob(cfgParam))));
       } catch (e) {
         try { customData = JSON.parse(decodeURIComponent(cfgParam)); } catch (err) {}
       }
-    } else if (window.location.hash.startsWith('#cfg=')) {
+    } else if (window.location.hash.startsWith('#cfg=') && !customData) {
       try {
         const raw = window.location.hash.substring(5);
         customData = JSON.parse(decodeURIComponent(escape(atob(raw))));
@@ -1710,11 +1794,35 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Fallback to localStorage if no URL param
+    // 3. Fallback to localStorage if no URL param
     if (!customData) {
       try {
-        const local = localStorage.getItem('wedding_custom_config');
-        if (local) customData = JSON.parse(local);
+        const isPreview = urlParams.get('preview') === '1';
+        if (isPreview) {
+          const local = localStorage.getItem('wedding_custom_config');
+          if (local) customData = JSON.parse(local);
+        } else {
+          // Nếu có user đang đăng nhập, nạp thiệp active của user đó
+          const sessRaw = localStorage.getItem('wedding_auth_session');
+          if (sessRaw) {
+            const sess = JSON.parse(sessRaw);
+            const dbRaw = localStorage.getItem('wedding_users_db');
+            if (dbRaw) {
+              const db = JSON.parse(dbRaw);
+              const user = db.find(u => u.id === sess.userId);
+              if (user && user.invitations && user.invitations.length > 0) {
+                const activeInv = user.invitations.find(i => i.id === user.activeInvitationId) || user.invitations[0];
+                if (activeInv && activeInv.config) {
+                  customData = activeInv.config;
+                }
+              }
+            }
+          }
+          if (!customData) {
+            const local = localStorage.getItem('wedding_custom_config');
+            if (local) customData = JSON.parse(local);
+          }
+        }
       } catch (e) {}
     }
 

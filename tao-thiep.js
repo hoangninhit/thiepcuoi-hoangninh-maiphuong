@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 1. Dữ liệu mẫu mặc định ban đầu
   const DEFAULT_CONFIG = {
+    themeStyle: 'royal',
     groomName: 'HOÀNG NINH',
     brideName: 'MAI PHƯƠNG',
     weddingDate: '18 . 12 . 2026',
@@ -176,6 +177,37 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) {}
   }
 
+  // Public Registry để người khác (khách mời) có thể mở xem thiệp qua mã ?inv=ID
+  const PUBLIC_REGISTRY_KEY = 'wedding_public_invitations';
+
+  function getPublicRegistry() {
+    try {
+      const saved = localStorage.getItem(PUBLIC_REGISTRY_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object') return parsed;
+      }
+    } catch (e) {}
+    return {};
+  }
+
+  function saveToPublicRegistry(invId, invData) {
+    if (!invId || !invData) return;
+    try {
+      let reg = getPublicRegistry();
+      reg[invId] = {
+        id: invId,
+        title: invData.title || 'Thiệp Cưới',
+        author: invData.author || '',
+        updatedAt: new Date().toISOString(),
+        config: invData.config || invData
+      };
+      localStorage.setItem(PUBLIC_REGISTRY_KEY, JSON.stringify(reg));
+    } catch (e) {
+      console.warn('Lỗi ghi Public Registry:', e);
+    }
+  }
+
   function saveCurrentConfigToUserAccount() {
     try {
       const session = getCurrentSession();
@@ -206,17 +238,44 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       saveUsersDB(db);
+
+      // Cập nhật thiệp này vào Public Registry
+      saveToPublicRegistry(activeInv.id, {
+        id: activeInv.id,
+        title: activeInv.title,
+        author: user.fullname,
+        config: activeInv.config
+      });
     } catch (e) {
       console.warn('Lỗi lưu thiệp vào tài khoản:', e);
     }
   }
 
-  function getInvitationShareUrl(cfg) {
+  function getInvitationShareUrl(cfg, invId) {
+    const baseUrl = window.location.origin + window.location.pathname.replace('tao-thiep.html', 'index.html');
+    
+    // Nếu có mã ID thiệp cưới thì ưu tiên tạo link trực tiếp theo ID
+    if (invId) {
+      return `${baseUrl}?inv=${encodeURIComponent(invId)}`;
+    }
+
+    // Nếu người dùng đang đăng nhập và có activeInvitationId
+    const session = getCurrentSession();
+    if (session) {
+      const db = getUsersDB();
+      const user = db.find(u => u.id === session.userId);
+      if (user && user.activeInvitationId) {
+        return `${baseUrl}?inv=${encodeURIComponent(user.activeInvitationId)}`;
+      }
+    }
+
+    // Fallback: Link chứa tham số Base64
     const shareData = {
       groomName: cfg.groomName,
       brideName: cfg.brideName,
       weddingDate: cfg.weddingDate,
       lunarDate: cfg.lunarDate,
+      themeStyle: cfg.themeStyle || 'royal',
       bgMusicUrl: cfg.bgMusicUrl,
       groomParents: cfg.groomParents,
       groomAddress: cfg.groomAddress,
@@ -240,7 +299,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const encodedJson = btoa(unescape(encodeURIComponent(JSON.stringify(shareData))));
-    const baseUrl = window.location.origin + window.location.pathname.replace('tao-thiep.html', 'index.html');
     return `${baseUrl}?cfg=${encodedJson}`;
   }
 
@@ -422,6 +480,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 6. Cập nhật giao diện Form theo State
   function populateFormFromConfig(cfg) {
+    // Theme Style
+    const activeTheme = cfg.themeStyle || 'royal';
+    const themeRadios = document.querySelectorAll('input[name="radio-theme-style"]');
+    themeRadios.forEach(r => {
+      r.checked = (r.value === activeTheme);
+      const card = r.closest('.theme-card-option');
+      if (card) {
+        if (r.value === activeTheme) card.classList.add('active');
+        else card.classList.remove('active');
+      }
+    });
+
     if (inpGroomName) inpGroomName.value = cfg.groomName || '';
     if (inpBrideName) inpBrideName.value = cfg.brideName || '';
     if (inpWeddingDate) inpWeddingDate.value = cfg.weddingDate || '';
@@ -589,6 +659,20 @@ document.addEventListener('DOMContentLoaded', () => {
           syncToPreviewAndStore();
         });
       }
+    });
+
+    // Theme Style Radio Change
+    document.querySelectorAll('input[name="radio-theme-style"]').forEach(r => {
+      r.addEventListener('change', () => {
+        if (r.checked) {
+          currentConfig.themeStyle = r.value;
+          document.querySelectorAll('.theme-card-option').forEach(card => card.classList.remove('active'));
+          const parentCard = r.closest('.theme-card-option');
+          if (parentCard) parentCard.classList.add('active');
+          syncToPreviewAndStore();
+          showToast('Đã đổi phong cách mẫu thiệp!');
+        }
+      });
     });
 
     // Music Selector
@@ -1263,7 +1347,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Tạo tài khoản mới, đồng thời tự động lưu cấu hình đang làm dở thành thiệp đầu tiên
         const newUserId = 'user_' + Date.now();
         const newInvId = 'inv_' + Date.now();
-        const initialTitle = `Thiệp Cưới ${currentConfig.groomName || 'Chú Rể'} & ${currentConfig.brideName || 'Cô Dâu'}`;
+        const userInitConfig = JSON.parse(JSON.stringify(currentConfig));
+        if (!userInitConfig.groomName || userInitConfig.groomName === 'HOÀNG NINH') {
+          userInitConfig.groomName = fullname.toUpperCase();
+          userInitConfig.transferNote = `Mừng cưới ${fullname}`;
+        }
+        const initialTitle = `Thiệp Cưới ${userInitConfig.groomName || 'Chú Rể'} & ${userInitConfig.brideName || 'Cô Dâu'}`;
 
         const newUser = {
           id: newUserId,
@@ -1277,7 +1366,7 @@ document.addEventListener('DOMContentLoaded', () => {
               id: newInvId,
               title: initialTitle,
               updatedAt: new Date().toISOString(),
-              config: JSON.parse(JSON.stringify(currentConfig))
+              config: userInitConfig
             }
           ]
         };
@@ -1285,13 +1374,25 @@ document.addEventListener('DOMContentLoaded', () => {
         db.push(newUser);
         saveUsersDB(db);
 
+        saveToPublicRegistry(newInvId, {
+          id: newInvId,
+          title: initialTitle,
+          author: fullname,
+          config: userInitConfig
+        });
+
         setCurrentSession(newUser);
+        currentConfig = userInitConfig;
+        populateFormFromConfig(currentConfig);
+        renderGalleryThumbs();
+        syncToPreviewAndStore();
+
         updateAuthUI();
         closeAuthModal();
 
         if (inpRegPwd) inpRegPwd.value = '';
         if (inpRegPwd2) inpRegPwd2.value = '';
-        showToast(`Đăng ký thành công! Đã tự động lưu thiệp cưới vào tài khoản.`);
+        showToast(`Đăng ký thành công! Đã tự động tạo mẫu thiệp riêng cho ${fullname}.`);
       });
     }
 
@@ -1314,8 +1415,15 @@ document.addEventListener('DOMContentLoaded', () => {
       btnLogout.addEventListener('click', () => {
         clearSession();
         if (userDropdownMenu) userDropdownMenu.classList.remove('show');
+
+        // Reset form & config to clean default to isolate user data
+        currentConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+        populateFormFromConfig(currentConfig);
+        renderGalleryThumbs();
+        syncToPreviewAndStore();
+
         updateAuthUI();
-        showToast('Đã đăng xuất tài khoản!');
+        showToast('Đã đăng xuất! Giao diện đã được đặt lại mẫu mặc định.');
       });
     }
 
@@ -1416,7 +1524,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const id = btn.getAttribute('data-id');
           const targetInv = user.invitations.find(i => i.id === id);
           if (targetInv && targetInv.config) {
-            const shareUrl = getInvitationShareUrl(targetInv.config);
+            const shareUrl = getInvitationShareUrl(targetInv.config, id);
             window.open(shareUrl, '_blank');
           }
         });
@@ -1428,7 +1536,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const id = btn.getAttribute('data-id');
           const targetInv = user.invitations.find(i => i.id === id);
           if (targetInv && targetInv.config) {
-            const shareUrl = getInvitationShareUrl(targetInv.config);
+            const shareUrl = getInvitationShareUrl(targetInv.config, id);
             if (shareLinkText) shareLinkText.textContent = shareUrl;
             if (btnTestShareLink) btnTestShareLink.href = shareUrl;
             if (myInvitationsModal) myInvitationsModal.classList.remove('active');
@@ -1509,17 +1617,27 @@ document.addEventListener('DOMContentLoaded', () => {
       if (title === null) return; // User cancelled
 
       const newId = 'inv_' + Date.now();
+      const newInvConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+      newInvConfig.groomName = user.fullname.toUpperCase();
+      newInvConfig.transferNote = `Mừng cưới ${user.fullname}`;
       const newInv = {
         id: newId,
         title: title.trim() || defaultTitle,
         updatedAt: new Date().toISOString(),
-        config: JSON.parse(JSON.stringify(DEFAULT_CONFIG))
+        config: newInvConfig
       };
 
       if (!user.invitations) user.invitations = [];
       user.invitations.unshift(newInv);
       user.activeInvitationId = newId;
       saveUsersDB(db);
+
+      saveToPublicRegistry(newId, {
+        id: newId,
+        title: newInv.title,
+        author: user.fullname,
+        config: newInvConfig
+      });
 
       currentConfig = JSON.parse(JSON.stringify(newInv.config));
       populateFormFromConfig(currentConfig);

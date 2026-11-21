@@ -1207,6 +1207,77 @@ body {
   100% { transform: scale(1); opacity: 1; }
 }
 
+/* Theme Styles Picker Grid */
+.theme-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 10px;
+}
+
+@media (max-width: 580px) {
+  .theme-picker-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.theme-card-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #fdfaf6;
+  border: 1.5px solid var(--border-color);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.theme-card-option input[type="radio"] {
+  display: none;
+}
+
+.theme-card-option:hover {
+  border-color: var(--accent-gold);
+  background: #fcf4e8;
+  transform: translateY(-1px);
+}
+
+.theme-card-option.active {
+  border-color: var(--accent-gold);
+  background: #fff8ea;
+  box-shadow: 0 4px 14px rgba(197, 155, 76, 0.25);
+  outline: 2px solid var(--accent-gold);
+}
+
+.theme-color-swatches {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.theme-color-swatches span {
+  width: 22px;
+  height: 10px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.theme-card-info strong {
+  display: block;
+  font-size: 13px;
+  color: var(--primary-red);
+  margin-bottom: 2px;
+}
+
+.theme-card-info span {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: block;
+}
+
 /* Step Navigation Buttons inside Tab Panes */
 .step-nav-buttons {
   display: flex;

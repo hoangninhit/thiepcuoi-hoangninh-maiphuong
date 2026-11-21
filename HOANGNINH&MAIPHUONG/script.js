@@ -1844,6 +1844,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (customData) {
+      // Chuyển hướng thông minh nếu thiệp được tạo theo mẫu giao diện khác và không ở chế độ preview
+      if (urlParams.get('preview') !== '1') {
+        if (customData.templateLayout === 'modern') {
+          window.location.replace('thiep-hien-dai.html' + window.location.search + window.location.hash);
+          return;
+        } else if (customData.templateLayout === 'garden') {
+          window.location.replace('thiep-hoa-co.html' + window.location.search + window.location.hash);
+          return;
+        }
+      }
+
       applyCustomWeddingData(customData);
 
       // Tự động lưu bản sao vào Public Registry của thiết bị khách mời

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>THIỆP CƯỚI HIỆN ĐẠI • HOÀNG NINH &amp; MAI PHƯƠNG</title>
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="THIỆP CƯỚI HIỆN ĐẠI • HOÀNG NINH &amp; MAI PHƯƠNG">
+  <meta property="og:description" content="Trân trọng kính mời quý khách đến dự lễ thành hôn của chúng tôi!">
+  <meta property="og:image" content="image/chinh.jpg">
+
+  <!-- Google Fonts: Playfair Display, Montserrat, Cormorant Garamond, Great Vibes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Modern Stylesheet -->
+  <link rel="stylesheet" href="thiep-hien-dai.css">
+</head>
+
+<body>
+
+  <!-- Floating Audio Player -->
+  <audio id="wedding-audio" loop preload="auto">
+    <source src="https://statics.pancake.vn/web-media/5e/ee/bf/4a/afa10d3bdf98ca17ec3191ebbfd3c829d135d06939ee1f1b712d731d-w:0-h:0-l:2938934-t:audio/mpeg.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="modern-disc-player" id="modern-disc-player" title="Bật/Tắt nhạc nền">
+    <div class="vinyl-disc">
+      <i class="fa-solid fa-music"></i>
+    </div>
+  </div>
+
+  <!-- ==================== 1. ENVELOPE INTRO SCREEN ==================== -->
+  <div class="modern-envelope-overlay" id="envelope-overlay">
+    <div class="envelope-scene">
+      <div class="envelope-top-sub">WEDDING INVITATION</div>
+
+      <!-- The 3D Luxury Envelope -->
+      <div class="envelope-box" id="envelope-box">
+        <!-- Envelope Back / Pocket -->
+        <div class="envelope-back"></div>
+
+        <!-- The Letter Sliding Out -->
+        <div class="envelope-card-letter">
+          <div class="card-monogram" id="envelope-monogram">N &bull; P</div>
+          <div class="card-sub-title">SAVE THE DATE</div>
+          <div class="card-names" id="envelope-names">HOÀNG NINH &amp; MAI PHƯƠNG</div>
+          <div class="card-date" id="envelope-date">18 . 12 . 2026</div>
+        </div>
+
+        <!-- Envelope Front Flaps -->
+        <div class="envelope-left-flap"></div>
+        <div class="envelope-right-flap"></div>
+        <div class="envelope-bottom-flap"></div>
+        <div class="envelope-top-flap" id="envelope-top-flap"></div>
+
+        <!-- Wax Seal Button -->
+        <div class="modern-wax-seal" id="modern-wax-seal" title="Chạm để mở thiệp cưới">
+          <div class="seal-inner">
+            <i class="fa-solid fa-heart"></i>
+            <span class="seal-touch-hint">Chạm mở</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Guest Label -->
+      <div class="envelope-guest-card">
+        <span class="guest-to">Kính gửi:</span>
+        <strong class="guest-name" id="envelope-guest-name">Quý Khách</strong>
+        <p class="guest-desc">Bấm vào con dấu sáp để mở phong bì thư cưới</p>
+      </div>
+
+      <button type="button" class="btn-skip-envelope" id="btn-skip-envelope">
+        Vào xem thiệp trực tiếp <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== 2. MAIN MODERN INVITATION ==================== -->
+  <main class="modern-wrapper" id="main-content">
+
+    <!-- Top Editorial Header -->
+    <header class="modern-header">
+      <div class="header-edition">THE WEDDING CELEBRATION &bull; SPECIAL EDITION</div>
+      <div class="header-monogram" id="top-monogram">N &amp; P</div>
+      <div class="header-divider"></div>
+    </header>
+
+    <!-- SECTION 1: HERO EDITORIAL BANNER -->
+    <section class="section-editorial-hero" id="section-hero">
+      <div class="hero-sub-intro">HONORED TO INVITE YOU TO THE WEDDING OF</div>
+      
+      <div class="hero-couple-titles">
+        <h1 class="groom-hero-name" id="hero-groom-name">HOÀNG NINH</h1>
+        <div class="hero-amp">&amp;</div>
+        <h1 class="bride-hero-name" id="hero-bride-name">MAI PHƯƠNG</h1>
+      </div>
+
+      <div class="hero-date-tag">
+        <span class="tag-line"></span>
+        <span class="tag-text" id="hero-wedding-date">18 . 12 . 2026</span>
+        <span class="tag-line"></span>
+      </div>
+
+      <!-- Hero Photo Frame -->
+      <div class="hero-photo-container">
+        <div class="photo-magazine-wrap">
+          <img id="hero-img" src="image/chinh.jpg" alt="Ảnh Cưới Hoàng Ninh &amp; Mai Phương">
+          <div class="photo-corner-badge">EXCLUSIVE</div>
+        </div>
+      </div>
+
+      <!-- Invitation Greeting Text -->
+      <div class="editorial-greeting-card">
+        <div class="greeting-symbol"><i class="fa-solid fa-feather-pointed"></i></div>
+        <p class="greeting-message" id="hero-greeting-text">
+          Đến dự buổi tiệc chung vui cùng gia đình chúng tôi. Sự hiện diện của bạn là niềm vinh hạnh to lớn cho ngày trọng đại nhất của hai đứa mình!
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 2: COUNTDOWN TIMER -->
+    <section class="section-countdown" id="section-countdown">
+      <div class="sec-title-wrap">
+        <span class="sec-subtitle">COUNTDOWN TO HAPPINESS</span>
+        <h2 class="sec-title">Cùng Đếm Ngược Ngày Chung Đôi</h2>
+      </div>
+
+      <div class="countdown-grid">
+        <div class="countdown-card">
+          <span class="cd-num" id="cd-days">00</span>
+          <span class="cd-label">NGÀY</span>
+        </div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-card">
+          <span class="cd-num" id="cd-hours">00</span>
+          <span class="cd-label">GIỜ</span>
+        </div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-card">
+          <span class="cd-num" id="cd-mins">00</span>
+          <span class="cd-label">PHÚT</span>
+        </div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-card">
+          <span class="cd-num" id="cd-secs">00</span>
+          <span class="cd-label">GIÂY</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: LOVE STORY & COUPLE PORTRAIT -->
+    <section class="section-couple-story" id="section-couple">
+      <div class="couple-portrait-wrap">
+        <div class="portrait-arch">
+          <img id="couple-img" src="image/188A6221.JPG" alt="Couple Portrait">
+        </div>
+      </div>
+
+      <div class="story-content">
+        <span class="story-tag">LOVE &amp; DESTINY</span>
+        <blockquote class="story-quote">
+          "Tình yêu không phải là tìm một người hoàn hảo để yêu, mà là học cách yêu trọn vẹn một người không hoàn hảo."
+        </blockquote>
+      </div>
+
+      <!-- Two Families -->
+      <div class="families-block" id="section-family">
+        <div class="family-card">
+          <div class="fam-side">NHÀ TRAI</div>
+          <div class="fam-parents" id="groom-parents">
+            ÔNG HOÀNG VĂN HIỂN<br>BÀ NGUYỄN THỊ HÀ
+          </div>
+          <div class="fam-addr" id="groom-address">
+            <i class="fa-solid fa-location-dot"></i> Quận 12, TP. Hồ Chí Minh
+          </div>
+        </div>
+
+        <div class="fam-divider"><i class="fa-solid fa-infinity"></i></div>
+
+        <div class="family-card">
+          <div class="fam-side">NHÀ GÁI</div>
+          <div class="fam-parents" id="bride-parents">
+            ÔNG NGÔ VĂN CỔN<br>BÀ NGUYỄN THỊ BÌNH
+          </div>
+          <div class="fam-addr" id="bride-address">
+            <i class="fa-solid fa-location-dot"></i> Xã Bà Điểm, TP. Hồ Chí Minh
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: WEDDING EVENTS & TIMELINE -->
+    <section class="section-events-timeline" id="section-events">
+      <div class="sec-title-wrap">
+        <span class="sec-subtitle">SCHEDULE</span>
+        <h2 class="sec-title">Chương Trình Hôn Lễ</h2>
+      </div>
+
+      <div class="events-cards-grid">
+        <!-- Event 1: Bride House -->
+        <div class="event-modern-card">
+          <div class="event-badge">LỄ VU QUY (NHÀ GÁI)</div>
+          <div class="event-time" id="ev1-time"><i class="fa-regular fa-clock"></i> 09:00 - Thứ Bảy</div>
+          <div class="event-venue" id="ev1-venue">TƯ GIA NHÀ GÁI</div>
+          <div class="event-address" id="ev1-address">
+            <i class="fa-solid fa-location-dot"></i> Xã Bà Điểm, TP. Hồ Chí Minh
+          </div>
+          <div class="event-btn-row">
+            <a href="https://maps.google.com" target="_blank" class="btn-event-action" id="btn-map-ev1">
+              <i class="fa-solid fa-map-location-dot"></i> Chỉ đường Google Maps
+            </a>
+          </div>
+        </div>
+
+        <!-- Event 2: Groom House / Reception -->
+        <div class="event-modern-card featured">
+          <div class="event-badge">TIỆC CƯỚI TÂN HÔN (NHÀ TRAI)</div>
+          <div class="event-time" id="ev2-time"><i class="fa-regular fa-clock"></i> 11:00 - Chủ Nhật</div>
+          <div class="event-venue" id="ev2-venue">TRUNG TÂM TIỆC CƯỚI ROYAL PALACE</div>
+          <div class="event-address" id="ev2-address">
+            <i class="fa-solid fa-location-dot"></i> Quận 12, TP. Hồ Chí Minh
+          </div>
+          <div class="event-btn-row">
+            <a href="https://maps.google.com" target="_blank" class="btn-event-action" id="btn-map-ev2">
+              <i class="fa-solid fa-map-location-dot"></i> Chỉ đường Google Maps
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: PHOTO GALLERY MASONRY -->
+    <section class="section-photo-gallery" id="section-gallery">
+      <div class="sec-title-wrap">
+        <span class="sec-subtitle">MEMORIES</span>
+        <h2 class="sec-title">Khoảnh Khắc Hạnh Phúc</h2>
+      </div>
+
+      <div class="modern-gallery-grid" id="gallery-container">
+        <!-- Gallery photos rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- SECTION 6: VIETQR REGISTRY (MỪNG CƯỚI) -->
+    <section class="section-gift-registry" id="section-bank">
+      <div class="sec-title-wrap">
+        <span class="sec-subtitle">GIFT REGISTRY</span>
+        <h2 class="sec-title">Gửi Mừng Chúc Phúc</h2>
+        <p class="sec-desc">Sự chúc phúc và hiện diện của bạn là món quà ý nghĩa nhất dành cho chúng mình!</p>
+      </div>
+
+      <div class="registry-card">
+        <div class="registry-qr-box">
+          <img id="bank-qr-img" src="image/qr_acb.svg" alt="VietQR Mừng Cưới" class="qr-code-img">
+        </div>
+
+        <div class="registry-info-table">
+          <div class="info-row">
+            <span class="label">Ngân hàng:</span>
+            <strong class="value" id="bank-name">ACB (Á Châu)</strong>
+          </div>
+          <div class="info-row">
+            <span class="label">Chủ tài khoản:</span>
+            <strong class="value" id="account-holder">HOANG VAN NINH</strong>
+          </div>
+          <div class="info-row">
+            <span class="label">Số tài khoản:</span>
+            <strong class="value highlight" id="account-number">873588</strong>
+          </div>
+          <div class="info-row">
+            <span class="label">Nội dung CK:</span>
+            <span class="value" id="transfer-note">Mừng cưới Hoàng Ninh - Mai Phương</span>
+          </div>
+
+          <button type="button" class="btn-copy-acc" id="btn-copy-acc">
+            <i class="fa-regular fa-copy"></i> Sao chép Số Tài Khoản
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: WISHES & RSVP -->
+    <section class="section-wishes-rsvp" id="section-rsvp">
+      <div class="sec-title-wrap">
+        <span class="sec-subtitle">GUESTBOOK</span>
+        <h2 class="sec-title">Gửi Lời Chúc Mừng</h2>
+      </div>
+
+      <form class="modern-wishes-form" id="modern-wishes-form">
+        <div class="form-field">
+          <input type="text" id="inp-guest-sender" class="modern-input" placeholder="Tên của bạn..." required>
+        </div>
+        <div class="form-field">
+          <textarea id="inp-guest-content" class="modern-textarea" rows="3" placeholder="Gửi những lời chúc tốt đẹp nhất tới cô dâu &amp; chú rể..." required></textarea>
+        </div>
+        <button type="submit" class="btn-send-wish">
+          <i class="fa-solid fa-paper-plane"></i> Gửi Lời Chúc Yêu Thương
+        </button>
+      </form>
+
+      <!-- Live Wishes Feed -->
+      <div class="wishes-feed" id="wishes-feed">
+        <div class="wish-item">
+          <div class="wish-author"><i class="fa-solid fa-heart" style="color: #e63946;"></i> Bạn bè &amp; Người thân</div>
+          <div class="wish-text">Chúc hai bạn trăm năm hạnh phúc, đầu bạc răng long, luôn ngập tràn yêu thương và tiếng cười!</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="modern-footer">
+      <div class="footer-thankyou">THANK YOU FOR BEING PART OF OUR SPECIAL DAY</div>
+      <div class="footer-names" id="footer-names">HOÀNG NINH &amp; MAI PHƯƠNG</div>
+      <p class="footer-year">&copy; 2026 &bull; Designed with Love</p>
+    </footer>
+
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox-modal" id="lightbox-modal">
+    <button type="button" class="btn-close-lightbox" id="btn-close-lightbox"><i class="fa-solid fa-xmark"></i></button>
+    <img id="lightbox-img" src="" alt="Zoom Photo">
+  </div>
+
+  <!-- Toast -->
+  <div class="modern-toast" id="modern-toast">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="toast-msg">Đã sao chép số tài khoản!</span>
+  </div>
+
+  <!-- Script -->
+  <script src="thiep-hien-dai.js"></script>
+</body>
+
+</html>

@@ -183,6 +183,61 @@
         <!-- ==================== TAB 1: DÂU RỂ & NGÀY CƯỚI ==================== -->
         <div class="tab-pane active" id="tab-names">
           
+          <!-- Chọn Kiểu Dáng Mẫu Thiệp (3 Mẫu Hoàn Toàn Khác Biệt) -->
+          <div class="form-card">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+              <h3 class="form-card-title" style="margin-bottom: 0;">
+                <i class="fa-solid fa-shapes" style="color: var(--accent-gold);"></i> Chọn Kiểu Dáng Mẫu Thiệp Cưới
+              </h3>
+              <span class="badge-hot" style="background: linear-gradient(135deg, #e74c3c, #c0392b); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 12px; letter-spacing: 0.5px;">3 MẪU MỚI</span>
+            </div>
+            <span class="form-hint" style="display: block; margin-bottom: 12px;">Mỗi mẫu có cấu trúc mở màn, chuyển động hoạt họa 3D và bố cục giao diện hoàn toàn khác biệt:</span>
+            
+            <div class="template-layout-grid">
+              <!-- Mẫu 1: Cung Đình Hoàng Gia -->
+              <label class="template-card-option active" data-layout="palace">
+                <input type="radio" name="radio-template-layout" value="palace" checked>
+                <div class="template-card-preview palace-preview">
+                  <span class="tpl-icon"><i class="fa-solid fa-archway"></i></span>
+                  <span class="tpl-tag">Mẫu 1</span>
+                </div>
+                <div class="template-card-body">
+                  <div class="tpl-title">Cung Đình Hoàng Gia</div>
+                  <div class="tpl-desc">Mở cổng hoàng thành đôi uy nghiêm, hoa văn long phụng hoàng tộc Á Đông</div>
+                  <div class="tpl-badge"><i class="fa-solid fa-door-open"></i> Cổng Đôi 3D</div>
+                </div>
+              </label>
+
+              <!-- Mẫu 2: Phong Bì Thư Tình Hiện Đại -->
+              <label class="template-card-option" data-layout="modern">
+                <input type="radio" name="radio-template-layout" value="modern">
+                <div class="template-card-preview modern-preview">
+                  <span class="tpl-icon"><i class="fa-solid fa-envelope-open-text"></i></span>
+                  <span class="tpl-tag">Mẫu 2</span>
+                </div>
+                <div class="template-card-body">
+                  <div class="tpl-title">Phong Bì &amp; Tạp Chí</div>
+                  <div class="tpl-desc">Mở nắp phong bì thư sáp 3D trượt thiệp, phong cách Editorial Châu Âu tối giản</div>
+                  <div class="tpl-badge"><i class="fa-solid fa-envelope"></i> Nắp Bì Thư 3D</div>
+                </div>
+              </label>
+
+              <!-- Mẫu 3: Vườn Hoa Cổ Tích -->
+              <label class="template-card-option" data-layout="garden">
+                <input type="radio" name="radio-template-layout" value="garden">
+                <div class="template-card-preview garden-preview">
+                  <span class="tpl-icon"><i class="fa-solid fa-spa"></i></span>
+                  <span class="tpl-tag">Mẫu 3</span>
+                </div>
+                <div class="template-card-body">
+                  <div class="tpl-title">Vườn Hoa &amp; Kính Mờ</div>
+                  <div class="tpl-desc">Cánh hoa rơi bồng bềnh, thẻ kính Glassmorphism, lịch cưới trăng mật thơ mộng</div>
+                  <div class="tpl-badge"><i class="fa-solid fa-wand-magic-sparkles"></i> Kính Mờ &amp; Hoa Rơi</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
           <!-- Chọn Phong Cách Mẫu Thiệp -->
           <div class="form-card">
             <h3 class="form-card-title"><i class="fa-solid fa-palette" style="color: var(--accent-gold);"></i> Phong Cách &amp; Tông Màu Mẫu Thiệp</h3>
@@ -985,6 +1040,33 @@
               <div>
                 <strong>Bắt đầu mẫu mới hoàn toàn</strong>
                 <span>Khởi tạo mẫu thiệp cưới trống mặc định ban đầu</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label">Chọn kiểu dáng thiết kế:</label>
+          <div class="radio-source-options">
+            <label class="radio-option-card active" id="label-layout-palace">
+              <input type="radio" name="new-inv-layout" value="palace" checked>
+              <div>
+                <strong>🏰 Mẫu 1: Cung Đình Hoàng Gia</strong>
+                <span>Cổng hoàng thành mở đôi 3D uy nghiêm, phong cách cung điện</span>
+              </div>
+            </label>
+            <label class="radio-option-card" id="label-layout-modern">
+              <input type="radio" name="new-inv-layout" value="modern">
+              <div>
+                <strong>💌 Mẫu 2: Phong Bì &amp; Tạp Chí</strong>
+                <span>Nắp phong bì thư sáp 3D trượt thiệp, tạp chí hiện đại tối giản</span>
+              </div>
+            </label>
+            <label class="radio-option-card" id="label-layout-garden">
+              <input type="radio" name="new-inv-layout" value="garden">
+              <div>
+                <strong>🌸 Mẫu 3: Vườn Hoa &amp; Kính Mờ</strong>
+                <span>Cánh hoa rơi bồng bềnh, thẻ kính mờ Glassmorphism thơ mộng</span>
               </div>
             </label>
           </div>

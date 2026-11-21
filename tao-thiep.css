@@ -1207,6 +1207,136 @@ body {
   100% { transform: scale(1); opacity: 1; }
 }
 
+/* Template Layout Grid (3 Mẫu Thiệp Mới) */
+.template-layout-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .template-layout-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.template-card-option {
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  background: #fdfaf6;
+  border: 2px solid var(--border-color);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.template-card-option input[type="radio"] {
+  display: none;
+}
+
+.template-card-option:hover {
+  border-color: var(--accent-gold);
+  background: #fff8eb;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.template-card-option.active {
+  border-color: var(--primary-red);
+  background: #fff6f4;
+  box-shadow: 0 6px 20px rgba(139, 24, 32, 0.15);
+  outline: 2px solid var(--primary-red);
+}
+
+.template-card-preview {
+  height: 80px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 12px;
+  color: #fff;
+}
+
+.template-card-preview.palace-preview {
+  background: linear-gradient(135deg, #851c1d 0%, #b83a3b 100%);
+}
+
+.template-card-preview.modern-preview {
+  background: linear-gradient(135deg, #2b2d42 0%, #4a4e69 100%);
+}
+
+.template-card-preview.garden-preview {
+  background: linear-gradient(135deg, #8c4a5a 0%, #d4a5b2 100%);
+}
+
+.template-card-preview .tpl-icon {
+  font-size: 32px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.template-card-preview .tpl-tag {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.template-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.tpl-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.template-card-option.active .tpl-title {
+  color: var(--primary-red);
+}
+
+.tpl-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.45;
+  margin-bottom: 8px;
+  flex: 1;
+}
+
+.tpl-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  align-self: flex-start;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 12px;
+  background: rgba(197, 155, 76, 0.15);
+  color: #8b6215;
+}
+
+.template-card-option.active .tpl-badge {
+  background: rgba(139, 24, 32, 0.12);
+  color: var(--primary-red);
+}
+
 /* Theme Styles Picker Grid */
 .theme-picker-grid {
   display: grid;

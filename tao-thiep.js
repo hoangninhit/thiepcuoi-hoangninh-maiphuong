@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 1. Dữ liệu mẫu mặc định ban đầu
   const DEFAULT_CONFIG = {
+    templateLayout: 'palace',
     themeStyle: 'royal',
     groomName: 'HOÀNG NINH',
     brideName: 'MAI PHƯƠNG',
@@ -273,7 +274,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function getInvitationShareUrl(cfg, invId) {
-    const baseUrl = window.location.origin + window.location.pathname.replace('tao-thiep.html', 'index.html');
+    let targetHtml = 'index.html';
+    if (cfg && cfg.templateLayout === 'modern') {
+      targetHtml = 'thiep-hien-dai.html';
+    } else if (cfg && cfg.templateLayout === 'garden') {
+      targetHtml = 'thiep-hoa-co.html';
+    }
+    const baseUrl = window.location.origin + window.location.pathname.replace('tao-thiep.html', targetHtml);
     
     let activeId = invId;
     if (!activeId) {
@@ -289,6 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const shareData = {
       invId: activeId,
+      templateLayout: (cfg && cfg.templateLayout) || 'palace',
       groomName: cfg.groomName,
       brideName: cfg.brideName,
       weddingDate: cfg.weddingDate,
@@ -570,8 +578,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Cập nhật URL Iframe xem trước theo mẫu thiệp được chọn
+  function updatePreviewIframeSource(layout) {
+    if (!previewIframe) return;
+    let target = 'index.html?preview=1';
+    if (layout === 'modern') target = 'thiep-hien-dai.html?preview=1';
+    else if (layout === 'garden') target = 'thiep-hoa-co.html?preview=1';
+
+    const currentSrc = previewIframe.getAttribute('src') || '';
+    if (!currentSrc.includes(target.split('?')[0])) {
+      previewIframe.src = target;
+    }
+  }
+
   // 6. Cập nhật giao diện Form theo State
   function populateFormFromConfig(cfg) {
+    // Template Layout
+    const activeLayout = cfg.templateLayout || 'palace';
+    const layoutRadios = document.querySelectorAll('input[name="radio-template-layout"]');
+    layoutRadios.forEach(r => {
+      r.checked = (r.value === activeLayout);
+      const card = r.closest('.template-card-option');
+      if (card) {
+        if (r.value === activeLayout) card.classList.add('active');
+        else card.classList.remove('active');
+      }
+    });
+    updatePreviewIframeSource(activeLayout);
+
     // Theme Style
     const activeTheme = cfg.themeStyle || 'royal';
     const themeRadios = document.querySelectorAll('input[name="radio-theme-style"]');
@@ -754,6 +788,26 @@ document.addEventListener('DOMContentLoaded', () => {
           syncToPreviewAndStore();
         });
       }
+    });
+
+    // Template Layout Radio Change (3 Kiểu Mẫu Thiệp Mới)
+    document.querySelectorAll('input[name="radio-template-layout"]').forEach(r => {
+      r.addEventListener('change', () => {
+        if (r.checked) {
+          currentConfig.templateLayout = r.value;
+          document.querySelectorAll('.template-card-option').forEach(card => card.classList.remove('active'));
+          const parentCard = r.closest('.template-card-option');
+          if (parentCard) parentCard.classList.add('active');
+          updatePreviewIframeSource(r.value);
+          syncToPreviewAndStore();
+          const layoutNames = {
+            palace: 'Cung Đình Hoàng Gia',
+            modern: 'Phong Bì Thư & Tạp Chí',
+            garden: 'Vườn Hoa & Kính Mờ'
+          };
+          showToast(`Đã chuyển sang mẫu: ${layoutNames[r.value] || r.value}!`);
+        }
+      });
     });
 
     // Theme Style Radio Change
@@ -1592,6 +1646,12 @@ document.addEventListener('DOMContentLoaded', () => {
         champagne: '<span class="invitation-theme-tag theme-tag-champagne">🥂 Champagne</span>'
       };
 
+      const layoutTagMap = {
+        palace: '<span class="invitation-theme-tag" style="background: rgba(139, 24, 32, 0.12); color: #8b1820; border: 1px solid rgba(139, 24, 32, 0.25);">🏰 Cung Đình</span>',
+        modern: '<span class="invitation-theme-tag" style="background: rgba(43, 45, 66, 0.12); color: #2b2d42; border: 1px solid rgba(43, 45, 66, 0.25);">💌 Phong Bì Thư</span>',
+        garden: '<span class="invitation-theme-tag" style="background: rgba(140, 74, 90, 0.12); color: #8c4a5a; border: 1px solid rgba(140, 74, 90, 0.25);">🌸 Vườn Hoa</span>'
+      };
+
       let html = '';
       user.invitations.forEach((inv) => {
         const isCurrent = (inv.id === user.activeInvitationId);
@@ -1601,6 +1661,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const timeFormatted = formatTime(inv.updatedAt);
         const theme = (inv.config && inv.config.themeStyle) || 'royal';
         const themeBadge = themeTagMap[theme] || themeTagMap.royal;
+        const layout = (inv.config && inv.config.templateLayout) || 'palace';
+        const layoutBadge = layoutTagMap[layout] || layoutTagMap.palace;
 
         html += `
           <div class="invitation-card-item ${isCurrent ? 'active' : ''}">
@@ -1609,6 +1671,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <div>
                 <div class="invitation-item-title">
                   ${escapeHtml(title)}
+                  ${layoutBadge}
                   ${themeBadge}
                   ${isCurrent ? '<span class="invitation-item-badge"><i class="fa-solid fa-check"></i> Đang sửa</span>' : ''}
                 </div>
@@ -1829,8 +1892,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
+      const activeLayout = currentConfig.templateLayout || 'palace';
+      document.querySelectorAll('input[name="new-inv-layout"]').forEach(r => {
+        r.checked = (r.value === activeLayout);
+        const card = r.closest('.radio-option-card');
+        if (card) {
+          if (r.value === activeLayout) card.classList.add('active');
+          else card.classList.remove('active');
+        }
+      });
+
       if (newInvitationModal) newInvitationModal.classList.add('active');
     }
+
+    document.querySelectorAll('input[name="new-inv-layout"]').forEach(r => {
+      r.addEventListener('change', () => {
+        document.querySelectorAll('input[name="new-inv-layout"]').forEach(other => {
+          const card = other.closest('.radio-option-card');
+          if (card) {
+            if (other.checked) card.classList.add('active');
+            else card.classList.remove('active');
+          }
+        });
+      });
+    });
 
     if (btnCreateNewInvitation) {
       btnCreateNewInvitation.addEventListener('click', () => openNewInvitationModal('new'));
@@ -1865,6 +1950,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const isClone = (radioSourceCurrent && radioSourceCurrent.checked);
         const selectedThemeRadio = document.querySelector('input[name="new-inv-theme"]:checked');
         const selectedTheme = selectedThemeRadio ? selectedThemeRadio.value : (currentConfig.themeStyle || 'royal');
+        const selectedLayoutRadio = document.querySelector('input[name="new-inv-layout"]:checked');
+        const selectedLayout = selectedLayoutRadio ? selectedLayoutRadio.value : (currentConfig.templateLayout || 'palace');
 
         const newId = 'inv_' + Date.now();
         let newConfig;
@@ -1873,11 +1960,13 @@ document.addEventListener('DOMContentLoaded', () => {
           const baseSource = sourceInv ? sourceInv.config : currentConfig;
           newConfig = JSON.parse(JSON.stringify(baseSource));
           newConfig.themeStyle = selectedTheme;
+          newConfig.templateLayout = selectedLayout;
         } else {
           newConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
           newConfig.groomName = user.fullname.toUpperCase();
           newConfig.transferNote = `Mừng cưới ${user.fullname}`;
           newConfig.themeStyle = selectedTheme;
+          newConfig.templateLayout = selectedLayout;
         }
 
         const newInv = {

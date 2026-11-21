@@ -1313,6 +1313,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnLogout) {
       btnLogout.addEventListener('click', () => {
         clearSession();
+        if (userDropdownMenu) userDropdownMenu.classList.remove('show');
         updateAuthUI();
         showToast('Đã đăng xuất tài khoản!');
       });
@@ -1450,9 +1451,9 @@ document.addEventListener('DOMContentLoaded', () => {
               currentConfig = Object.assign({}, DEFAULT_CONFIG, user.invitations[0].config);
               populateFormFromConfig(currentConfig);
               renderGalleryThumbs();
-              syncToPreviewAndStore();
             }
             saveUsersDB(db);
+            syncToPreviewAndStore();
             renderUserInvitations();
             showToast('Đã xóa thiệp cưới!');
           }

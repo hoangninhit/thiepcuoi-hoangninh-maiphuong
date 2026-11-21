@@ -1537,4 +1537,173 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollProgress();
   initScrollAnimations();
 
+  // 16. Dynamic Wedding Data & Live Preview Customizer (Hỗ trợ tùy biến thiệp cưới)
+  function applyCustomWeddingData(cfg) {
+    if (!cfg || typeof cfg !== 'object') return;
+
+    const groom = (cfg.groomName || (cfg.groom && cfg.groom.name) || '').trim();
+    const bride = (cfg.brideName || (cfg.bride && cfg.bride.name) || '').trim();
+
+    // 1. Groom & Bride Names
+    if (groom) {
+      document.querySelectorAll('.hero-names .name-line:first-child').forEach(el => el.textContent = groom.toUpperCase());
+      document.querySelectorAll('.groom-box .person-name').forEach(el => el.textContent = groom);
+    }
+    if (bride) {
+      document.querySelectorAll('.hero-names .name-line:last-child').forEach(el => el.textContent = bride.toUpperCase());
+      document.querySelectorAll('.bride-box .person-name').forEach(el => el.textContent = bride);
+    }
+
+    if (groom && bride) {
+      document.title = `THƯ MỜI CƯỚI ${groom.toUpperCase()} & ${bride.toUpperCase()}`;
+      const palaceBadge = document.querySelector('.palace-top-badge');
+      if (palaceBadge) {
+        palaceBadge.innerHTML = `<i class="fa-solid fa-crown" style="color: #d4af37; margin-right: 6px;"></i> HOÀNG GIA HỶ SỰ &bull; ${escapeHtml(groom.toUpperCase())} &amp; ${escapeHtml(bride.toUpperCase())}`;
+      }
+      const footerCredit = document.querySelector('.footer-credit p');
+      if (footerCredit) {
+        footerCredit.innerHTML = `THƯ MỜI CƯỚI ${escapeHtml(groom.toUpperCase())} &amp; ${escapeHtml(bride.toUpperCase())} &bull; ${escapeHtml(cfg.weddingDate || '2026')}`;
+      }
+    }
+
+    // 2. Wedding Date
+    const dateStr = cfg.weddingDate || (cfg.dates && cfg.dates.weddingDate);
+    if (dateStr) {
+      const heroDateBanner = document.querySelector('.hero-date-banner');
+      if (heroDateBanner) heroDateBanner.textContent = dateStr;
+      const thresholdDate = document.querySelector('.threshold-meta strong');
+      if (thresholdDate) thresholdDate.textContent = dateStr;
+    }
+
+    // 3. Images
+    if (cfg.heroPhoto) {
+      const heroImg = document.querySelector('.hero-photo-wrapper img');
+      if (heroImg) {
+        heroImg.src = cfg.heroPhoto;
+        heroImg.alt = `${groom || 'Chú rể'} & ${bride || 'Cô dâu'}`;
+      }
+    }
+    if (cfg.couplePhoto) {
+      const coupleImg = document.querySelector('.couple-arch-photo img');
+      if (coupleImg) coupleImg.src = cfg.couplePhoto;
+    }
+    if (cfg.footerPhoto) {
+      const footerImg = document.querySelector('.thankyou-photo img');
+      if (footerImg) footerImg.src = cfg.footerPhoto;
+    }
+
+    // 4. Parents & Addresses
+    if (cfg.groomParents) {
+      const gEl = document.querySelector('.family-column:nth-of-type(1) .parent-names');
+      if (gEl) gEl.innerHTML = escapeHtml(cfg.groomParents).replace(/\n/g, '<br>');
+    }
+    if (cfg.groomAddress) {
+      const gAddr = document.querySelector('.family-column:nth-of-type(1) .family-address');
+      if (gAddr) gAddr.innerHTML = `<i class="fa-solid fa-location-dot" style="color: #c59b4c;"></i> ${escapeHtml(cfg.groomAddress)}`;
+    }
+    if (cfg.brideParents) {
+      const bEl = document.querySelector('.family-column:nth-of-type(2) .parent-names');
+      if (bEl) bEl.innerHTML = escapeHtml(cfg.brideParents).replace(/\n/g, '<br>');
+    }
+    if (cfg.brideAddress) {
+      const bAddr = document.querySelector('.family-column:nth-of-type(2) .family-address');
+      if (bAddr) bAddr.innerHTML = `<i class="fa-solid fa-location-dot" style="color: #c59b4c;"></i> ${escapeHtml(cfg.brideAddress)}`;
+    }
+
+    // 5. Events details (if customized)
+    if (cfg.events) {
+      if (cfg.events.bride) {
+        const ev1Time = document.querySelector('.event-card:nth-of-type(1) .event-time');
+        if (ev1Time && cfg.events.bride.time) ev1Time.textContent = cfg.events.bride.time;
+        const ev1Venue = document.querySelector('.event-card:nth-of-type(1) .event-venue-name');
+        if (ev1Venue && cfg.events.bride.venue) ev1Venue.textContent = cfg.events.bride.venue;
+        const ev1Addr = document.querySelector('.event-card:nth-of-type(1) .event-address-text');
+        if (ev1Addr && cfg.events.bride.address) ev1Addr.textContent = cfg.events.bride.address;
+      }
+      if (cfg.events.groom) {
+        const ev2Time = document.querySelector('.event-card:nth-of-type(2) .event-time');
+        if (ev2Time && cfg.events.groom.time) ev2Time.textContent = cfg.events.groom.time;
+        const ev2Venue = document.querySelector('.event-card:nth-of-type(2) .event-venue-name');
+        if (ev2Venue && cfg.events.groom.venue) ev2Venue.textContent = cfg.events.groom.venue;
+        const ev2Addr = document.querySelector('.event-card:nth-of-type(2) .event-address-text');
+        if (ev2Addr && cfg.events.groom.address) ev2Addr.textContent = cfg.events.groom.address;
+      }
+    }
+
+    // 6. Bank Information & QR
+    if (cfg.qrCode) {
+      const qrImg = document.querySelector('.gift-qr-box img');
+      if (qrImg) qrImg.src = cfg.qrCode;
+    }
+    if (cfg.bankName) {
+      const bNameEl = document.querySelector('.bank-row:nth-child(1) .val');
+      if (bNameEl) bNameEl.textContent = cfg.bankName;
+    }
+    if (cfg.accountHolder) {
+      const bHolderEl = document.querySelector('.bank-row:nth-child(2) .val');
+      if (bHolderEl) bHolderEl.textContent = cfg.accountHolder.toUpperCase();
+    }
+    if (cfg.accountNumber) {
+      const bAccEl = document.querySelector('.bank-row:nth-child(3) .val');
+      if (bAccEl) bAccEl.textContent = cfg.accountNumber;
+    }
+    if (cfg.transferNote || (groom && bride)) {
+      const bNoteEl = document.querySelector('.bank-row:nth-child(4) .val');
+      if (bNoteEl) bNoteEl.textContent = cfg.transferNote || `Mừng cưới ${groom} - ${bride}`;
+    }
+
+    // 7. Gallery Images
+    if (Array.isArray(cfg.gallery) && cfg.gallery.length > 0) {
+      const galleryItems = document.querySelectorAll('.gallery-grid .gallery-item img');
+      cfg.gallery.forEach((url, i) => {
+        if (galleryItems[i] && url) {
+          galleryItems[i].src = url;
+        }
+      });
+    }
+  }
+
+  function initCustomWeddingData() {
+    let customData = null;
+
+    // Check URL query param ?cfg=...
+    const urlParams = new URLSearchParams(window.location.search);
+    const cfgParam = urlParams.get('cfg');
+    if (cfgParam) {
+      try {
+        customData = JSON.parse(decodeURIComponent(escape(atob(cfgParam))));
+      } catch (e) {
+        try { customData = JSON.parse(decodeURIComponent(cfgParam)); } catch (err) {}
+      }
+    } else if (window.location.hash.startsWith('#cfg=')) {
+      try {
+        const raw = window.location.hash.substring(5);
+        customData = JSON.parse(decodeURIComponent(escape(atob(raw))));
+      } catch (e) {
+        try { customData = JSON.parse(decodeURIComponent(raw)); } catch (err) {}
+      }
+    }
+
+    // Fallback to localStorage if no URL param
+    if (!customData) {
+      try {
+        const local = localStorage.getItem('wedding_custom_config');
+        if (local) customData = JSON.parse(local);
+      } catch (e) {}
+    }
+
+    if (customData) {
+      applyCustomWeddingData(customData);
+    }
+
+    // Live preview listener from tao-thiep.html iframe
+    window.addEventListener('message', (event) => {
+      if (event.data && event.data.type === 'UPDATE_WEDDING_CONFIG') {
+        applyCustomWeddingData(event.data.config);
+      }
+    });
+  }
+
+  initCustomWeddingData();
+
 });

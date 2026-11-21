@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CÔNG CỤ TẠO &amp; TÙY BIẾN THIỆP CƯỚI HOÀNG GIA</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Builder Stylesheet -->
+  <link rel="stylesheet" href="tao-thiep.css">
+</head>
+
+<body>
+
+  <!-- 1. Header Bar -->
+  <header class="builder-header">
+    <div class="brand-wrap">
+      <div class="brand-icon">
+        <i class="fa-solid fa-crown"></i>
+      </div>
+      <div>
+        <h1 class="brand-title">TẠO THIỆP CƯỚI HOÀNG GIA</h1>
+        <div class="brand-sub">Hệ thống tùy biến tên dâu rể &amp; hình ảnh trực tiếp</div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button type="button" class="btn-header btn-header-secondary" id="btn-reset-default" title="Khôi phục dữ liệu gốc">
+        <i class="fa-solid fa-rotate-left"></i> <span>Mặc Định</span>
+      </button>
+
+      <button type="button" class="btn-header btn-header-secondary" id="btn-import-trigger" title="Nhập cấu hình từ file JSON">
+        <i class="fa-solid fa-file-import"></i> <span>Nhập JSON</span>
+      </button>
+      <input type="file" id="file-import-json" accept=".json" style="display: none;">
+
+      <button type="button" class="btn-header btn-header-secondary" id="btn-export-json" title="Tải file cấu hình JSON về máy">
+        <i class="fa-solid fa-download"></i> <span>Xuất JSON</span>
+      </button>
+
+      <button type="button" class="btn-header btn-header-primary" id="btn-share-link" title="Tạo link chia sẻ gửi bạn bè">
+        <i class="fa-solid fa-share-nodes"></i> <span>Lấy Link Thiệp</span>
+      </button>
+
+      <a href="index.html" target="_blank" class="btn-header btn-header-primary" id="btn-open-fullscreen" title="Mở xem toàn màn hình thiệp cưới trong tab mới">
+        <i class="fa-solid fa-up-right-from-square"></i> <span>Xem Full</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- 2. Main Builder Workspace -->
+  <main class="builder-workspace">
+
+    <!-- Left Column: Editor Controls -->
+    <section class="editor-panel">
+      <!-- Tabs Navigation -->
+      <nav class="tab-nav">
+        <button type="button" class="tab-btn active" data-tab="tab-names">
+          <i class="fa-solid fa-user-group"></i> Dâu Rể &amp; Ngày Cưới
+        </button>
+        <button type="button" class="tab-btn" data-tab="tab-images">
+          <i class="fa-solid fa-images"></i> Hình Ảnh &amp; Album
+        </button>
+        <button type="button" class="tab-btn" data-tab="tab-family">
+          <i class="fa-solid fa-house-chimney-window"></i> Hai Gia Đình
+        </button>
+        <button type="button" class="tab-btn" data-tab="tab-events">
+          <i class="fa-solid fa-calendar-check"></i> Tiệc Cưới
+        </button>
+        <button type="button" class="tab-btn" data-tab="tab-bank">
+          <i class="fa-solid fa-qrcode"></i> Mừng Cưới &amp; QR
+        </button>
+      </nav>
+
+      <!-- Tabs Content Form -->
+      <div class="tab-content">
+
+        <!-- ==================== TAB 1: DÂU RỂ & NGÀY CƯỚI ==================== -->
+        <div class="tab-pane active" id="tab-names">
+          <div class="form-card">
+            <h3 class="form-card-title"><i class="fa-solid fa-heart" style="color: var(--accent-gold);"></i> Tên Cô Dâu &amp; Chú Rể</h3>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="inp-groom-name">Tên Chú Rể (IN HOA): *</label>
+                <input type="text" id="inp-groom-name" class="form-input" placeholder="Ví dụ: HOÀNG NINH" value="HOÀNG NINH">
+                <span class="form-hint">Hiển thị ở trang bìa, cổng cung đình, chân trang</span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="inp-bride-name">Tên Cô Dâu (IN HOA): *</label>
+                <input type="text" id="inp-bride-name" class="form-input" placeholder="Ví dụ: MAI PHƯƠNG" value="MAI PHƯƠNG">
+                <span class="form-hint">Hiển thị ở trang bìa, cổng cung đình, chân trang</span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="inp-wedding-date">Ngày Đại Hỷ (Dương lịch): *</label>
+                <input type="text" id="inp-wedding-date" class="form-input" placeholder="Ví dụ: 18 . 12 . 2026" value="18 . 12 . 2026">
+                <span class="form-hint">Hiển thị nổi bật ở biểu ngữ Hero Banner</span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="inp-lunar-date">Ngày Âm Lịch (Tùy chọn):</label>
+                <input type="text" id="inp-lunar-date" class="form-input" placeholder="Ví dụ: 10 tháng 11 năm Bính Ngọ" value="10 tháng 11 năm Bính Ngọ">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== TAB 2: HÌNH ẢNH & ALBUM ==================== -->
+        <div class="tab-pane" id="tab-images">
+          
+          <!-- 1. Ảnh Bìa Chính (Hero Photo) -->
+          <div class="image-upload-card">
+            <div class="upload-header">
+              <div class="upload-title">
+                <i class="fa-solid fa-image" style="color: var(--accent-gold);"></i> 1. Ảnh Bìa Chính (Hero Photo)
+              </div>
+              <span class="form-hint">Ảnh đứng dọc (Tỉ lệ 3:4 hoặc 4:5 đẹp nhất)</span>
+            </div>
+
+            <div class="upload-preview-box">
+              <div class="preview-thumb" id="thumb-box-hero">
+                <img id="img-preview-hero" src="image/chinh.jpg" alt="Hero Preview">
+              </div>
+
+              <div class="upload-controls">
+                <div class="upload-btn-row">
+                  <label class="btn-upload-file">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Tải ảnh từ máy
+                    <input type="file" id="file-hero-photo" accept="image/*">
+                  </label>
+                  <button type="button" class="btn-default-photo" data-restore="hero">
+                    <i class="fa-solid fa-wand-magic"></i> Dùng ảnh mẫu
+                  </button>
+                </div>
+                <div class="form-group">
+                  <input type="text" id="inp-url-hero" class="form-input" placeholder="Hoặc dán URL link ảnh online tại đây..." value="image/chinh.jpg">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Ảnh Đôi Uyên Ương (Couple Portrait) -->
+          <div class="image-upload-card">
+            <div class="upload-header">
+              <div class="upload-title">
+                <i class="fa-solid fa-user-astronaut" style="color: var(--accent-gold);"></i> 2. Ảnh Đôi Uyên Ương (Mục Lời Báo Tin)
+              </div>
+              <span class="form-hint">Khung vòm cung điện sang trọng</span>
+            </div>
+
+            <div class="upload-preview-box">
+              <div class="preview-thumb" id="thumb-box-couple">
+                <img id="img-preview-couple" src="image/188A6221.JPG" alt="Couple Preview">
+              </div>
+
+              <div class="upload-controls">
+                <div class="upload-btn-row">
+                  <label class="btn-upload-file">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Tải ảnh từ máy
+                    <input type="file" id="file-couple-photo" accept="image/*">
+                  </label>
+                  <button type="button" class="btn-default-photo" data-restore="couple">
+                    <i class="fa-solid fa-wand-magic"></i> Dùng ảnh mẫu
+                  </button>
+                </div>
+                <div class="form-group">
+                  <input type="text" id="inp-url-couple" class="form-input" placeholder="Hoặc dán URL link ảnh online tại đây..." value="image/188A6221.JPG">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Ảnh Mã QR Mừng Cưới (Bank QR Code) -->
+          <div class="image-upload-card">
+            <div class="upload-header">
+              <div class="upload-title">
+                <i class="fa-solid fa-qrcode" style="color: var(--accent-gold);"></i> 3. Ảnh Mã QR Mừng Cưới
+              </div>
+              <span class="form-hint">Mã QR ngân hàng để khách quét mừng cưới</span>
+            </div>
+
+            <div class="upload-preview-box">
+              <div class="preview-thumb square" id="thumb-box-qr">
+                <img id="img-preview-qr" src="image/qr_acb.svg" alt="QR Preview">
+              </div>
+
+              <div class="upload-controls">
+                <div class="upload-btn-row">
+                  <label class="btn-upload-file">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Tải ảnh QR từ máy
+                    <input type="file" id="file-qr-photo" accept="image/*">
+                  </label>
+                  <button type="button" class="btn-default-photo" data-restore="qr">
+                    <i class="fa-solid fa-wand-magic"></i> Dùng QR mẫu
+                  </button>
+                </div>
+                <div class="form-group">
+                  <input type="text" id="inp-url-qr" class="form-input" placeholder="Hoặc dán URL ảnh mã QR..." value="image/qr_acb.svg">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Album Ảnh Cưới (Gallery Images) -->
+          <div class="image-upload-card">
+            <div class="upload-header">
+              <div class="upload-title">
+                <i class="fa-solid fa-photo-film" style="color: var(--accent-gold);"></i> 4. Album Ảnh Cưới (Gallery)
+              </div>
+              <span class="form-hint" id="gallery-count-text">16 ảnh trong album</span>
+            </div>
+
+            <div class="upload-btn-row">
+              <label class="btn-upload-file">
+                <i class="fa-solid fa-plus"></i> Thêm ảnh vào Album (Chọn nhiều ảnh)
+                <input type="file" id="file-gallery-multi" accept="image/*" multiple>
+              </label>
+              <button type="button" class="btn-default-photo" id="btn-restore-gallery">
+                <i class="fa-solid fa-images"></i> Khôi phục Album Mẫu
+              </button>
+              <button type="button" class="btn-remove-photo" id="btn-clear-gallery">
+                <i class="fa-solid fa-trash-can"></i> Xóa Hết Ảnh
+              </button>
+            </div>
+
+            <div class="gallery-thumbs-grid" id="gallery-thumbs-container">
+              <!-- Dynamically populated thumbnails -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ==================== TAB 3: HAI GIA ĐÌNH ==================== -->
+        <div class="tab-pane" id="tab-family">
+          <div class="form-card">
+            <h3 class="form-card-title"><i class="fa-solid fa-house" style="color: var(--accent-gold);"></i> Nhà Trai (Gia Đình Chú Rể)</h3>
+            <div class="form-row single">
+              <div class="form-group">
+                <label class="form-label" for="inp-groom-parents">Họ Tên Thân Phụ &amp; Thân Mẫu Nhà Trai:</label>
+                <textarea id="inp-groom-parents" class="form-textarea" placeholder="ÔNG HOÀNG VĂN HIỂN&#10;BÀ NGUYỄN THỊ HÀ">ÔNG HOÀNG VĂN HIỂN&#10;BÀ NGUYỄN THỊ HÀ</textarea>
+              </div>
+            </div>
+            <div class="form-row single">
+              <div class="form-group">
+                <label class="form-label" for="inp-groom-address">Địa Chỉ Nhà Trai:</label>
+                <input type="text" id="inp-groom-address" class="form-input" placeholder="Quận 12, TP. Hồ Chí Minh" value="Quận 12, TP. Hồ Chí Minh">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-card">
+            <h3 class="form-card-title"><i class="fa-solid fa-house" style="color: var(--accent-gold);"></i> Nhà Gái (Gia Đình Cô Dâu)</h3>
+            <div class="form-row single">
+              <div class="form-group">
+                <label class="form-label" for="inp-bride-parents">Họ Tên Thân Phụ &amp; Thân Mẫu Nhà Gái:</label>
+                <textarea id="inp-bride-parents" class="form-textarea" placeholder="ÔNG NGÔ VĂN CỔN&#10;BÀ NGUYỄN THỊ BÌNH">ÔNG NGÔ VĂN CỔN&#10;BÀ NGUYỄN THỊ BÌNH</textarea>
+              </div>
+            </div>
+            <div class="form-row single">
+              <div class="form-group">
+                <label class="form-label" for="inp-bride-address">Địa Chỉ Nhà Gái:</label>
+                <input type="text" id="inp-bride-address" class="form-input" placeholder="Xã Bà Điểm, TP. Hồ Chí Minh" value="Xã Bà Điểm, TP. Hồ Chí Minh">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== TAB 4: LỊCH TRÌNH TIỆC CƯỚI ==================== -->
+        <div class="tab-pane" id="tab-events">
+          <div class="form-card">
+            <h3 class="form-card-title"><i class="fa-solid fa-cake-candles" style="color: var(--accent-gold);"></i> Tiệc Cưới 1 (Nhà Gái / Lễ Vu Quy)</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="inp-ev1-time">Giờ &amp; Thứ:</label>
+                <input type="text" id="inp-ev1-time" class="form-input" value="09:00 - Thứ Bảy">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="inp-ev1-venue">Tên Địa Điểm / Nhà Hàng:</label>
+                <input type="text" id="inp-ev1-venue" class="form-input" value="TƯ GIA NHÀ GÁI">
+              </div>
+            </div>
+            <div class="form-row single">
+              <div class="form-group">
+                <label class="form-label" for="inp-ev1-address">Địa Chỉ Chi Tiết:</label>
+                <input type="text" id="inp-ev1-address" class="form-input" value="Xã Bà Điểm, TP. Hồ Chí Minh">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-card">
+            <h3 class="form-card-title"><i class="fa-solid fa-champagne-glasses" style="color: var(--accent-gold);"></i> Tiệc Cưới 2 (Nhà Trai / Lễ Thành Hôn)</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="inp-ev2-time">Giờ &amp; Thứ:</label>
+                <input type="text" id="inp-ev2-time" class="form-input" value="11:00 - Chủ Nhật">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="inp-ev2-venue">Tên Địa Điểm / Trung Tâm Tiệc Cưới:</label>
+                <input type="text" id="inp-ev2-venue" class="form-input" value="TRUNG TÂM HỘI NGHỊ TIỆC CƯỚI ROYAL PALACE">
+              </div>
+            </div>
+            <div class="form-row single">
+              <div class="form-group">
+                <label class="form-label" for="inp-ev2-address">Địa Chỉ Chi Tiết:</label>
+                <input type="text" id="inp-ev2-address" class="form-input" value="Quận 12, TP. Hồ Chí Minh">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== TAB 5: MỪNG CƯỚI & NGÂN HÀNG ==================== -->
+        <div class="tab-pane" id="tab-bank">
+          <div class="form-card">
+            <h3 class="form-card-title"><i class="fa-solid fa-credit-card" style="color: var(--accent-gold);"></i> Thông Tin Tài Khoản Mừng Cưới</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="inp-bank-name">Ngân Hàng:</label>
+                <input type="text" id="inp-bank-name" class="form-input" placeholder="Ví dụ: ACB (Á Châu)" value="ACB (Á Châu)">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="inp-account-number">Số Tài Khoản:</label>
+                <input type="text" id="inp-account-number" class="form-input" placeholder="Ví dụ: 873588" value="873588">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="inp-account-holder">Tên Chủ Tài Khoản (IN HOA):</label>
+                <input type="text" id="inp-account-holder" class="form-input" placeholder="Ví dụ: HOANG VAN NINH" value="HOANG VAN NINH">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="inp-transfer-note">Nội Dung Chuyển Khoản Gợi Ý:</label>
+                <input type="text" id="inp-transfer-note" class="form-input" placeholder="Ví dụ: Mừng cưới Hoàng Ninh - Mai Phương" value="Mừng cưới Hoàng Ninh - Mai Phương">
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Right Column: Live Phone Mockup Preview -->
+    <section class="preview-panel">
+      <!-- Preview Control Toolbar -->
+      <div class="preview-toolbar">
+        <span class="preview-toolbar-title">
+          <i class="fa-solid fa-mobile-screen"></i> Xem Trước Live
+        </span>
+        <button type="button" class="preview-size-btn active" data-size="mobile">iPhone</button>
+        <button type="button" class="preview-size-btn" data-size="tablet">Màn Lớn</button>
+        <button type="button" class="btn-preview-refresh" id="btn-refresh-preview" title="Tải lại bản xem trước">
+          <i class="fa-solid fa-rotate-right"></i>
+        </button>
+      </div>
+
+      <!-- Smartphone Mockup -->
+      <div class="phone-mockup-frame" id="phone-frame">
+        <!-- Top Status Bar -->
+        <div class="phone-notch-bar">
+          <span>9:41</span>
+          <div class="phone-dynamic-island"></div>
+          <span><i class="fa-solid fa-wifi"></i> <i class="fa-solid fa-battery-full"></i></span>
+        </div>
+
+        <!-- Live Iframe -->
+        <div class="phone-iframe-wrap">
+          <iframe id="preview-iframe" class="phone-iframe" src="index.html" title="Xem trước thiệp cưới"></iframe>
+        </div>
+
+        <!-- Bottom Home Bar -->
+        <div class="phone-bottom-bar">
+          <div class="phone-home-pill"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 3. Share Link Modal -->
+  <div class="modal-overlay" id="share-modal">
+    <div class="modal-card">
+      <button type="button" class="modal-close" id="btn-close-modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <h3 class="modal-title"><i class="fa-solid fa-link" style="color: var(--accent-gold);"></i> Link Thiệp Cưới Của Bạn Đã Sẵn Sàng!</h3>
+      <p class="modal-desc">
+        Đường link dưới đây chứa toàn bộ tên cô dâu, chú rể và hình ảnh bạn vừa tùy biến. Bất kỳ ai mở link này đều sẽ thấy đúng thông tin bạn vừa tạo mà không cần cài đặt gì thêm!
+      </p>
+
+      <div class="share-link-box" id="share-link-text">
+        <!-- Generated link text -->
+      </div>
+
+      <div style="display: flex; gap: 10px;">
+        <button type="button" class="btn-header btn-header-primary" id="btn-copy-share-link" style="flex: 1; justify-content: center; padding: 12px;">
+          <i class="fa-regular fa-copy"></i> Sao Chép Đường Link
+        </button>
+        <a href="#" target="_blank" class="btn-header btn-header-secondary" id="btn-test-share-link" style="padding: 12px 18px;">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Mở Thử
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notice -->
+  <div class="toast-notice" id="toast-notice">
+    <i class="fa-solid fa-circle-check" style="color: #4cd964;"></i>
+    <span id="toast-text">Đã cập nhật thiệp cưới!</span>
+  </div>
+
+  <!-- Builder Script -->
+  <script src="tao-thiep.js"></script>
+</body>
+
+</html>

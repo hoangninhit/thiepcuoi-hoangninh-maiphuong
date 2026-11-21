@@ -1564,6 +1564,15 @@ document.addEventListener('DOMContentLoaded', () => {
       if (footerCredit) {
         footerCredit.innerHTML = `THƯ MỜI CƯỚI ${escapeHtml(groom.toUpperCase())} &amp; ${escapeHtml(bride.toUpperCase())} &bull; ${escapeHtml(cfg.weddingDate || '2026')}`;
       }
+      // Dynamic Monogram on center wax seal
+      const monogramEl = document.querySelector('.lock-monogram');
+      if (monogramEl) {
+        const gWords = groom.split(/\s+/);
+        const bWords = bride.split(/\s+/);
+        const gInitial = (gWords[gWords.length - 1] || groom)[0] || 'N';
+        const bInitial = (bWords[bWords.length - 1] || bride)[0] || 'P';
+        monogramEl.innerHTML = `${gInitial.toUpperCase()} &bull; ${bInitial.toUpperCase()}`;
+      }
     }
 
     // 2. Wedding Date
@@ -1661,10 +1670,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     }
+
+    // 8. Custom Background Music
+    if (cfg.bgMusicUrl) {
+      const audioEl = document.getElementById('wedding-audio');
+      if (audioEl) {
+        const sourceEl = audioEl.querySelector('source');
+        if (sourceEl && sourceEl.src !== cfg.bgMusicUrl) {
+          sourceEl.src = cfg.bgMusicUrl;
+          audioEl.load();
+        }
+      }
+    }
   }
 
   function initCustomWeddingData() {
     let customData = null;
+
+    // 0. Check standalone embedded config (if exported as standalone HTML)
+    if (window.EMBEDDED_WEDDING_CONFIG && typeof window.EMBEDDED_WEDDING_CONFIG === 'object') {
+      customData = window.EMBEDDED_WEDDING_CONFIG;
+    }
 
     // Check URL query param ?cfg=...
     const urlParams = new URLSearchParams(window.location.search);
@@ -1696,10 +1722,32 @@ document.addEventListener('DOMContentLoaded', () => {
       applyCustomWeddingData(customData);
     }
 
-    // Live preview listener from tao-thiep.html iframe
+    // Auto-open gate when in preview mode (?preview=1 or ?skipIntro=1)
+    if (urlParams.get('preview') === '1' || urlParams.get('skipIntro') === '1') {
+      setTimeout(() => {
+        skipIntroDirectly();
+      }, 150);
+    }
+
+    // Live preview listeners from tao-thiep.html iframe
     window.addEventListener('message', (event) => {
-      if (event.data && event.data.type === 'UPDATE_WEDDING_CONFIG') {
+      if (!event.data) return;
+      if (event.data.type === 'UPDATE_WEDDING_CONFIG') {
         applyCustomWeddingData(event.data.config);
+      } else if (event.data.type === 'OPEN_GATE') {
+        triggerOpenPalaceGate();
+      } else if (event.data.type === 'SKIP_INTRO') {
+        skipIntroDirectly();
+      } else if (event.data.type === 'SCROLL_TO_SECTION' && event.data.sectionId) {
+        if (!hasOpened) skipIntroDirectly();
+        const sec = document.getElementById(event.data.sectionId);
+        if (sec) {
+          sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      } else if (event.data.type === 'OPEN_GIFT_MODAL') {
+        if (!hasOpened) skipIntroDirectly();
+        const giftModal = document.getElementById('gift-modal');
+        if (giftModal) giftModal.classList.add('active');
       }
     });
   }

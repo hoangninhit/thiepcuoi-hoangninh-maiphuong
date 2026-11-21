@@ -48,6 +48,10 @@
         <i class="fa-solid fa-download"></i> <span>Xuất JSON</span>
       </button>
 
+      <button type="button" class="btn-header btn-header-secondary" id="btn-export-html" title="Tải file website HTML thiệp cưới độc lập">
+        <i class="fa-solid fa-file-code"></i> <span>Tải File Web</span>
+      </button>
+
       <button type="button" class="btn-header btn-header-primary" id="btn-share-link" title="Tạo link chia sẻ gửi bạn bè">
         <i class="fa-solid fa-share-nodes"></i> <span>Lấy Link Thiệp</span>
       </button>
@@ -114,6 +118,20 @@
               <div class="form-group">
                 <label class="form-label" for="inp-lunar-date">Ngày Âm Lịch (Tùy chọn):</label>
                 <input type="text" id="inp-lunar-date" class="form-input" placeholder="Ví dụ: 10 tháng 11 năm Bính Ngọ" value="10 tháng 11 năm Bính Ngọ">
+              </div>
+            </div>
+
+            <div class="form-row single" style="margin-top: 6px;">
+              <div class="form-group">
+                <label class="form-label" for="sel-bg-music"><i class="fa-solid fa-music" style="color: var(--accent-gold);"></i> Nhạc Nền Thiệp Cưới:</label>
+                <select id="sel-bg-music" class="form-select">
+                  <option value="https://statics.pancake.vn/web-media/5e/ee/bf/4a/afa10d3bdf98ca17ec3191ebbfd3c829d135d06939ee1f1b712d731d-w:0-h:0-l:2938934-t:audio/mpeg.mp3">1. Nhạc Cưới Acoustic Lãng Mạn (Mặc định)</option>
+                  <option value="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=wedding-piano-112191.mp3">2. Wedding Piano Sweet Melody (Dịu dàng &amp; Sâu lắng)</option>
+                  <option value="https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f77c30.mp3?filename=romantic-wedding-love-123497.mp3">3. Romantic Love &amp; Symphony (Trang trọng)</option>
+                  <option value="https://cdn.pixabay.com/download/audio/2021/08/08/audio_88447e70b7.mp3?filename=inspiring-cinematic-wedding-11634.mp3">4. Cinematic Royal Wedding (Cung đình hoàng gia)</option>
+                  <option value="custom">5. Nhập link file nhạc MP3 trực tuyến khác...</option>
+                </select>
+                <input type="text" id="inp-custom-music" class="form-input" placeholder="Dán đường link file nhạc MP3 (https://...) tại đây..." style="display: none; margin-top: 8px;">
               </div>
             </div>
           </div>
@@ -326,25 +344,56 @@
         <div class="tab-pane" id="tab-bank">
           <div class="form-card">
             <h3 class="form-card-title"><i class="fa-solid fa-credit-card" style="color: var(--accent-gold);"></i> Thông Tin Tài Khoản Mừng Cưới</h3>
+            
             <div class="form-row">
               <div class="form-group">
-                <label class="form-label" for="inp-bank-name">Ngân Hàng:</label>
+                <label class="form-label" for="sel-bank-code">Ngân Hàng (Tạo VietQR Tự Động):</label>
+                <select id="sel-bank-code" class="form-select">
+                  <option value="ACB">ACB - Ngân hàng Á Châu</option>
+                  <option value="VCB">Vietcombank - Ngoại Thương Việt Nam</option>
+                  <option value="MB">MB Bank - Ngân hàng Quân Đội</option>
+                  <option value="TCB">Techcombank - Kỹ Thương Việt Nam</option>
+                  <option value="CTG">VietinBank - Công Thương Việt Nam</option>
+                  <option value="BIDV">BIDV - Đầu tư &amp; Phát triển</option>
+                  <option value="VPB">VPBank - Việt Nam Thịnh Vượng</option>
+                  <option value="TPB">TPBank - Tiên Phong</option>
+                  <option value="VIB">VIB - Quốc Tế</option>
+                  <option value="STB">Sacombank - Sài Gòn Thương Tín</option>
+                  <option value="HDB">HDBank - Phát triển TP.HCM</option>
+                  <option value="OCB">OCB - Phương Đông</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="inp-bank-name">Tên Ngân Hàng Hiển Thị:</label>
                 <input type="text" id="inp-bank-name" class="form-input" placeholder="Ví dụ: ACB (Á Châu)" value="ACB (Á Châu)">
               </div>
-              <div class="form-group">
-                <label class="form-label" for="inp-account-number">Số Tài Khoản:</label>
-                <input type="text" id="inp-account-number" class="form-input" placeholder="Ví dụ: 873588" value="873588">
-              </div>
             </div>
+
             <div class="form-row">
               <div class="form-group">
-                <label class="form-label" for="inp-account-holder">Tên Chủ Tài Khoản (IN HOA):</label>
+                <label class="form-label" for="inp-account-number">Số Tài Khoản: *</label>
+                <input type="text" id="inp-account-number" class="form-input" placeholder="Ví dụ: 873588" value="873588">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="inp-account-holder">Tên Chủ Tài Khoản (IN HOA): *</label>
                 <input type="text" id="inp-account-holder" class="form-input" placeholder="Ví dụ: HOANG VAN NINH" value="HOANG VAN NINH">
               </div>
+            </div>
+
+            <div class="form-row single">
               <div class="form-group">
-                <label class="form-label" for="inp-transfer-note">Nội Dung Chuyển Khoản Gợi Ý:</label>
+                <label class="form-label" for="inp-transfer-note">Nội Dung Chuyển Khoản Mặc Định:</label>
                 <input type="text" id="inp-transfer-note" class="form-input" placeholder="Ví dụ: Mừng cưới Hoàng Ninh - Mai Phương" value="Mừng cưới Hoàng Ninh - Mai Phương">
               </div>
+            </div>
+
+            <div style="margin-top: 10px;">
+              <button type="button" class="btn-header btn-header-primary" id="btn-generate-vietqr" style="width: 100%; justify-content: center; padding: 11px;">
+                <i class="fa-solid fa-bolt"></i> Tự Động Tạo Mã VietQR Cho Tài Khoản Này
+              </button>
+              <span class="form-hint" style="display: block; text-align: center; margin-top: 6px;">Hệ thống sẽ sinh mã QR chuẩn liên ngân hàng NAPAS kèm sẵn số tài khoản &amp; tên chủ thẻ</span>
             </div>
           </div>
         </div>
@@ -361,6 +410,9 @@
         </span>
         <button type="button" class="preview-size-btn active" data-size="mobile">iPhone</button>
         <button type="button" class="preview-size-btn" data-size="tablet">Màn Lớn</button>
+        <button type="button" class="preview-size-btn" id="btn-toggle-preview-gate" title="Mở cổng cung đình vào thẳng nội dung">
+          <i class="fa-solid fa-door-open"></i> Mở Cổng
+        </button>
         <button type="button" class="btn-preview-refresh" id="btn-refresh-preview" title="Tải lại bản xem trước">
           <i class="fa-solid fa-rotate-right"></i>
         </button>
@@ -375,9 +427,9 @@
           <span><i class="fa-solid fa-wifi"></i> <i class="fa-solid fa-battery-full"></i></span>
         </div>
 
-        <!-- Live Iframe -->
+        <!-- Live Iframe (Mặc định mở sẵn nội dung thiệp để xem tức thì) -->
         <div class="phone-iframe-wrap">
-          <iframe id="preview-iframe" class="phone-iframe" src="index.html" title="Xem trước thiệp cưới"></iframe>
+          <iframe id="preview-iframe" class="phone-iframe" src="index.html?preview=1" title="Xem trước thiệp cưới"></iframe>
         </div>
 
         <!-- Bottom Home Bar -->

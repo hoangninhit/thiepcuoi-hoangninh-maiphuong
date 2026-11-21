@@ -1,11 +1,11 @@
 /**
  * CÔNG CỤ TẠO & TÙY BIẾN THIỆP CƯỚI HOÀNG GIA (TAO-THIEP.JS)
- * Quản lý trạng thái, nén ảnh HTML5 Canvas, gửi postMessage thời gian thực tới Iframe
+ * Quản lý trạng thái, nén ảnh HTML5 Canvas, VietQR tự động, Real-time Live Preview
  */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // 1. Dữ liệu mặc định ban đầu (Hoàng Ninh & Mai Phương)
+  // 1. Dữ liệu mẫu mặc định ban đầu
   const DEFAULT_CONFIG = {
     groomName: 'HOÀNG NINH',
     brideName: 'MAI PHƯƠNG',
@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     heroPhoto: 'image/chinh.jpg',
     couplePhoto: 'image/188A6221.JPG',
     qrCode: 'image/qr_acb.svg',
+    bgMusicUrl: 'https://statics.pancake.vn/web-media/5e/ee/bf/4a/afa10d3bdf98ca17ec3191ebbfd3c829d135d06939ee1f1b712d731d-w:0-h:0-l:2938934-t:audio/mpeg.mp3',
     groomParents: 'ÔNG HOÀNG VĂN HIỂN\nBÀ NGUYỄN THỊ HÀ',
     groomAddress: 'Quận 12, TP. Hồ Chí Minh',
     brideParents: 'ÔNG NGÔ VĂN CỔN\nBÀ NGUYỄN THỊ BÌNH',
@@ -54,6 +55,21 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
   };
 
+  const BANK_NAMES = {
+    ACB: 'ACB (Á Châu)',
+    VCB: 'Vietcombank',
+    MB: 'MB Bank',
+    TCB: 'Techcombank',
+    CTG: 'VietinBank',
+    BIDV: 'BIDV',
+    VPB: 'VPBank',
+    TPB: 'TPBank',
+    VIB: 'VIB',
+    STB: 'Sacombank',
+    HDB: 'HDBank',
+    OCB: 'OCB'
+  };
+
   // State hiện tại (được tải từ localStorage nếu đã lưu trước đó)
   let currentConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
   try {
@@ -79,6 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const inpBrideName = document.getElementById('inp-bride-name');
   const inpWeddingDate = document.getElementById('inp-wedding-date');
   const inpLunarDate = document.getElementById('inp-lunar-date');
+  const selBgMusic = document.getElementById('sel-bg-music');
+  const inpCustomMusic = document.getElementById('inp-custom-music');
 
   // Photos elements
   const imgPreviewHero = document.getElementById('img-preview-hero');
@@ -113,11 +131,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const inpEv2Venue = document.getElementById('inp-ev2-venue');
   const inpEv2Address = document.getElementById('inp-ev2-address');
 
-  // Bank elements
+  // Bank & VietQR elements
+  const selBankCode = document.getElementById('sel-bank-code');
   const inpBankName = document.getElementById('inp-bank-name');
   const inpAccountNumber = document.getElementById('inp-account-number');
   const inpAccountHolder = document.getElementById('inp-account-holder');
   const inpTransferNote = document.getElementById('inp-transfer-note');
+  const btnGenerateVietQr = document.getElementById('btn-generate-vietqr');
 
   // Modal elements
   const shareModal = document.getElementById('share-modal');
@@ -140,9 +160,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 4. Tab Switching
+  // 4. Tab Switching & Tab-Based Auto-Scroll in Preview
   const tabBtns = document.querySelectorAll('.tab-btn');
   const tabPanes = document.querySelectorAll('.tab-pane');
+  const tabSectionMap = {
+    'tab-names': 'section-hero',
+    'tab-images': 'section-gallery',
+    'tab-family': 'section-families',
+    'tab-events': 'section-events',
+    'tab-bank': 'section-thankyou'
+  };
+
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetId = btn.getAttribute('data-tab');
@@ -151,6 +179,16 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.classList.add('active');
       const targetPane = document.getElementById(targetId);
       if (targetPane) targetPane.classList.add('active');
+
+      // Tự động cuộn khung xem trước điện thoại tới đúng mục đang chỉnh sửa
+      const targetSec = tabSectionMap[targetId];
+      if (targetSec && previewIframe && previewIframe.contentWindow) {
+        if (targetId === 'tab-bank') {
+          previewIframe.contentWindow.postMessage({ type: 'OPEN_GIFT_MODAL' }, '*');
+        } else {
+          previewIframe.contentWindow.postMessage({ type: 'SCROLL_TO_SECTION', sectionId: targetSec }, '*');
+        }
+      }
     });
   });
 
@@ -202,15 +240,30 @@ document.addEventListener('DOMContentLoaded', () => {
     if (inpWeddingDate) inpWeddingDate.value = cfg.weddingDate || '';
     if (inpLunarDate) inpLunarDate.value = cfg.lunarDate || '';
 
+    // Music
+    if (selBgMusic) {
+      const foundOpt = Array.from(selBgMusic.options).find(opt => opt.value === cfg.bgMusicUrl);
+      if (foundOpt) {
+        selBgMusic.value = cfg.bgMusicUrl;
+        if (inpCustomMusic) inpCustomMusic.style.display = 'none';
+      } else if (cfg.bgMusicUrl) {
+        selBgMusic.value = 'custom';
+        if (inpCustomMusic) {
+          inpCustomMusic.style.display = 'block';
+          inpCustomMusic.value = cfg.bgMusicUrl;
+        }
+      }
+    }
+
     // Photos
     if (imgPreviewHero) imgPreviewHero.src = cfg.heroPhoto || DEFAULT_CONFIG.heroPhoto;
-    if (inpUrlHero) inpUrlHero.value = cfg.heroPhoto || '';
+    if (inpUrlHero) inpUrlHero.value = (cfg.heroPhoto && !cfg.heroPhoto.startsWith('data:')) ? cfg.heroPhoto : '';
 
     if (imgPreviewCouple) imgPreviewCouple.src = cfg.couplePhoto || DEFAULT_CONFIG.couplePhoto;
-    if (inpUrlCouple) inpUrlCouple.value = cfg.couplePhoto || '';
+    if (inpUrlCouple) inpUrlCouple.value = (cfg.couplePhoto && !cfg.couplePhoto.startsWith('data:')) ? cfg.couplePhoto : '';
 
     if (imgPreviewQr) imgPreviewQr.src = cfg.qrCode || DEFAULT_CONFIG.qrCode;
-    if (inpUrlQr) inpUrlQr.value = cfg.qrCode || '';
+    if (inpUrlQr) inpUrlQr.value = (cfg.qrCode && !cfg.qrCode.startsWith('data:')) ? cfg.qrCode : '';
 
     // Family
     if (inpGroomParents) inpGroomParents.value = cfg.groomParents || '';
@@ -347,6 +400,65 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
     });
+
+    // Music Selector
+    if (selBgMusic) {
+      selBgMusic.addEventListener('change', () => {
+        if (selBgMusic.value === 'custom') {
+          if (inpCustomMusic) inpCustomMusic.style.display = 'block';
+        } else {
+          if (inpCustomMusic) inpCustomMusic.style.display = 'none';
+          currentConfig.bgMusicUrl = selBgMusic.value;
+          syncToPreviewAndStore();
+          showToast('Đã đổi bài hát nền!');
+        }
+      });
+    }
+
+    if (inpCustomMusic) {
+      inpCustomMusic.addEventListener('input', () => {
+        const val = inpCustomMusic.value.trim();
+        if (val) {
+          currentConfig.bgMusicUrl = val;
+          syncToPreviewAndStore();
+        }
+      });
+    }
+
+    // Auto Bank Dropdown -> Update Bank Name
+    if (selBankCode && inpBankName) {
+      selBankCode.addEventListener('change', () => {
+        const code = selBankCode.value;
+        if (BANK_NAMES[code]) {
+          inpBankName.value = BANK_NAMES[code];
+          currentConfig.bankName = BANK_NAMES[code];
+          syncToPreviewAndStore();
+        }
+      });
+    }
+
+    // Auto VietQR Generator
+    if (btnGenerateVietQr) {
+      btnGenerateVietQr.addEventListener('click', () => {
+        const bank = (selBankCode ? selBankCode.value : 'ACB') || 'ACB';
+        const acc = (inpAccountNumber ? inpAccountNumber.value.trim() : '') || '873588';
+        const holder = (inpAccountHolder ? inpAccountHolder.value.trim() : '') || 'HOANG VAN NINH';
+        const note = (inpTransferNote ? inpTransferNote.value.trim() : '') || 'Mung cuoi';
+
+        if (!acc) {
+          alert('Vui lòng nhập Số Tài Khoản để tạo mã VietQR!');
+          return;
+        }
+
+        // Tạo link ảnh VietQR chuẩn Napas 247
+        const qrUrl = `https://img.vietqr.io/image/${bank}-${acc}-compact2.jpg?amount=&addInfo=${encodeURIComponent(note)}&accountName=${encodeURIComponent(holder)}`;
+        currentConfig.qrCode = qrUrl;
+        if (imgPreviewQr) imgPreviewQr.src = qrUrl;
+        if (inpUrlQr) inpUrlQr.value = qrUrl;
+        syncToPreviewAndStore();
+        showToast('Đã tạo mã VietQR tự động thành công!');
+      });
+    }
   }
 
   // 10. Xử lý tải ảnh lên (Upload & Nén ảnh tự động)
@@ -357,7 +469,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const file = e.target.files[0];
         if (!file) return;
         try {
-          showToast('Đang xử lý ảnh bìa...');
+          showToast('Đang nén & xử lý ảnh bìa...');
           const compressed = await compressImage(file, 1000, 1300, 0.84);
           currentConfig.heroPhoto = compressed;
           if (imgPreviewHero) imgPreviewHero.src = compressed;
@@ -386,7 +498,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const file = e.target.files[0];
         if (!file) return;
         try {
-          showToast('Đang xử lý ảnh đôi...');
+          showToast('Đang nén & xử lý ảnh đôi...');
           const compressed = await compressImage(file, 900, 1100, 0.84);
           currentConfig.couplePhoto = compressed;
           if (imgPreviewCouple) imgPreviewCouple.src = compressed;
@@ -470,7 +582,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const files = Array.from(e.target.files);
         if (!files.length) return;
 
-        showToast(`Đang tải lên ${files.length} ảnh vào album...`);
+        showToast(`Đang tải lên và nén ${files.length} ảnh vào album...`);
         let count = 0;
         for (const file of files) {
           try {
@@ -511,7 +623,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 11. Các nút hành động trên Header (Xuất, Nhập, Tạo Link)
+  // 11. Các nút hành động trên Header (Xuất, Nhập, Tạo Link, Xuất HTML)
   function bindHeaderActionListeners() {
     // A. Khôi phục mặc định toàn bộ
     const btnResetDefault = document.getElementById('btn-reset-default');
@@ -577,16 +689,48 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // D. Tạo Link chia sẻ (Share Link Modal)
+    // D. Xuất file web HTML độc lập (Standalone HTML Export)
+    const btnExportHtml = document.getElementById('btn-export-html');
+    if (btnExportHtml) {
+      btnExportHtml.addEventListener('click', async () => {
+        try {
+          showToast('Đang tạo file web độc lập...');
+          const res = await fetch('index.html');
+          if (!res.ok) throw new Error('Không thể đọc file index.html');
+          let htmlContent = await res.text();
+
+          // Nhúng script chứa cấu hình trực tiếp vào trang web độc lập
+          const injectScript = `\n  <script>window.EMBEDDED_WEDDING_CONFIG = ${JSON.stringify(currentConfig)};</script>\n`;
+          htmlContent = htmlContent.replace('</head>', `${injectScript}</head>`);
+
+          const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          const filename = `thiep-cuoi-${(currentConfig.groomName || 'chu-re')}-${(currentConfig.brideName || 'co-dau')}.html`
+            .toLowerCase()
+            .replace(/[\s\.]+/g, '-');
+          a.href = url;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          showToast('Đã tải xuống file web thiệp cưới độc lập!');
+        } catch (err) {
+          alert('Lỗi xuất file web: ' + err.message);
+        }
+      });
+    }
+
+    // E. Tạo Link chia sẻ (Share Link Modal)
     if (btnShareLink && shareModal) {
       btnShareLink.addEventListener('click', () => {
-        // Tạo chuỗi cấu hình nén Base64
-        // Để URL không bị quá dài do chứa ảnh Base64 dung lượng lớn, tạo một bản rút gọn các trường văn bản + link ảnh online
         const shareData = {
           groomName: currentConfig.groomName,
           brideName: currentConfig.brideName,
           weddingDate: currentConfig.weddingDate,
           lunarDate: currentConfig.lunarDate,
+          bgMusicUrl: currentConfig.bgMusicUrl,
           groomParents: currentConfig.groomParents,
           groomAddress: currentConfig.groomAddress,
           brideParents: currentConfig.brideParents,
@@ -598,7 +742,7 @@ document.addEventListener('DOMContentLoaded', () => {
           events: currentConfig.events
         };
 
-        // Nếu ảnh là URL (không phải Base64 quá dài) thì kèm vào URL
+        // Nếu ảnh là link URL trực tuyến thì kèm vào URL chia sẻ
         if (currentConfig.heroPhoto && !currentConfig.heroPhoto.startsWith('data:')) {
           shareData.heroPhoto = currentConfig.heroPhoto;
         }
@@ -634,7 +778,6 @@ document.addEventListener('DOMContentLoaded', () => {
             shareModal.classList.remove('active');
           });
         } else {
-          // Fallback
           const ta = document.createElement('textarea');
           ta.value = text;
           document.body.appendChild(ta);
@@ -646,12 +789,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     }
+
+    // F. Nút Xem Full màn hình
+    const btnOpenFullscreen = document.getElementById('btn-open-fullscreen');
+    if (btnOpenFullscreen) {
+      btnOpenFullscreen.addEventListener('click', (e) => {
+        e.preventDefault();
+        syncToPreviewAndStore();
+        window.open('index.html', '_blank');
+      });
+    }
   }
 
-  // 12. Preview Toolbar: Thay đổi kích thước & Refresh iframe
+  // 12. Preview Toolbar: Thay đổi kích thước, Mở cổng, Refresh iframe
   function bindPreviewToolbar() {
     const phoneFrame = document.getElementById('phone-frame');
-    const sizeBtns = document.querySelectorAll('.preview-size-btn');
+    const sizeBtns = document.querySelectorAll('.preview-size-btn[data-size]');
+    const btnToggleGate = document.getElementById('btn-toggle-preview-gate');
     const btnRefresh = document.getElementById('btn-refresh-preview');
 
     sizeBtns.forEach(btn => {
@@ -668,6 +822,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     });
+
+    if (btnToggleGate && previewIframe) {
+      btnToggleGate.addEventListener('click', () => {
+        if (previewIframe.contentWindow) {
+          previewIframe.contentWindow.postMessage({ type: 'OPEN_GATE' }, '*');
+          showToast('Đang mở cánh cổng hoàng gia trong bản xem trước...');
+        }
+      });
+    }
 
     if (btnRefresh && previewIframe) {
       btnRefresh.addEventListener('click', () => {

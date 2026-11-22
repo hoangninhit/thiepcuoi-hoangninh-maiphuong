@@ -26,6 +26,13 @@
 
 <body data-theme="fireworks">
 
+  <!-- Festive Fireworks Scroll Progress Bar with Lantern Tip -->
+  <div class="fireworks-scroll-progress" id="fireworks-scroll-progress">
+    <div class="fireworks-scroll-bar" id="fireworks-scroll-bar">
+      <span class="lantern-tip">🏮</span>
+    </div>
+  </div>
+
   <!-- Canvas Fireworks & Sky Lanterns Engine -->
   <canvas id="fireworks-canvas" class="fireworks-canvas"></canvas>
 
@@ -105,7 +112,7 @@
       <div class="festive-lunar-date" id="hero-lunar-date">Tức ngày 10 tháng 11 năm Bính Ngọ</div>
 
       <!-- Hero Photo with Golden Lantern Frame -->
-      <div class="lantern-frame-container">
+      <div class="lantern-frame-container festive-reveal">
         <div class="lantern-glow-ambient"></div>
         <div class="lantern-arch-photo">
           <img id="hero-img" src="image/chinh.jpg" alt="Hoàng Ninh &amp; Mai Phương">
@@ -117,7 +124,7 @@
       </div>
 
       <!-- Greeting Card -->
-      <div class="festive-greeting-card">
+      <div class="festive-greeting-card festive-reveal">
         <div class="card-lantern-icon">🏮</div>
         <p class="card-greeting-text" id="hero-greeting-text">
           Đến dự buổi tiệc chung vui cùng gia đình chúng tôi. Tình yêu như ngọn đèn lồng ấm áp thắp sáng đêm đông, sự hiện diện của bạn là niềm hạnh phúc lớn nhất của chúng mình!
@@ -143,7 +150,7 @@
         </div>
       </div>
 
-      <div class="lantern-countdown-row">
+      <div class="lantern-countdown-row festive-reveal">
         <div class="lantern-cd-item">
           <div class="lantern-val" id="cd-days">00</div>
           <div class="lantern-lbl">NGÀY</div>
@@ -182,7 +189,7 @@
 
       <div class="festive-parents-grid">
         <!-- Groom Family -->
-        <div class="festive-parent-box groom-box">
+        <div class="festive-parent-box groom-box festive-reveal">
           <div class="box-crest"><i class="fa-solid fa-dragon"></i> NHÀ TRAI</div>
           <div class="parent-text" id="groom-parents-text">
             ÔNG HOÀNG VĂN HIỂN<br>BÀ NGUYỄN THỊ HÀ
@@ -194,7 +201,7 @@
         </div>
 
         <!-- Bride Family -->
-        <div class="festive-parent-box bride-box">
+        <div class="festive-parent-box bride-box festive-reveal">
           <div class="box-crest"><i class="fa-solid fa-feather"></i> NHÀ GÁI</div>
           <div class="parent-text" id="bride-parents-text">
             ÔNG NGÔ VĂN CỔN<br>BÀ NGUYỄN THỊ BÌNH
@@ -223,7 +230,7 @@
 
       <div class="festive-events-wrap">
         <!-- Event 1: Nhà Gái -->
-        <div class="festive-event-card">
+        <div class="festive-event-card festive-reveal">
           <div class="card-ribbon-tag">TIỆC VU QUY &bull; NHÀ GÁI</div>
           <div class="ev-time" id="event-bride-time"><i class="fa-solid fa-clock"></i> 09:00 - Thứ Bảy</div>
           <h3 class="ev-venue" id="event-bride-venue">TƯ GIA NHÀ GÁI</h3>
@@ -234,7 +241,7 @@
         </div>
 
         <!-- Event 2: Nhà Trai -->
-        <div class="festive-event-card highlight-card">
+        <div class="festive-event-card highlight-card festive-reveal">
           <div class="card-ribbon-tag highlight">TIỆC THÀNH HÔN &bull; NHÀ TRAI</div>
           <div class="ev-time" id="event-groom-time"><i class="fa-solid fa-clock"></i> 11:00 - Chủ Nhật</div>
           <h3 class="ev-venue" id="event-groom-venue">TRUNG TÂM TIỆC CƯỚI ROYAL PALACE</h3>
@@ -260,13 +267,13 @@
         </div>
       </div>
 
-      <div class="festive-gallery-grid" id="gallery-grid">
+      <div class="festive-gallery-grid festive-reveal" id="gallery-grid">
         <!-- Rendered via JS -->
       </div>
     </section>
 
     <!-- SECTION: GIFT REGISTRY & VIETQR -->
-    <section class="section-fireworks-gift" id="section-gift">
+    <section class="section-fireworks-gift festive-reveal" id="section-gift">
       <div class="festive-sec-title">
         <span class="eyebrow">WEDDING GIFTS</span>
         <h2>Hộp Mừng Cưới</h2>
@@ -279,7 +286,7 @@
         </div>
       </div>
 
-      <div class="festive-gift-box">
+      <div class="festive-gift-box festive-reveal">
         <p class="gift-lead-text">
           Sự hiện diện của quý khách là niềm chúc phúc to lớn nhất cho đôi uyên ương. Nếu ở xa, quý khách có thể gửi lời chúc và món quà mừng qua mã VietQR dưới đây:
         </p>
@@ -329,7 +336,7 @@
         </div>
       </div>
 
-      <div class="festive-wishes-box">
+      <div class="festive-wishes-box festive-reveal">
         <form class="festive-wish-form" id="wish-form">
           <div class="form-item">
             <label for="wish-name">Tên của bạn:</label>

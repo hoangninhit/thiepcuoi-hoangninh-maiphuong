@@ -2151,15 +2151,66 @@ section {
   position: fixed;
   top: 0;
   left: 0;
-  height: 3.5px;
+  height: 4px;
   width: 0%;
   background: linear-gradient(90deg, #9a7329, #c59b4c, #f6e9c7, #c59b4c, #9a7329);
   background-size: 200% 100%;
   animation: goldShimmer 3s linear infinite;
   box-shadow: 0 0 10px rgba(197, 155, 76, 0.9), 0 0 5px rgba(232, 211, 159, 0.6);
   z-index: 10000;
-  transition: width 0.15s ease-out;
+  transition: width 0.08s linear;
   pointer-events: none;
+}
+
+.royal-scroll-crown {
+  position: absolute;
+  right: -9px;
+  top: -8px;
+  font-size: 13px;
+  filter: drop-shadow(0 0 6px #ffd700);
+  animation: crownPulse 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes crownPulse {
+  0% { transform: scale(0.9) rotate(0deg); opacity: 0.85; }
+  100% { transform: scale(1.25) rotate(15deg); opacity: 1; }
+}
+
+/* Palace Scroll Reveal & 3D Interactive Card Tilt */
+.palace-reveal {
+  opacity: 0;
+  transform: translateY(28px) scale(0.98);
+  filter: blur(3px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+}
+
+.palace-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+.guest-invitation-card,
+.family-column,
+.event-card,
+.wedding-calendar-card,
+.countdown-container,
+.bank-card-luxury,
+.wishes-form-card {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.guest-invitation-card:hover,
+.family-column:hover,
+.event-card:hover,
+.wedding-calendar-card:hover,
+.bank-card-luxury:hover,
+.wishes-form-card:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 16px 36px rgba(184, 41, 52, 0.25), 0 0 20px rgba(197, 155, 76, 0.3);
 }
 
 @keyframes goldShimmer {

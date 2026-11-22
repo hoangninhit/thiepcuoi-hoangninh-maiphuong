@@ -26,6 +26,16 @@
 
 <body>
 
+  <!-- Modern Minimalist Scroll Progress Bar -->
+  <div class="modern-scroll-progress" id="modern-scroll-progress">
+    <div class="modern-scroll-bar" id="modern-scroll-bar">
+      <span class="modern-scroll-dot">✦</span>
+    </div>
+  </div>
+
+  <!-- Modern Floating Rose Gold Dust Canvas -->
+  <canvas id="modern-dust-canvas" class="modern-dust-canvas"></canvas>
+
   <!-- Floating Audio Player -->
   <audio id="wedding-audio" loop preload="auto">
     <source src="https://statics.pancake.vn/web-media/5e/ee/bf/4a/afa10d3bdf98ca17ec3191ebbfd3c829d135d06939ee1f1b712d731d-w:0-h:0-l:2938934-t:audio/mpeg.mp3" type="audio/mpeg">
@@ -118,7 +128,7 @@
       </div>
 
       <!-- Hero Photo Frame -->
-      <div class="hero-photo-container">
+      <div class="hero-photo-container modern-reveal">
         <div class="photo-magazine-wrap">
           <img id="hero-img" src="image/chinh.jpg" alt="Ảnh Cưới Hoàng Ninh &amp; Mai Phương">
           <div class="photo-corner-badge">EXCLUSIVE</div>
@@ -126,7 +136,7 @@
       </div>
 
       <!-- Invitation Greeting Text -->
-      <div class="editorial-greeting-card">
+      <div class="editorial-greeting-card modern-reveal">
         <div class="greeting-symbol"><i class="fa-solid fa-feather-pointed"></i></div>
         <p class="greeting-message" id="hero-greeting-text">
           Đến dự buổi tiệc chung vui cùng gia đình chúng tôi. Sự hiện diện của bạn là niềm vinh hạnh to lớn cho ngày trọng đại nhất của hai đứa mình!
@@ -135,7 +145,7 @@
     </section>
 
     <!-- SECTION 2: COUNTDOWN TIMER -->
-    <section class="section-countdown" id="section-countdown">
+    <section class="section-countdown modern-reveal" id="section-countdown">
       <div class="sec-title-wrap">
         <span class="sec-subtitle">COUNTDOWN TO HAPPINESS</span>
         <h2 class="sec-title">Cùng Đếm Ngược Ngày Chung Đôi</h2>
@@ -165,7 +175,7 @@
     </section>
 
     <!-- SECTION 3: LOVE STORY & COUPLE PORTRAIT -->
-    <section class="section-couple-story" id="section-couple">
+    <section class="section-couple-story modern-reveal" id="section-couple">
       <div class="couple-portrait-wrap">
         <div class="portrait-arch">
           <img id="couple-img" src="image/188A6221.JPG" alt="Couple Portrait">
@@ -180,7 +190,7 @@
       </div>
 
       <!-- Two Families -->
-      <div class="families-block" id="section-family">
+      <div class="families-block modern-reveal" id="section-family">
         <div class="family-card">
           <div class="fam-side">NHÀ TRAI</div>
           <div class="fam-parents" id="groom-parents">
@@ -214,7 +224,7 @@
 
       <div class="events-cards-grid">
         <!-- Event 1: Bride House -->
-        <div class="event-modern-card">
+        <div class="event-modern-card modern-reveal">
           <div class="event-badge">LỄ VU QUY (NHÀ GÁI)</div>
           <div class="event-time" id="ev1-time"><i class="fa-regular fa-clock"></i> 09:00 - Thứ Bảy</div>
           <div class="event-venue" id="ev1-venue">TƯ GIA NHÀ GÁI</div>
@@ -229,7 +239,7 @@
         </div>
 
         <!-- Event 2: Groom House / Reception -->
-        <div class="event-modern-card featured">
+        <div class="event-modern-card featured modern-reveal">
           <div class="event-badge">TIỆC CƯỚI TÂN HÔN (NHÀ TRAI)</div>
           <div class="event-time" id="ev2-time"><i class="fa-regular fa-clock"></i> 11:00 - Chủ Nhật</div>
           <div class="event-venue" id="ev2-venue">TRUNG TÂM TIỆC CƯỚI ROYAL PALACE</div>
@@ -252,20 +262,20 @@
         <h2 class="sec-title">Khoảnh Khắc Hạnh Phúc</h2>
       </div>
 
-      <div class="modern-gallery-grid" id="gallery-container">
+      <div class="modern-gallery-grid modern-reveal" id="gallery-container">
         <!-- Gallery photos rendered dynamically -->
       </div>
     </section>
 
     <!-- SECTION 6: VIETQR REGISTRY (MỪNG CƯỚI) -->
-    <section class="section-gift-registry" id="section-bank">
+    <section class="section-gift-registry modern-reveal" id="section-bank">
       <div class="sec-title-wrap">
         <span class="sec-subtitle">GIFT REGISTRY</span>
         <h2 class="sec-title">Gửi Mừng Chúc Phúc</h2>
         <p class="sec-desc">Sự chúc phúc và hiện diện của bạn là món quà ý nghĩa nhất dành cho chúng mình!</p>
       </div>
 
-      <div class="registry-card">
+      <div class="registry-card modern-reveal">
         <div class="registry-qr-box">
           <img id="bank-qr-img" src="image/qr_acb.svg" alt="VietQR Mừng Cưới" class="qr-code-img">
         </div>
@@ -296,13 +306,13 @@
     </section>
 
     <!-- SECTION 7: WISHES & RSVP -->
-    <section class="section-wishes-rsvp" id="section-rsvp">
+    <section class="section-wishes-rsvp modern-reveal" id="section-rsvp">
       <div class="sec-title-wrap">
         <span class="sec-subtitle">GUESTBOOK</span>
         <h2 class="sec-title">Gửi Lời Chúc Mừng</h2>
       </div>
 
-      <form class="modern-wishes-form" id="modern-wishes-form">
+      <form class="modern-wishes-form modern-reveal" id="modern-wishes-form">
         <div class="form-field">
           <input type="text" id="inp-guest-sender" class="modern-input" placeholder="Tên của bạn..." required>
         </div>

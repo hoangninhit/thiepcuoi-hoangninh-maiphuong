@@ -528,8 +528,167 @@
     }
   });
 
+  // ==================== MODERN SCROLL EFFECTS & DUST CANVAS ====================
+  function initModernDustCanvas() {
+    const canvas = document.getElementById('modern-dust-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    const particles = [];
+    const colors = ['#c59b4c', '#e8d39f', '#d4a373', '#b07d62'];
+    for (let i = 0; i < 30; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 2 + 0.8,
+        depth: Math.random() * 1.5 + 0.4,
+        speedX: (Math.random() - 0.5) * 0.4,
+        speedY: Math.random() * 0.4 + 0.2,
+        alpha: Math.random() * 0.5 + 0.2,
+        color: colors[Math.floor(Math.random() * colors.length)]
+      });
+    }
+
+    const mouseTrail = [];
+    function addDustSpark(x, y) {
+      if (mouseTrail.length > 50) return;
+      mouseTrail.push({
+        x: x + (Math.random() - 0.5) * 16,
+        y: y + (Math.random() - 0.5) * 16,
+        vx: (Math.random() - 0.5) * 1.2,
+        vy: (Math.random() - 0.5) * 1.2 - 0.3,
+        radius: Math.random() * 2 + 0.8,
+        alpha: Math.random() * 0.6 + 0.4,
+        decay: Math.random() * 0.025 + 0.015,
+        color: colors[Math.floor(Math.random() * colors.length)]
+      });
+    }
+
+    let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+    let scrollVelocity = 0;
+    let targetVelocity = 0;
+
+    window.addEventListener('scroll', () => {
+      const currentY = window.pageYOffset || document.documentElement.scrollTop;
+      const delta = currentY - lastScrollY;
+      lastScrollY = currentY;
+      targetVelocity += delta * 0.3;
+      if (targetVelocity > 60) targetVelocity = 60;
+      if (targetVelocity < -60) targetVelocity = -60;
+
+      if (Math.abs(delta) > 20 && mouseTrail.length < 40 && Math.random() < 0.4) {
+        addDustSpark(Math.random() * width, Math.random() * height);
+      }
+    }, { passive: true });
+
+    window.addEventListener('mousemove', (e) => {
+      if (Math.random() < 0.35) addDustSpark(e.clientX, e.clientY);
+    }, { passive: true });
+
+    function renderDust() {
+      ctx.clearRect(0, 0, width, height);
+      scrollVelocity += (targetVelocity - scrollVelocity) * 0.12;
+      targetVelocity *= 0.88;
+
+      particles.forEach(p => {
+        p.x += p.speedX;
+        p.y += p.speedY + scrollVelocity * 0.18 * p.depth;
+
+        if (p.y > height + 10) { p.y = -10; p.x = Math.random() * width; }
+        else if (p.y < -10) { p.y = height + 10; p.x = Math.random() * width; }
+        if (p.x > width + 10) p.x = -10;
+        else if (p.x < -10) p.x = width + 10;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha;
+        ctx.shadowBlur = 4;
+        ctx.shadowColor = p.color;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+
+      for (let k = mouseTrail.length - 1; k >= 0; k--) {
+        const m = mouseTrail[k];
+        m.x += m.vx;
+        m.y += m.vy;
+        m.alpha -= m.decay;
+        if (m.alpha <= 0) {
+          mouseTrail.splice(k, 1);
+          continue;
+        }
+        ctx.beginPath();
+        ctx.arc(m.x, m.y, m.radius, 0, Math.PI * 2);
+        ctx.fillStyle = m.color;
+        ctx.globalAlpha = m.alpha;
+        ctx.shadowBlur = 5;
+        ctx.shadowColor = m.color;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(renderDust);
+    }
+    renderDust();
+  }
+
+  function initModernScrollEffects() {
+    const scrollBar = document.getElementById('modern-scroll-bar');
+    function updateProgress() {
+      if (!scrollBar) return;
+      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+      scrollBar.style.width = Math.min(100, Math.max(0, scrolled)) + '%';
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+
+    // IntersectionObserver for Starlight Scroll Reveal
+    const revealEls = document.querySelectorAll('.modern-reveal');
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+      revealEls.forEach(el => observer.observe(el));
+    } else {
+      revealEls.forEach(el => el.classList.add('revealed'));
+    }
+
+    // 3D Card Tilt on Mousemove
+    const tiltCards = document.querySelectorAll('.hero-photo-container, .editorial-greeting-card, .couple-portrait-wrap, .family-card, .event-modern-card, .registry-card, .modern-wishes-form');
+    tiltCards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rotX = ((y - rect.height / 2) / (rect.height / 2)) * -4;
+        const rotY = ((x - rect.width / 2) / (rect.width / 2)) * 4;
+        card.style.transform = `perspective(800px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateY(-4px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+  }
+
   // Init
   initData();
   bindGalleryItemClicks();
+  initModernDustCanvas();
+  initModernScrollEffects();
 
 })();

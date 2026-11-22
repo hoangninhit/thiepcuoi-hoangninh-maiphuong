@@ -702,13 +702,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const particles = [];
-    const totalParticles = 24;
+    const totalParticles = 28;
 
     for (let i = 0; i < totalParticles; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
         size: Math.random() * 8 + 6,
+        depth: Math.random() * 1.5 + 0.5,
         speedX: Math.random() * 1.5 - 0.5,
         speedY: Math.random() * 1.2 + 0.8,
         angle: Math.random() * 360,
@@ -718,16 +719,61 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+    // Scroll Velocity & Wind Tracking
+    let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+    let scrollVelocity = 0;
+    let targetVelocity = 0;
+
+    // Interactive Golden Shimmer Sparks on mouse move & scroll
+    const goldSparks = [];
+    function addGoldSpark(x, y) {
+      if (goldSparks.length > 55) return;
+      goldSparks.push({
+        x: x + (Math.random() - 0.5) * 16,
+        y: y + (Math.random() - 0.5) * 16,
+        vx: (Math.random() - 0.5) * 1.4,
+        vy: (Math.random() - 0.5) * 1.4 - 0.3,
+        size: Math.random() * 2.5 + 1,
+        alpha: Math.random() * 0.65 + 0.35,
+        decay: Math.random() * 0.025 + 0.015,
+        color: Math.random() > 0.5 ? '#ffd700' : '#c59b4c'
+      });
+    }
+
+    window.addEventListener('scroll', () => {
+      const currentY = window.pageYOffset || document.documentElement.scrollTop;
+      const delta = currentY - lastScrollY;
+      lastScrollY = currentY;
+      targetVelocity += delta * 0.32;
+      if (targetVelocity > 60) targetVelocity = 60;
+      if (targetVelocity < -60) targetVelocity = -60;
+
+      if (Math.abs(delta) > 25 && goldSparks.length < 50 && Math.random() < 0.45) {
+        addGoldSpark(Math.random() * width, Math.random() * height);
+      }
+    }, { passive: true });
+
+    window.addEventListener('mousemove', (e) => {
+      if (Math.random() < 0.35) addGoldSpark(e.clientX, e.clientY);
+    }, { passive: true });
+
     function renderParticles() {
       ctx.clearRect(0, 0, width, height);
 
+      // Smooth scroll velocity damping
+      scrollVelocity += (targetVelocity - scrollVelocity) * 0.12;
+      targetVelocity *= 0.88;
+
       particles.forEach(p => {
-        p.x += p.speedX;
-        p.y += p.speedY;
-        p.angle += p.spinSpeed;
+        p.x += p.speedX + Math.sin(p.y * 0.02) * (0.8 + Math.abs(scrollVelocity) * 0.08);
+        p.y += p.speedY + scrollVelocity * 0.22 * p.depth;
+        p.angle += p.spinSpeed + scrollVelocity * 0.04;
 
         if (p.y > height + 20) {
           p.y = -20;
+          p.x = Math.random() * width;
+        } else if (p.y < -20) {
+          p.y = height + 20;
           p.x = Math.random() * width;
         }
         if (p.x > width + 20) p.x = -20;
@@ -758,6 +804,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         ctx.restore();
       });
+
+      // Render interactive gold sparks
+      for (let k = goldSparks.length - 1; k >= 0; k--) {
+        const sp = goldSparks[k];
+        sp.x += sp.vx;
+        sp.y += sp.vy;
+        sp.alpha -= sp.decay;
+
+        if (sp.alpha <= 0) {
+          goldSparks.splice(k, 1);
+          continue;
+        }
+
+        ctx.beginPath();
+        ctx.arc(sp.x, sp.y, sp.size, 0, Math.PI * 2);
+        ctx.fillStyle = sp.color;
+        ctx.globalAlpha = sp.alpha;
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = sp.color;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+      ctx.globalAlpha = 1;
 
       requestAnimationFrame(renderParticles);
     }
@@ -861,6 +930,37 @@ document.addEventListener('DOMContentLoaded', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     }
+
+    // IntersectionObserver for Palace Starlight Reveal
+    const revealEls = document.querySelectorAll('.palace-reveal');
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+      revealEls.forEach(el => observer.observe(el));
+    } else {
+      revealEls.forEach(el => el.classList.add('revealed'));
+    }
+
+    // 3D Card Tilt on Mousemove
+    const tiltCards = document.querySelectorAll('.guest-invitation-card, .family-column, .event-card, .wedding-calendar-card, .countdown-container, .bank-card-luxury, .wishes-form-card');
+    tiltCards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rotX = ((y - rect.height / 2) / (rect.height / 2)) * -4;
+        const rotY = ((x - rect.width / 2) / (rect.width / 2)) * 4;
+        card.style.transform = `perspective(800px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateY(-4px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
   }
 
   // 16. TIKTOK LIVE GIFTING SYSTEM (Hoa Hồng, Siêu Xe, Tên Lửa, Lâu Đài...)

@@ -32,6 +32,92 @@ html, body {
   overflow-x: hidden;
 }
 
+/* Modern Minimalist Scroll Progress Bar */
+.modern-scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3.5px;
+  background: rgba(0, 0, 0, 0.04);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.modern-scroll-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #c59b4c, #e8d39f, #8b1820);
+  box-shadow: 0 0 10px rgba(197, 155, 76, 0.6);
+  position: relative;
+  transition: width 0.08s linear;
+}
+
+.modern-scroll-dot {
+  position: absolute;
+  right: -6px;
+  top: -8px;
+  font-size: 12px;
+  color: #c59b4c;
+  text-shadow: 0 0 6px rgba(197, 155, 76, 0.8);
+  animation: modernDotPulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes modernDotPulse {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  100% { transform: scale(1.25); opacity: 1; }
+}
+
+/* Modern Floating Rose Gold Dust Canvas */
+.modern-dust-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Modern Starlight Scroll Reveal */
+.modern-reveal {
+  opacity: 0;
+  transform: translateY(28px) scale(0.98);
+  filter: blur(3px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+}
+
+.modern-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* 3D Tilt on Modern Cards */
+.hero-photo-container,
+.editorial-greeting-card,
+.couple-portrait-wrap,
+.family-card,
+.event-modern-card,
+.registry-card,
+.modern-wishes-form {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.hero-photo-container:hover,
+.editorial-greeting-card:hover,
+.couple-portrait-wrap:hover,
+.family-card:hover,
+.event-modern-card:hover,
+.registry-card:hover,
+.modern-wishes-form:hover {
+  transform: translateY(-4px) scale(1.008);
+  box-shadow: 0 16px 36px rgba(197, 155, 76, 0.16);
+}
+
 /* Floating Settings Button */
 .modern-settings-btn {
   position: fixed;

@@ -111,6 +111,80 @@ body {
   z-index: 8;
 }
 
+/* Botanical Garden Scroll Progress Bar */
+.garden-scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(82, 110, 89, 0.08);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.garden-scroll-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #526e59, #84a98c, #e29578, #ffb5a7);
+  box-shadow: 0 0 10px rgba(132, 169, 140, 0.7);
+  position: relative;
+  transition: width 0.08s linear;
+}
+
+.garden-leaf-tip {
+  position: absolute;
+  right: -9px;
+  top: -8px;
+  font-size: 13px;
+  filter: drop-shadow(0 0 5px rgba(226, 149, 120, 0.9));
+  animation: leafSway 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes leafSway {
+  0% { transform: scale(0.9) rotate(-10deg); opacity: 0.85; }
+  100% { transform: scale(1.25) rotate(20deg); opacity: 1; }
+}
+
+/* Garden Scroll Reveal */
+.garden-reveal {
+  opacity: 0;
+  transform: translateY(30px) scale(0.97);
+  filter: blur(4px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+}
+
+.garden-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* 3D Botanical Tilt on Cards */
+.hero-arch-container,
+.garden-greeting-box,
+.calendar-glass-card,
+.parent-glass-card,
+.event-glass-tile,
+.gift-glass-box,
+.wishes-glass-container {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.hero-arch-container:hover,
+.garden-greeting-box:hover,
+.calendar-glass-card:hover,
+.parent-glass-card:hover,
+.event-glass-tile:hover,
+.gift-glass-box:hover,
+.wishes-glass-container:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 16px 36px rgba(82, 110, 89, 0.22);
+}
+
 /* Floating Settings / Builder Button */
 .garden-settings-player {
   position: fixed;

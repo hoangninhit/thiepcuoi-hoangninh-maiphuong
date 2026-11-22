@@ -26,6 +26,13 @@
 
 <body>
 
+  <!-- Botanical Garden Scroll Progress Bar with Blooming Flower Tip -->
+  <div class="garden-scroll-progress" id="garden-scroll-progress">
+    <div class="garden-scroll-bar" id="garden-scroll-bar">
+      <span class="garden-leaf-tip">🌸</span>
+    </div>
+  </div>
+
   <!-- Floating Falling Petals Canvas -->
   <canvas id="petals-canvas" class="petals-canvas"></canvas>
 
@@ -110,7 +117,7 @@
       <div class="hero-lunar-date" id="hero-lunar-date">Tức ngày 10 tháng 11 năm Bính Ngọ</div>
 
       <!-- Hero Floral Arch Photo Frame -->
-      <div class="hero-arch-container">
+      <div class="hero-arch-container garden-reveal">
         <div class="arch-frame">
           <div class="arch-glass-glow"></div>
           <img id="hero-img" src="image/chinh.jpg" alt="Hoàng Ninh &amp; Mai Phương">
@@ -122,7 +129,7 @@
       </div>
 
       <!-- Greeting Message Card -->
-      <div class="garden-greeting-box">
+      <div class="garden-greeting-box garden-reveal">
         <div class="box-flora-icon"><i class="fa-solid fa-dove"></i></div>
         <p class="box-greeting-text" id="hero-greeting-text">
           Đến dự buổi tiệc chung vui cùng gia đình chúng tôi. Sự hiện diện và lời chúc phúc của bạn là món quà quý giá nhất trong ngày trọng đại của chúng mình!
@@ -144,7 +151,7 @@
         </div>
       </div>
 
-      <div class="calendar-glass-card">
+      <div class="calendar-glass-card garden-reveal">
         <div class="calendar-month-header" id="calendar-month-header">THÁNG 12 / 2026</div>
         <div class="calendar-table-wrap">
           <table class="calendar-table">
@@ -178,7 +185,7 @@
         <h2>Cùng Đếm Ngược Ngày Cưới</h2>
       </div>
 
-      <div class="countdown-glass-row">
+      <div class="countdown-glass-row garden-reveal">
         <div class="countdown-glass-item">
           <div class="cd-glass-val" id="cd-days">00</div>
           <div class="cd-glass-unit">NGÀY</div>
@@ -217,7 +224,7 @@
 
       <div class="parents-glass-grid">
         <!-- Groom Family -->
-        <div class="parent-glass-card groom-card">
+        <div class="parent-glass-card groom-card garden-reveal">
           <div class="card-flower-badge"><i class="fa-solid fa-leaf"></i></div>
           <h3 class="card-side-title">NHÀ TRAI</h3>
           <div class="parent-names-block" id="groom-parents-text">
@@ -230,7 +237,7 @@
         </div>
 
         <!-- Bride Family -->
-        <div class="parent-glass-card bride-card">
+        <div class="parent-glass-card bride-card garden-reveal">
           <div class="card-flower-badge"><i class="fa-solid fa-spa"></i></div>
           <h3 class="card-side-title">NHÀ GÁI</h3>
           <div class="parent-names-block" id="bride-parents-text">
@@ -260,7 +267,7 @@
 
       <div class="events-glass-wrapper">
         <!-- Event 1: Nhà Gái -->
-        <div class="event-glass-tile">
+        <div class="event-glass-tile garden-reveal">
           <div class="event-glow-badge">TIỆC VU QUY</div>
           <div class="event-time-stamp" id="event-bride-time">09:00 - Thứ Bảy</div>
           <h3 class="event-venue-name" id="event-bride-venue">TƯ GIA NHÀ GÁI</h3>
@@ -276,7 +283,7 @@
         </div>
 
         <!-- Event 2: Nhà Trai -->
-        <div class="event-glass-tile highlight-tile">
+        <div class="event-glass-tile highlight-tile garden-reveal">
           <div class="event-glow-badge">TIỆC THÀNH HÔN</div>
           <div class="event-time-stamp" id="event-groom-time">11:00 - Chủ Nhật</div>
           <h3 class="event-venue-name" id="event-groom-venue">TRUNG TÂM TIỆC CƯỚI ROYAL PALACE</h3>
@@ -307,13 +314,13 @@
         </div>
       </div>
 
-      <div class="gallery-mosaic-grid" id="gallery-grid">
+      <div class="gallery-mosaic-grid garden-reveal" id="gallery-grid">
         <!-- Dynamically rendered via JS -->
       </div>
     </section>
 
     <!-- SECTION: GIFT REGISTRY & VIETQR -->
-    <section class="section-garden-gift" id="section-gift">
+    <section class="section-garden-gift garden-reveal" id="section-gift">
       <div class="garden-sec-title">
         <span class="sec-eyebrow">WISHES &amp; GIFTS</span>
         <h2>Hộp Mừng Cưới</h2>
@@ -326,7 +333,7 @@
         </div>
       </div>
 
-      <div class="gift-glass-box">
+      <div class="gift-glass-box garden-reveal">
         <div class="gift-intro-desc">
           Sự hiện diện của quý khách là niềm vui và chúc phúc lớn nhất cho chúng mình. Nếu quý khách ở xa hoặc muốn gửi món quà mừng tân hôn, có thể gửi qua số tài khoản dưới đây:
         </div>
@@ -376,7 +383,7 @@
         </div>
       </div>
 
-      <div class="wishes-glass-container">
+      <div class="wishes-glass-container garden-reveal">
         <!-- Wish Submission Form -->
         <form class="garden-wish-form" id="wish-form">
           <div class="form-row">

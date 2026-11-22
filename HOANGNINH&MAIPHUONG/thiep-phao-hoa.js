@@ -196,13 +196,61 @@
 
     let autoFireworkTimer = Date.now() + 3000;
 
+    // Scroll Velocity Tracking
+    let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+    let scrollVelocity = 0;
+    let targetVelocity = 0;
+
+    // Golden Embers Spark Trail on mousemove & scroll
+    const emberSparks = [];
+    function addEmberSpark(x, y) {
+      if (emberSparks.length > 55) return;
+      const emberColors = ['#ffd166', '#ffdd00', '#ffb703', '#ff4d6d'];
+      emberSparks.push({
+        x: x + (Math.random() - 0.5) * 16,
+        y: y + (Math.random() - 0.5) * 16,
+        vx: (Math.random() - 0.5) * 1.3,
+        vy: -(Math.random() * 1.6 + 0.6), // float upwards
+        size: Math.random() * 2.4 + 1,
+        alpha: Math.random() * 0.7 + 0.3,
+        decay: Math.random() * 0.025 + 0.015,
+        color: emberColors[Math.floor(Math.random() * emberColors.length)]
+      });
+    }
+
+    window.addEventListener('scroll', function () {
+      const currentY = window.pageYOffset || document.documentElement.scrollTop;
+      const delta = currentY - lastScrollY;
+      lastScrollY = currentY;
+      targetVelocity += delta * 0.35;
+      if (targetVelocity > 70) targetVelocity = 70;
+      if (targetVelocity < -70) targetVelocity = -70;
+
+      // Burst celebration fireworks on fast scroll
+      if (Math.abs(delta) > 26 && particles.length < 80 && Math.random() < 0.38) {
+        createFirework(Math.random() * (width * 0.8) + (width * 0.1), Math.random() * (height * 0.35) + 60, 36, Math.random() > 0.5);
+      }
+
+      if (Math.abs(delta) > 15 && emberSparks.length < 45 && Math.random() < 0.4) {
+        addEmberSpark(Math.random() * width, Math.random() * height);
+      }
+    }, { passive: true });
+
+    window.addEventListener('mousemove', function (e) {
+      if (Math.random() < 0.35) addEmberSpark(e.clientX, e.clientY);
+    }, { passive: true });
+
     function renderScene() {
       ctx.clearRect(0, 0, width, height);
 
-      // A. Draw Sky Lanterns
+      // Smooth scroll velocity damping
+      scrollVelocity += (targetVelocity - scrollVelocity) * 0.12;
+      targetVelocity *= 0.88;
+
+      // A. Draw Sky Lanterns (responsive to scroll)
       for (let i = 0; i < lanterns.length; i++) {
         const l = lanterns[i];
-        l.y -= l.speedY;
+        l.y -= (l.speedY + scrollVelocity * 0.22);
         const currentX = l.x + Math.sin(l.y * l.swaySpeed + l.swayOffset) * l.swayAmount;
 
         // Lantern shape
@@ -236,6 +284,8 @@
 
         if (l.y < -50) {
           lanterns[i] = createLantern();
+        } else if (l.y > height + 100) {
+          l.y = -40;
         }
       }
 
@@ -273,12 +323,82 @@
         }
       }
 
-      ctx.globalAlpha = 1;
+      // D. Draw Interactive Golden Embers
+      for (let k = emberSparks.length - 1; k >= 0; k--) {
+        const em = emberSparks[k];
+        em.x += em.vx;
+        em.y += em.vy;
+        em.alpha -= em.decay;
 
+        if (em.alpha <= 0) {
+          emberSparks.splice(k, 1);
+          continue;
+        }
+
+        ctx.beginPath();
+        ctx.arc(em.x, em.y, em.size, 0, Math.PI * 2);
+        ctx.fillStyle = em.color;
+        ctx.globalAlpha = em.alpha;
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = em.color;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      ctx.globalAlpha = 1;
       fireworksAnimId = requestAnimationFrame(renderScene);
     }
 
     renderScene();
+  }
+
+  // ==================== FESTIVE SCROLL EFFECTS: PROGRESS & REVEAL & 3D TILT ====================
+  function initFireworksScrollEffects() {
+    const scrollBar = document.getElementById('fireworks-scroll-bar');
+    function updateProgress() {
+      if (!scrollBar) return;
+      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+      scrollBar.style.width = Math.min(100, Math.max(0, scrolled)) + '%';
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+
+    // IntersectionObserver for Festive Scroll Reveal
+    const revealEls = document.querySelectorAll('.festive-reveal');
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+      revealEls.forEach(function (el) {
+        observer.observe(el);
+      });
+    } else {
+      revealEls.forEach(function (el) {
+        el.classList.add('revealed');
+      });
+    }
+
+    // 3D Tilt on Hover
+    const tiltCards = document.querySelectorAll('.lantern-frame-container, .festive-greeting-card, .lantern-countdown-row, .festive-parent-box, .festive-event-card, .festive-gift-box, .festive-wishes-box');
+    tiltCards.forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rotX = ((y - rect.height / 2) / (rect.height / 2)) * -4;
+        const rotY = ((x - rect.width / 2) / (rect.width / 2)) * 4;
+        card.style.transform = 'perspective(800px) rotateX(' + rotX.toFixed(2) + 'deg) rotateY(' + rotY.toFixed(2) + 'deg) translateY(-4px)';
+      });
+      card.addEventListener('mouseleave', function () {
+        card.style.transform = '';
+      });
+    });
   }
 
   // ==================== 3. COUNTDOWN TIMER ====================
@@ -543,8 +663,9 @@
 
   // ==================== 8. INITIALIZE & EVENT LISTENERS ====================
   document.addEventListener('DOMContentLoaded', function () {
-    // Fireworks Canvas
+    // Fireworks Canvas & Scroll Effects
     initFireworksCanvas();
+    initFireworksScrollEffects();
 
     const urlParams = new URLSearchParams(window.location.search);
 

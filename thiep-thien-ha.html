@@ -12,10 +12,10 @@
   <meta property="og:description" content="Kính mời quý khách bước vào vũ trụ tình yêu ngàn sao của chúng tôi!">
   <meta property="og:image" content="image/chinh.jpg">
 
-  <!-- Google Fonts: Cinzel, Cormorant Garamond, Orbitron, Montserrat -->
+  <!-- Google Fonts: Playfair Display, Cormorant Garamond, Montserrat (100% Chuẩn Tiếng Việt) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&display=swap" rel="stylesheet">
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -25,6 +25,13 @@
 </head>
 
 <body data-theme="galaxy">
+
+  <!-- Cosmic Scroll Progress Bar with Comet Sparkle -->
+  <div class="cosmic-scroll-progress" id="cosmic-scroll-progress">
+    <div class="cosmic-scroll-bar" id="cosmic-scroll-bar">
+      <div class="comet-head">✦</div>
+    </div>
+  </div>
 
   <!-- Canvas Cosmic Starfield & Shooting Stars -->
   <canvas id="galaxy-canvas" class="galaxy-canvas"></canvas>
@@ -96,20 +103,20 @@
         <i class="fa-solid fa-star"></i> THE WEDDING OF DESTINY <i class="fa-solid fa-star"></i>
       </div>
 
-      <div class="hero-couple-titles">
+      <div class="hero-couple-titles cosmic-reveal">
         <h1 class="cosmic-groom" id="hero-groom-name">HOÀNG NINH</h1>
         <div class="cosmic-and">&infin;</div>
         <h1 class="cosmic-bride" id="hero-bride-name">MAI PHƯƠNG</h1>
       </div>
 
-      <div class="hero-cosmic-date-pill">
+      <div class="hero-cosmic-date-pill cosmic-reveal">
         <i class="fa-regular fa-clock"></i>
         <span id="hero-wedding-date">18 . 12 . 2026</span>
       </div>
       <div class="hero-lunar-date" id="hero-lunar-date">Tức ngày 10 tháng 11 năm Bính Ngọ</div>
 
       <!-- Hero Photo with Holographic Aurora Portal -->
-      <div class="aurora-portal-wrap">
+      <div class="aurora-portal-wrap cosmic-reveal">
         <div class="aurora-glow-ring"></div>
         <div class="aurora-portal-frame">
           <img id="hero-img" src="image/chinh.jpg" alt="Hoàng Ninh &amp; Mai Phương">
@@ -121,7 +128,7 @@
       </div>
 
       <!-- Cosmic Greeting Message -->
-      <div class="cosmic-message-card">
+      <div class="cosmic-message-card cosmic-reveal">
         <i class="fa-solid fa-quote-left quote-cosmic"></i>
         <p class="greeting-text" id="hero-greeting-text">
           Đến dự buổi tiệc chung vui cùng gia đình chúng tôi. Giữa hàng tỷ vì sao trong vũ trụ bao la, chúng mình thật may mắn vì đã gặp được nhau và có bạn cùng chứng kiến khoảnh khắc này!
@@ -131,7 +138,7 @@
 
     <!-- SECTION: ASTRONOMICAL COUNTDOWN -->
     <section class="section-galaxy-countdown" id="section-countdown">
-      <div class="cosmic-sec-header">
+      <div class="cosmic-sec-header cosmic-reveal">
         <span class="sec-orbit-tag">DESTINY COUNTDOWN</span>
         <h2 class="sec-cosmic-title">Đếm Ngược Giờ Gặp Nhau</h2>
         <div class="cosmic-divider">
@@ -143,7 +150,7 @@
         </div>
       </div>
 
-      <div class="cosmic-countdown-grid">
+      <div class="cosmic-countdown-grid cosmic-reveal">
         <div class="countdown-orb-item">
           <div class="orb-val" id="cd-days">00</div>
           <div class="orb-unit">NGÀY</div>
@@ -168,7 +175,7 @@
 
     <!-- SECTION: PARENTS & TWO FAMILIES -->
     <section class="section-galaxy-parents" id="section-parents">
-      <div class="cosmic-sec-header">
+      <div class="cosmic-sec-header cosmic-reveal">
         <span class="sec-orbit-tag">TWO FAMILIES</span>
         <h2 class="sec-cosmic-title">Đại Diện Hai Bên Gia Đình</h2>
         <div class="cosmic-divider">
@@ -182,7 +189,7 @@
 
       <div class="galaxy-parents-grid">
         <!-- Groom Family -->
-        <div class="galaxy-family-card groom-side">
+        <div class="galaxy-family-card groom-side cosmic-reveal">
           <div class="card-starlight-tag"><i class="fa-solid fa-moon"></i> NHÀ TRAI</div>
           <div class="parent-names" id="groom-parents-text">
             ÔNG HOÀNG VĂN HIỂN<br>BÀ NGUYỄN THỊ HÀ
@@ -194,7 +201,7 @@
         </div>
 
         <!-- Bride Family -->
-        <div class="galaxy-family-card bride-side">
+        <div class="galaxy-family-card bride-side cosmic-reveal">
           <div class="card-starlight-tag"><i class="fa-solid fa-sun"></i> NHÀ GÁI</div>
           <div class="parent-names" id="bride-parents-text">
             ÔNG NGÔ VĂN CỔN<br>BÀ NGUYỄN THỊ BÌNH
@@ -209,7 +216,7 @@
 
     <!-- SECTION: WEDDING EVENTS SCHEDULE -->
     <section class="section-galaxy-events" id="section-events">
-      <div class="cosmic-sec-header">
+      <div class="cosmic-sec-header cosmic-reveal">
         <span class="sec-orbit-tag">TIMELINE &amp; LOCATIONS</span>
         <h2 class="sec-cosmic-title">Thời Khắc Trọng Đại</h2>
         <div class="cosmic-divider">
@@ -223,7 +230,7 @@
 
       <div class="galaxy-events-list">
         <!-- Event 1: Nhà Gái -->
-        <div class="cosmic-event-card">
+        <div class="cosmic-event-card cosmic-reveal">
           <div class="event-orbit-badge">LỄ VU QUY &bull; NHÀ GÁI</div>
           <div class="event-time" id="event-bride-time"><i class="fa-solid fa-clock"></i> 09:00 - Thứ Bảy</div>
           <h3 class="event-venue" id="event-bride-venue">TƯ GIA NHÀ GÁI</h3>
@@ -236,7 +243,7 @@
         </div>
 
         <!-- Event 2: Nhà Trai -->
-        <div class="cosmic-event-card highlight-event">
+        <div class="cosmic-event-card highlight-event cosmic-reveal">
           <div class="event-orbit-badge highlight">TIỆC CƯỚI THÀNH HÔN &bull; NHÀ TRAI</div>
           <div class="event-time" id="event-groom-time"><i class="fa-solid fa-clock"></i> 11:00 - Chủ Nhật</div>
           <h3 class="event-venue" id="event-groom-venue">TRUNG TÂM TIỆC CƯỚI ROYAL PALACE</h3>
@@ -252,7 +259,7 @@
 
     <!-- SECTION: PHOTO ALBUM / STARRY GALLERY -->
     <section class="section-galaxy-gallery" id="section-gallery">
-      <div class="cosmic-sec-header">
+      <div class="cosmic-sec-header cosmic-reveal">
         <span class="sec-orbit-tag">COSMIC MEMORIES</span>
         <h2 class="sec-cosmic-title">Khoảnh Khắc Tinh Tú</h2>
         <div class="cosmic-divider">
@@ -264,14 +271,14 @@
         </div>
       </div>
 
-      <div class="galaxy-mosaic-gallery" id="gallery-grid">
+      <div class="galaxy-mosaic-gallery cosmic-reveal" id="gallery-grid">
         <!-- Rendered via JS -->
       </div>
     </section>
 
     <!-- SECTION: GIFT REGISTRY & VIETQR -->
     <section class="section-galaxy-gift" id="section-gift">
-      <div class="cosmic-sec-header">
+      <div class="cosmic-sec-header cosmic-reveal">
         <span class="sec-orbit-tag">WISHES &amp; GIFTS</span>
         <h2 class="sec-cosmic-title">Hộp Mừng Cưới</h2>
         <div class="cosmic-divider">
@@ -283,7 +290,7 @@
         </div>
       </div>
 
-      <div class="galaxy-gift-card">
+      <div class="galaxy-gift-card cosmic-reveal">
         <p class="gift-cosmic-desc">
           Sự hiện diện của quý khách là món quà quý báu nhất. Nếu quý khách muốn gửi lời chúc mừng từ phương xa, có thể quét mã VietQR ngân hàng dưới đây:
         </p>
@@ -321,7 +328,7 @@
 
     <!-- SECTION: WISHES / COSMIC GUESTBOOK -->
     <section class="section-galaxy-wishes" id="section-wishes">
-      <div class="cosmic-sec-header">
+      <div class="cosmic-sec-header cosmic-reveal">
         <span class="sec-orbit-tag">STARLIGHT BLESSINGS</span>
         <h2 class="sec-cosmic-title">Sổ Lưu Bút Thiên Hà</h2>
         <div class="cosmic-divider">
@@ -333,7 +340,7 @@
         </div>
       </div>
 
-      <div class="galaxy-wishes-card">
+      <div class="galaxy-wishes-card cosmic-reveal">
         <form class="galaxy-wish-form" id="wish-form">
           <div class="f-group">
             <label for="wish-name">Tên của bạn:</label>
@@ -355,7 +362,7 @@
     </section>
 
     <!-- FOOTER -->
-    <footer class="galaxy-footer">
+    <footer class="galaxy-footer cosmic-reveal">
       <div class="footer-orbit-icon"><i class="fa-solid fa-infinity"></i></div>
       <div class="footer-monogram" id="footer-monogram">HOÀNG NINH &amp; MAI PHƯƠNG</div>
       <p class="footer-thanks">Cảm ơn bạn đã là một mảnh ghép rực rỡ trong dải ngân hà hạnh phúc của chúng mình!</p>

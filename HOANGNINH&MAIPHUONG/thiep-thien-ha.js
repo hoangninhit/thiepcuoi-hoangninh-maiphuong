@@ -102,7 +102,7 @@
     return { day: 18, month: 12, year: 2026 };
   }
 
-  // ==================== 2. COSMIC STARFIELD & SHOOTING STARS ENGINE ====================
+  // ==================== 2. COSMIC STARFIELD & SCROLL PARALLAX ENGINE ====================
   function initGalaxyCanvas() {
     const canvas = document.getElementById('galaxy-canvas');
     if (!canvas) return;
@@ -115,18 +115,20 @@
       height = canvas.height = window.innerHeight;
     });
 
-    // Generate static/twinkling stars
-    const starCount = Math.min(140, Math.floor((width * height) / 5000));
+    // Generate static/twinkling stars with 3D depth
+    const starCount = Math.min(160, Math.floor((width * height) / 4500));
     const stars = [];
     for (let i = 0; i < starCount; i++) {
       stars.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        radius: Math.random() * 1.5 + 0.4,
+        radius: Math.random() * 1.6 + 0.4,
+        depth: Math.random() * 1.5 + 0.3, // 3D depth parallax multiplier
+        speedX: (Math.random() - 0.5) * 0.12,
         alpha: Math.random() * 0.8 + 0.2,
         twinkleSpeed: Math.random() * 0.03 + 0.005,
         twinkleDir: Math.random() > 0.5 ? 1 : -1,
-        color: Math.random() > 0.6 ? '#64dfdf' : (Math.random() > 0.3 ? '#ffd166' : '#ffffff')
+        color: Math.random() > 0.65 ? '#64dfdf' : (Math.random() > 0.35 ? '#ffd166' : (Math.random() > 0.15 ? '#ffffff' : '#c499f6'))
       });
     }
 
@@ -135,11 +137,11 @@
 
     function addShootingStar() {
       shootingStars.push({
-        x: Math.random() * (width * 0.8),
-        y: Math.random() * (height * 0.4),
-        len: Math.random() * 90 + 70,
-        speed: Math.random() * 10 + 12,
-        angle: Math.PI / 4 + (Math.random() - 0.5) * 0.2, // ~45 deg
+        x: Math.random() * (width * 0.85),
+        y: Math.random() * (height * 0.45),
+        len: Math.random() * 100 + 75,
+        speed: Math.random() * 11 + 13,
+        angle: Math.PI / 4 + (Math.random() - 0.5) * 0.25, // ~45 deg
         opacity: 1,
         dead: false
       });
@@ -147,12 +149,93 @@
 
     let nextShootTime = Date.now() + 2000;
 
+    // Interactive Stardust Particles (spawn on mouse move, wheel, or scroll)
+    const stardustParticles = [];
+
+    function addStardust(x, y, count) {
+      if (stardustParticles.length > 90) return;
+      const colors = ['#64dfdf', '#ffd166', '#a370f7', '#ffffff'];
+      for (let i = 0; i < (count || 1); i++) {
+        stardustParticles.push({
+          x: x + (Math.random() - 0.5) * 20,
+          y: y + (Math.random() - 0.5) * 20,
+          vx: (Math.random() - 0.5) * 1.5,
+          vy: (Math.random() - 0.5) * 1.5 - 0.4,
+          radius: Math.random() * 2 + 0.8,
+          alpha: Math.random() * 0.6 + 0.4,
+          decay: Math.random() * 0.02 + 0.015,
+          color: colors[Math.floor(Math.random() * colors.length)]
+        });
+      }
+    }
+
+    // Scroll Velocity Tracking
+    let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+    let scrollVelocity = 0;
+    let targetVelocity = 0;
+
+    window.addEventListener('scroll', function () {
+      const currentY = window.pageYOffset || document.documentElement.scrollTop;
+      const delta = currentY - lastScrollY;
+      lastScrollY = currentY;
+      targetVelocity += delta * 0.35;
+      if (targetVelocity > 70) targetVelocity = 70;
+      if (targetVelocity < -70) targetVelocity = -70;
+
+      // Burst shooting stars if user is scrolling fast
+      if (Math.abs(delta) > 28 && shootingStars.length < 5 && Math.random() < 0.35) {
+        addShootingStar();
+      }
+
+      // Add edge stardust on scroll
+      if (Math.abs(delta) > 10 && Math.random() < 0.4) {
+        addStardust(Math.random() < 0.5 ? Math.random() * 60 : width - Math.random() * 60, Math.random() * height, 1);
+      }
+    }, { passive: true });
+
+    // Mouse wheel velocity boost
+    window.addEventListener('wheel', function (e) {
+      targetVelocity += Math.sign(e.deltaY) * Math.min(15, Math.abs(e.deltaY) * 0.08);
+    }, { passive: true });
+
+    // Mouse move stardust trail
+    window.addEventListener('mousemove', function (e) {
+      if (Math.random() < 0.4) {
+        addStardust(e.clientX, e.clientY, 1);
+      }
+    }, { passive: true });
+
+    // Touch move stardust trail
+    window.addEventListener('touchmove', function (e) {
+      if (e.touches && e.touches[0] && Math.random() < 0.5) {
+        addStardust(e.touches[0].clientX, e.touches[0].clientY, 1);
+      }
+    }, { passive: true });
+
     function renderStarfield() {
       ctx.clearRect(0, 0, width, height);
 
-      // 1. Draw Twinkling Stars
+      // Smooth damping of scroll velocity
+      scrollVelocity += (targetVelocity - scrollVelocity) * 0.12;
+      targetVelocity *= 0.88;
+
+      const isFastScrolling = Math.abs(scrollVelocity) > 2.5;
+
+      // 1. Draw Twinkling Stars with 3D Depth Parallax & Streak Warp
       for (let i = 0; i < stars.length; i++) {
         const s = stars[i];
+
+        // Move stars with depth parallax
+        s.y -= scrollVelocity * 0.18 * s.depth;
+        s.x += s.speedX;
+
+        // Boundary wrap
+        if (s.y < 0) s.y = height + (s.y % height);
+        else if (s.y > height) s.y = s.y % height;
+        if (s.x < 0) s.x = width;
+        else if (s.x > width) s.x = 0;
+
+        // Twinkle
         s.alpha += s.twinkleSpeed * s.twinkleDir;
         if (s.alpha >= 1) {
           s.alpha = 1;
@@ -162,14 +245,27 @@
           s.twinkleDir = 1;
         }
 
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
-        ctx.fillStyle = s.color;
-        ctx.globalAlpha = s.alpha;
-        ctx.shadowBlur = s.radius * 3;
-        ctx.shadowColor = s.color;
-        ctx.fill();
-        ctx.shadowBlur = 0;
+        // Streak warp on fast scroll vs soft glow when slow
+        const streakLen = Math.min(22, Math.abs(scrollVelocity) * 0.28 * s.depth);
+        if (isFastScrolling && streakLen > 2) {
+          const dir = scrollVelocity > 0 ? -1 : 1;
+          ctx.beginPath();
+          ctx.moveTo(s.x, s.y);
+          ctx.lineTo(s.x, s.y + dir * streakLen);
+          ctx.strokeStyle = s.color;
+          ctx.lineWidth = s.radius * 1.3;
+          ctx.globalAlpha = Math.min(1, s.alpha * 1.2);
+          ctx.stroke();
+        } else {
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+          ctx.fillStyle = s.color;
+          ctx.globalAlpha = s.alpha;
+          ctx.shadowBlur = s.radius * 3.5;
+          ctx.shadowColor = s.color;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
       }
 
       ctx.globalAlpha = 1;
@@ -177,7 +273,7 @@
       // 2. Spawn and Draw Shooting Stars
       if (Date.now() > nextShootTime) {
         addShootingStar();
-        nextShootTime = Date.now() + Math.random() * 3500 + 2500;
+        nextShootTime = Date.now() + Math.random() * 3200 + 2200;
       }
 
       for (let j = shootingStars.length - 1; j >= 0; j--) {
@@ -187,29 +283,110 @@
 
         const grad = ctx.createLinearGradient(ss.x, ss.y, tailX, tailY);
         grad.addColorStop(0, 'rgba(255, 255, 255, ' + ss.opacity + ')');
-        grad.addColorStop(0.3, 'rgba(100, 223, 223, ' + (ss.opacity * 0.7) + ')');
+        grad.addColorStop(0.3, 'rgba(100, 223, 223, ' + (ss.opacity * 0.75) + ')');
         grad.addColorStop(1, 'rgba(163, 112, 247, 0)');
 
         ctx.beginPath();
         ctx.moveTo(ss.x, ss.y);
         ctx.lineTo(tailX, tailY);
         ctx.strokeStyle = grad;
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 2.2;
         ctx.stroke();
 
         ss.x += Math.cos(ss.angle) * ss.speed;
         ss.y += Math.sin(ss.angle) * ss.speed;
-        ss.opacity -= 0.015;
+        ss.opacity -= 0.016;
 
         if (ss.opacity <= 0 || ss.x > width + 100 || ss.y > height + 100) {
           shootingStars.splice(j, 1);
         }
       }
 
+      // 3. Draw Interactive Stardust Sparkle Trail
+      for (let k = stardustParticles.length - 1; k >= 0; k--) {
+        const p = stardustParticles[k];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= p.decay;
+
+        if (p.alpha <= 0) {
+          stardustParticles.splice(k, 1);
+          continue;
+        }
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha;
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = p.color;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      ctx.globalAlpha = 1;
       starfieldAnimId = requestAnimationFrame(renderStarfield);
     }
 
     renderStarfield();
+  }
+
+  // ==================== SCROLL EFFECTS: PROGRESS & REVEAL & 3D TILT ====================
+  function initScrollEffects() {
+    const scrollBar = document.getElementById('cosmic-scroll-bar');
+
+    function updateProgress() {
+      if (!scrollBar) return;
+      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+      scrollBar.style.width = Math.min(100, Math.max(0, scrolled)) + '%';
+    }
+
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+
+    // IntersectionObserver for Starlight Scroll Reveal
+    const revealEls = document.querySelectorAll('.cosmic-reveal');
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+          }
+        });
+      }, {
+        threshold: 0.08,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      revealEls.forEach(function (el) {
+        observer.observe(el);
+      });
+    } else {
+      revealEls.forEach(function (el) {
+        el.classList.add('revealed');
+      });
+    }
+
+    // 3D Tilt Effect on mousemove for cosmic cards
+    const tiltCards = document.querySelectorAll('.aurora-portal-wrap, .galaxy-family-card, .cosmic-event-card, .galaxy-gift-card, .galaxy-wishes-card');
+    tiltCards.forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotX = ((y - centerY) / centerY) * -5;
+        const rotY = ((x - centerX) / centerX) * 5;
+        card.style.transform = 'perspective(900px) rotateX(' + rotX.toFixed(2) + 'deg) rotateY(' + rotY.toFixed(2) + 'deg) translateY(-4px)';
+      });
+
+      card.addEventListener('mouseleave', function () {
+        card.style.transform = '';
+      });
+    });
   }
 
   // ==================== 3. COUNTDOWN TIMER ====================
@@ -473,8 +650,9 @@
 
   // ==================== 8. INITIALIZE & EVENT LISTENERS ====================
   document.addEventListener('DOMContentLoaded', function () {
-    // Starfield Canvas
+    // Starfield Canvas & Scroll Parallax / Reveal Effects
     initGalaxyCanvas();
+    initScrollEffects();
 
     const urlParams = new URLSearchParams(window.location.search);
 

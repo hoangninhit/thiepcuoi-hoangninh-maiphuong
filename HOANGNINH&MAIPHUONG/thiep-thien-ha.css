@@ -1,0 +1,1182 @@
+/**
+ * THIỆP CƯỚI THIÊN HÀ SAO BĂNG (THIEP-THIEN-HA.CSS)
+ * Cosmic Starfield, Shooting Stars, Aurora Glowing Rings & Holographic UI
+ */
+
+:root {
+  --cosmic-bg-deep: #080816;
+  --cosmic-bg-card: rgba(16, 20, 48, 0.72);
+  --cosmic-border: rgba(100, 223, 223, 0.28);
+  --cosmic-border-glow: rgba(230, 200, 117, 0.35);
+  --gold-starlight: #e6c875;
+  --gold-shimmer: #ffd166;
+  --cyan-beam: #64dfdf;
+  --violet-glow: #a370f7;
+  --text-pure: #ffffff;
+  --text-muted: #a3b1cc;
+  --font-title: 'Cinzel', 'Playfair Display', Georgia, serif;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Base Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--text-pure);
+  background: radial-gradient(circle at 50% 20%, #151838 0%, #0c0e22 50%, #060712 100%);
+  background-attachment: fixed;
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Background Canvas Starfield */
+.galaxy-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Floating Settings / Builder Button */
+.galaxy-settings-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+  height: 44px;
+  padding: 0 16px 0 12px;
+  border-radius: 25px;
+  background: rgba(16, 20, 48, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid var(--gold-starlight);
+  box-shadow: 0 0 18px rgba(230, 200, 117, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--gold-starlight);
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.galaxy-settings-btn:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 0 25px rgba(230, 200, 117, 0.5);
+  background: rgba(25, 32, 75, 0.95);
+  color: #fff;
+}
+
+.galaxy-settings-btn .gear-wrap {
+  font-size: 16px;
+  transition: transform 0.4s ease;
+}
+
+.galaxy-settings-btn:hover .gear-wrap {
+  transform: rotate(90deg);
+}
+
+/* Floating Music Player */
+.galaxy-music-player {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(16, 20, 48, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid var(--cyan-beam);
+  box-shadow: 0 0 18px rgba(100, 223, 223, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.galaxy-music-player:hover {
+  transform: scale(1.08);
+}
+
+.planet-disc {
+  color: var(--cyan-beam);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.galaxy-music-player.playing .planet-disc {
+  animation: orbitSpin 6s linear infinite;
+}
+
+@keyframes orbitSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.nebula-ring-pulse {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px dashed rgba(100, 223, 223, 0.4);
+  animation: pulseNebula 3s ease-in-out infinite;
+}
+
+@keyframes pulseNebula {
+  0%, 100% { transform: scale(1); opacity: 0.4; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+/* ==================== 1. INTRO OVERLAY ==================== */
+.galaxy-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: radial-gradient(circle at center, #1b1638 0%, #0c0b1f 60%, #04040a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  transition: opacity 0.9s cubic-bezier(0.2, 0.9, 0.3, 1), visibility 0.9s ease, transform 0.9s ease;
+}
+
+.galaxy-overlay.dismissed {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.08);
+  pointer-events: none;
+}
+
+.constellation-scene {
+  width: 100%;
+  max-width: 440px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  animation: fadeInConstellation 1s ease-out;
+}
+
+@keyframes fadeInConstellation {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Zodiac Monogram Ring */
+.cosmic-zodiac-ring {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(230, 200, 117, 0.6);
+  box-shadow: 0 0 25px rgba(230, 200, 117, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zodiac-center-monogram {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 3px;
+  color: var(--gold-shimmer);
+  text-shadow: 0 0 10px rgba(255, 209, 102, 0.8);
+}
+
+.orbit-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cyan-beam);
+  box-shadow: 0 0 8px var(--cyan-beam);
+}
+
+.orbit-particle.p1 {
+  top: -3px;
+  left: 50%;
+  animation: orbitParticle1 4s linear infinite;
+}
+
+.orbit-particle.p2 {
+  bottom: -3px;
+  left: 50%;
+  animation: orbitParticle2 4s linear infinite;
+}
+
+@keyframes orbitParticle1 {
+  from { transform: rotate(0deg) translateX(45px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(45px) rotate(-360deg); }
+}
+
+@keyframes orbitParticle2 {
+  from { transform: rotate(180deg) translateX(45px) rotate(-180deg); }
+  to { transform: rotate(540deg) translateX(45px) rotate(-540deg); }
+}
+
+.cosmic-sub-title {
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: var(--cyan-beam);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.cosmic-couple-names {
+  font-family: var(--font-title);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #fff;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  margin-bottom: 8px;
+}
+
+.cosmic-date {
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: var(--gold-starlight);
+  margin-bottom: 24px;
+}
+
+.hologram-glass-card {
+  background: var(--cosmic-bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--cosmic-border);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(100, 223, 223, 0.08);
+  border-radius: 20px;
+  padding: 24px 20px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.holo-to-label {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.holo-guest-name {
+  font-family: var(--font-title);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--gold-shimmer);
+  text-shadow: 0 0 12px rgba(255, 209, 102, 0.4);
+  margin-bottom: 8px;
+}
+
+.holo-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.btn-open-cosmos {
+  width: 100%;
+  padding: 15px 24px;
+  background: linear-gradient(135deg, #a370f7 0%, #3a86ff 50%, #00f5d4 100%);
+  background-size: 200% auto;
+  color: #fff;
+  border: none;
+  border-radius: 35px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 0 25px rgba(58, 134, 255, 0.5);
+  transition: all 0.3s ease;
+  animation: gradientShift 4s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.btn-open-cosmos:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 35px rgba(0, 245, 212, 0.7);
+}
+
+.btn-skip-cosmos {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-top: 14px;
+  cursor: pointer;
+  padding: 6px 12px;
+  transition: color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-skip-cosmos:hover {
+  color: var(--cyan-beam);
+}
+
+/* ==================== 2. MAIN PAGE WRAPPER ==================== */
+.galaxy-main-wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px 16px 60px;
+  position: relative;
+  z-index: 10;
+}
+
+/* Section Header */
+.cosmic-sec-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.sec-orbit-tag {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 4px;
+  font-weight: 600;
+  color: var(--cyan-beam);
+  margin-bottom: 4px;
+}
+
+.sec-cosmic-title {
+  font-family: var(--font-title);
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+.cosmic-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+  color: var(--gold-starlight);
+  font-size: 13px;
+}
+
+.cosmic-divider .beam-line {
+  width: 45px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan-beam), transparent);
+}
+
+/* ==================== HERO SECTION ==================== */
+.section-galaxy-hero {
+  text-align: center;
+  padding: 20px 0 35px;
+}
+
+.cosmic-badge {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--gold-starlight);
+  margin-bottom: 14px;
+}
+
+.hero-couple-titles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.hero-couple-titles .cosmic-groom,
+.hero-couple-titles .cosmic-bride {
+  font-family: var(--font-title);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #fff;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+.hero-couple-titles .cosmic-and {
+  font-size: 28px;
+  color: var(--cyan-beam);
+  text-shadow: 0 0 10px var(--cyan-beam);
+}
+
+.hero-cosmic-date-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  border-radius: 25px;
+  background: var(--cosmic-bg-card);
+  border: 1px solid var(--cosmic-border);
+  box-shadow: 0 0 15px rgba(100, 223, 223, 0.15);
+  font-size: 14px;
+  letter-spacing: 3px;
+  color: var(--gold-shimmer);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.hero-lunar-date {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-bottom: 25px;
+}
+
+/* Aurora Portal Frame */
+.aurora-portal-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.aurora-glow-ring {
+  position: absolute;
+  inset: -8px;
+  max-width: 396px;
+  margin: 0 auto;
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(163, 112, 247, 0.4) 0%, rgba(100, 223, 223, 0.4) 100%);
+  filter: blur(14px);
+  animation: glowPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes glowPulse {
+  0% { transform: scale(0.98); opacity: 0.6; }
+  100% { transform: scale(1.02); opacity: 0.9; }
+}
+
+.aurora-portal-frame {
+  position: relative;
+  width: 88%;
+  max-width: 380px;
+  aspect-ratio: 3 / 4;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 2px solid var(--cosmic-border);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  background: #000;
+}
+
+.aurora-portal-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.aurora-portal-frame:hover img {
+  transform: scale(1.04);
+}
+
+.portal-corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--cyan-beam);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.portal-corner.c-tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+.portal-corner.c-tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+.portal-corner.c-bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+.portal-corner.c-br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+.cosmic-message-card {
+  background: var(--cosmic-bg-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--cosmic-border);
+  border-radius: 20px;
+  padding: 22px 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.quote-cosmic {
+  font-size: 20px;
+  color: var(--cyan-beam);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.greeting-text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+/* ==================== COUNTDOWN SECTION ==================== */
+.section-galaxy-countdown {
+  margin-bottom: 40px;
+}
+
+.cosmic-countdown-grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.countdown-orb-item {
+  flex: 1;
+  max-width: 85px;
+  background: var(--cosmic-bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--cosmic-border);
+  border-radius: 18px;
+  padding: 16px 6px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(100, 223, 223, 0.12);
+}
+
+.orb-val {
+  font-family: var(--font-title);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--cyan-beam);
+  text-shadow: 0 0 10px rgba(100, 223, 223, 0.5);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.orb-unit {
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  color: var(--gold-starlight);
+}
+
+.orb-sep {
+  font-size: 20px;
+  color: var(--violet-glow);
+}
+
+/* ==================== PARENTS SECTION ==================== */
+.section-galaxy-parents {
+  margin-bottom: 40px;
+}
+
+.galaxy-parents-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.galaxy-family-card {
+  background: var(--cosmic-bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--cosmic-border);
+  border-radius: 20px;
+  padding: 22px 16px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+}
+
+.card-starlight-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--gold-shimmer);
+  margin-bottom: 10px;
+}
+
+.parent-names {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.parent-addr {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ==================== EVENTS SECTION ==================== */
+.section-galaxy-events {
+  margin-bottom: 40px;
+}
+
+.galaxy-events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cosmic-event-card {
+  background: var(--cosmic-bg-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--cosmic-border);
+  border-radius: 22px;
+  padding: 24px 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transition: transform 0.25s ease;
+}
+
+.cosmic-event-card:hover {
+  transform: translateY(-2px);
+}
+
+.event-orbit-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  background: rgba(100, 223, 223, 0.12);
+  border: 1px solid rgba(100, 223, 223, 0.3);
+  color: var(--cyan-beam);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.event-orbit-badge.highlight {
+  background: rgba(230, 200, 117, 0.15);
+  border-color: rgba(230, 200, 117, 0.4);
+  color: var(--gold-shimmer);
+}
+
+.event-time {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--gold-starlight);
+  margin-bottom: 6px;
+}
+
+.event-venue {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.event-addr {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+}
+
+.btn-galaxy-map {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 25px;
+  background: rgba(100, 223, 223, 0.12);
+  border: 1px solid var(--cyan-beam);
+  color: var(--cyan-beam);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.btn-galaxy-map:hover {
+  background: var(--cyan-beam);
+  color: #060712;
+  box-shadow: 0 0 20px rgba(100, 223, 223, 0.6);
+}
+
+.btn-galaxy-map.highlight {
+  border-color: var(--gold-starlight);
+  color: var(--gold-starlight);
+  background: rgba(230, 200, 117, 0.12);
+}
+
+.btn-galaxy-map.highlight:hover {
+  background: var(--gold-starlight);
+  color: #060712;
+  box-shadow: 0 0 20px rgba(230, 200, 117, 0.6);
+}
+
+/* ==================== GALLERY SECTION ==================== */
+.section-galaxy-gallery {
+  margin-bottom: 40px;
+}
+
+.galaxy-mosaic-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.galaxy-photo-tile {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  border: 1.5px solid var(--cosmic-border);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+.galaxy-photo-tile.tall {
+  grid-row: span 2;
+  aspect-ratio: 1 / 2;
+}
+
+.galaxy-photo-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.galaxy-photo-tile:hover img {
+  transform: scale(1.06);
+}
+
+/* ==================== GIFT & VIETQR ==================== */
+.section-galaxy-gift {
+  margin-bottom: 40px;
+}
+
+.galaxy-gift-card {
+  background: var(--cosmic-bg-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--cosmic-border);
+  border-radius: 24px;
+  padding: 24px 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.gift-cosmic-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.qr-cosmic-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.qr-neon-frame {
+  width: 190px;
+  height: 190px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid var(--gold-starlight);
+  box-shadow: 0 0 25px rgba(230, 200, 117, 0.35);
+  background: #fff;
+}
+
+.qr-neon-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.qr-bank-info {
+  width: 100%;
+  max-width: 380px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 16px;
+  font-size: 13px;
+}
+
+.b-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.b-row:last-child {
+  border-bottom: none;
+}
+
+.b-row .lbl {
+  color: var(--text-muted);
+}
+
+.b-row .val {
+  color: #fff;
+  font-weight: 600;
+}
+
+.b-row .note {
+  color: var(--cyan-beam);
+  font-style: italic;
+  text-align: right;
+  max-width: 60%;
+}
+
+.stk-copy-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stk-num {
+  font-family: monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--gold-shimmer);
+  letter-spacing: 1px;
+}
+
+.btn-copy-stk {
+  background: rgba(230, 200, 117, 0.15);
+  color: var(--gold-starlight);
+  border: 1px solid rgba(230, 200, 117, 0.3);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-copy-stk:hover {
+  background: var(--gold-starlight);
+  color: #060712;
+}
+
+/* ==================== WISHES SECTION ==================== */
+.section-galaxy-wishes {
+  margin-bottom: 40px;
+}
+
+.galaxy-wishes-card {
+  background: var(--cosmic-bg-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--cosmic-border);
+  border-radius: 24px;
+  padding: 24px 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.galaxy-wish-form {
+  margin-bottom: 24px;
+}
+
+.f-group {
+  margin-bottom: 14px;
+}
+
+.f-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.input-cosmic {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--cosmic-border);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-cosmic:focus {
+  border-color: var(--cyan-beam);
+  box-shadow: 0 0 12px rgba(100, 223, 223, 0.3);
+}
+
+.btn-send-cosmic-wish {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #a370f7 0%, #3a86ff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 0 18px rgba(58, 134, 255, 0.4);
+  transition: transform 0.2s ease;
+}
+
+.btn-send-cosmic-wish:hover {
+  transform: translateY(-2px);
+}
+
+.wishes-stream-container {
+  max-height: 320px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.empty-notice {
+  text-align: center;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-muted);
+  padding: 16px 0;
+}
+
+.wish-starlight-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 12px 14px;
+  border-left: 3px solid var(--cyan-beam);
+}
+
+.wish-h-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.wish-user {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--cyan-beam);
+}
+
+.wish-time {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.wish-msg {
+  font-size: 13px;
+  color: #fff;
+  line-height: 1.5;
+}
+
+/* ==================== FOOTER ==================== */
+.galaxy-footer {
+  text-align: center;
+  padding: 30px 16px 20px;
+}
+
+.footer-orbit-icon {
+  font-size: 20px;
+  color: var(--cyan-beam);
+  margin-bottom: 8px;
+}
+
+.footer-monogram {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.footer-thanks {
+  font-size: 13px;
+  color: var(--text-muted);
+  max-width: 420px;
+  margin: 0 auto 12px;
+}
+
+.footer-setting-wrap {
+  margin: 18px 0 14px;
+}
+
+.btn-galaxy-footer-setting {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: linear-gradient(135deg, rgba(163, 112, 247, 0.8) 0%, rgba(58, 134, 255, 0.8) 100%);
+  color: #fff;
+  border: 1px solid var(--cyan-beam);
+  border-radius: 25px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 0 15px rgba(58, 134, 255, 0.3);
+  transition: all 0.25s ease;
+}
+
+.btn-galaxy-footer-setting:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(100, 223, 223, 0.6);
+  color: #fff;
+}
+
+.footer-stars {
+  font-size: 14px;
+  color: var(--gold-starlight);
+  opacity: 0.7;
+}
+
+/* ==================== LIGHTBOX & TOAST ==================== */
+.galaxy-lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.galaxy-lightbox.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 5, 15, 0.9);
+  backdrop-filter: blur(10px);
+}
+
+.lightbox-body {
+  position: relative;
+  z-index: 2;
+  max-width: 90vw;
+  max-height: 85vh;
+}
+
+.lightbox-body img {
+  max-width: 100%;
+  max-height: 85vh;
+  border-radius: 16px;
+  border: 1px solid var(--cosmic-border);
+  box-shadow: 0 0 35px rgba(100, 223, 223, 0.3);
+}
+
+.btn-close-lightbox {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 32px;
+  cursor: pointer;
+}
+
+.galaxy-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(30px);
+  background: rgba(16, 20, 48, 0.95);
+  border: 1px solid var(--cyan-beam);
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 30px;
+  font-size: 13px;
+  z-index: 10001;
+  opacity: 0;
+  visibility: hidden;
+  box-shadow: 0 0 20px rgba(100, 223, 223, 0.4);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.galaxy-toast.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Hide settings in iframe preview */
+body.in-preview .galaxy-settings-btn,
+body.in-preview .footer-setting-wrap {
+  display: none !important;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .galaxy-parents-grid {
+    grid-template-columns: 1fr;
+  }
+  .hero-couple-titles .cosmic-groom,
+  .hero-couple-titles .cosmic-bride {
+    font-size: 24px;
+  }
+  .orb-val {
+    font-size: 22px;
+  }
+  .galaxy-settings-btn {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 50%;
+  }
+  .galaxy-settings-btn .settings-hint {
+    display: none;
+  }
+}

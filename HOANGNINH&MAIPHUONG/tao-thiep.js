@@ -279,6 +279,10 @@ document.addEventListener('DOMContentLoaded', () => {
       targetHtml = 'thiep-hien-dai.html';
     } else if (cfg && cfg.templateLayout === 'garden') {
       targetHtml = 'thiep-hoa-co.html';
+    } else if (cfg && cfg.templateLayout === 'galaxy') {
+      targetHtml = 'thiep-thien-ha.html';
+    } else if (cfg && cfg.templateLayout === 'fireworks') {
+      targetHtml = 'thiep-phao-hoa.html';
     }
     const baseUrl = window.location.origin + window.location.pathname.replace('tao-thiep.html', targetHtml);
     
@@ -584,6 +588,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let target = 'index.html?preview=1';
     if (layout === 'modern') target = 'thiep-hien-dai.html?preview=1';
     else if (layout === 'garden') target = 'thiep-hoa-co.html?preview=1';
+    else if (layout === 'galaxy') target = 'thiep-thien-ha.html?preview=1';
+    else if (layout === 'fireworks') target = 'thiep-phao-hoa.html?preview=1';
 
     const currentSrc = previewIframe.getAttribute('src') || '';
     if (!currentSrc.includes(target.split('?')[0])) {
@@ -803,7 +809,9 @@ document.addEventListener('DOMContentLoaded', () => {
           const layoutNames = {
             palace: 'Cung Đình Hoàng Gia',
             modern: 'Phong Bì Thư & Tạp Chí',
-            garden: 'Vườn Hoa & Kính Mờ'
+            garden: 'Vườn Hoa & Kính Mờ',
+            galaxy: 'Thiên Hà & Sao Băng',
+            fireworks: 'Đèn Lồng & Pháo Hoa'
           };
           showToast(`Đã chuyển sang mẫu: ${layoutNames[r.value] || r.value}!`);
         }
@@ -1649,7 +1657,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const layoutTagMap = {
         palace: '<span class="invitation-theme-tag" style="background: rgba(139, 24, 32, 0.12); color: #8b1820; border: 1px solid rgba(139, 24, 32, 0.25);">🏰 Cung Đình</span>',
         modern: '<span class="invitation-theme-tag" style="background: rgba(43, 45, 66, 0.12); color: #2b2d42; border: 1px solid rgba(43, 45, 66, 0.25);">💌 Phong Bì Thư</span>',
-        garden: '<span class="invitation-theme-tag" style="background: rgba(140, 74, 90, 0.12); color: #8c4a5a; border: 1px solid rgba(140, 74, 90, 0.25);">🌸 Vườn Hoa</span>'
+        garden: '<span class="invitation-theme-tag" style="background: rgba(140, 74, 90, 0.12); color: #8c4a5a; border: 1px solid rgba(140, 74, 90, 0.25);">🌸 Vườn Hoa</span>',
+        galaxy: '<span class="invitation-theme-tag" style="background: rgba(26, 32, 75, 0.5); color: #64dfdf; border: 1px solid rgba(100, 223, 223, 0.4);">🌌 Thiên Hà</span>',
+        fireworks: '<span class="invitation-theme-tag" style="background: rgba(130, 13, 24, 0.25); color: #ffd166; border: 1px solid rgba(212, 175, 55, 0.4);">🎆 Pháo Hoa</span>'
       };
 
       let html = '';

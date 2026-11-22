@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>THIỆP CƯỚI THIÊN HÀ SAO BĂNG • HOÀNG NINH &amp; MAI PHƯƠNG</title>
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="THIỆP CƯỚI THIÊN HÀ SAO BĂNG • HOÀNG NINH &amp; MAI PHƯƠNG">
+  <meta property="og:description" content="Kính mời quý khách bước vào vũ trụ tình yêu ngàn sao của chúng tôi!">
+  <meta property="og:image" content="image/chinh.jpg">
+
+  <!-- Google Fonts: Cinzel, Cormorant Garamond, Orbitron, Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Galaxy Theme Stylesheet -->
+  <link rel="stylesheet" href="thiep-thien-ha.css">
+</head>
+
+<body data-theme="galaxy">
+
+  <!-- Canvas Cosmic Starfield & Shooting Stars -->
+  <canvas id="galaxy-canvas" class="galaxy-canvas"></canvas>
+
+  <!-- Background Music Audio -->
+  <audio id="wedding-audio" loop preload="auto">
+    <source src="https://statics.pancake.vn/web-media/5e/ee/bf/4a/afa10d3bdf98ca17ec3191ebbfd3c829d135d06939ee1f1b712d731d-w:0-h:0-l:2938934-t:audio/mpeg.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Floating Settings / Builder Button -->
+  <a href="tao-thiep.html" class="galaxy-settings-btn" id="galaxy-settings-btn" title="Cài đặt &amp; Tùy biến thiệp cưới">
+    <div class="gear-wrap">
+      <i class="fa-solid fa-gear"></i>
+    </div>
+    <span class="settings-hint">Cài đặt</span>
+  </a>
+
+  <!-- Floating Cosmic Music Player -->
+  <div class="galaxy-music-player" id="galaxy-music-player" title="Bật/Tắt âm nhạc thiên hà">
+    <div class="nebula-ring-pulse"></div>
+    <div class="planet-disc">
+      <i class="fa-solid fa-satellite"></i>
+    </div>
+  </div>
+
+  <!-- ==================== 1. COSMIC SUPERNOVA INTRO OVERLAY ==================== -->
+  <div class="galaxy-overlay" id="galaxy-overlay">
+    <div class="nebula-cloud-bg"></div>
+
+    <div class="constellation-scene">
+      <!-- Zodiac Monogram Ring -->
+      <div class="cosmic-zodiac-ring">
+        <div class="orbit-particle p1"></div>
+        <div class="orbit-particle p2"></div>
+        <div class="orbit-particle p3"></div>
+        <div class="zodiac-center-monogram" id="overlay-monogram">N &bull; P</div>
+      </div>
+
+      <div class="cosmic-sub-title">TWO STARS &bull; ONE UNIVERSE</div>
+      <h1 class="cosmic-couple-names" id="overlay-couple-names">HOÀNG NINH &bull; MAI PHƯƠNG</h1>
+      <div class="cosmic-date" id="overlay-wedding-date">18 . 12 . 2026</div>
+
+      <!-- Holographic Invitation Card -->
+      <div class="hologram-glass-card">
+        <div class="holo-shine"></div>
+        <div class="holo-to-label">TRÂN TRỌNG KÍNH MỜI:</div>
+        <div class="holo-guest-name" id="overlay-guest-name">Quý Khách</div>
+        <p class="holo-desc">Bước qua cánh cổng dải ngân hà để chung vui trong ngày hai vì sao tìm thấy nhau!</p>
+      </div>
+
+      <!-- Action Button -->
+      <button type="button" class="btn-open-cosmos" id="btn-open-cosmos">
+        <i class="fa-solid fa-meteor"></i>
+        <span>KHAI MỞ THIÊN HÀ</span>
+      </button>
+
+      <button type="button" class="btn-skip-cosmos" id="btn-skip-cosmos">
+        Vào xem trực tiếp <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== 2. MAIN GALAXY INVITATION ==================== -->
+  <main class="galaxy-main-wrapper" id="main-content">
+
+    <!-- Top Constellation Header -->
+    <header class="section-galaxy-hero" id="section-hero">
+      <div class="cosmic-badge">
+        <i class="fa-solid fa-star"></i> THE WEDDING OF DESTINY <i class="fa-solid fa-star"></i>
+      </div>
+
+      <div class="hero-couple-titles">
+        <h1 class="cosmic-groom" id="hero-groom-name">HOÀNG NINH</h1>
+        <div class="cosmic-and">&infin;</div>
+        <h1 class="cosmic-bride" id="hero-bride-name">MAI PHƯƠNG</h1>
+      </div>
+
+      <div class="hero-cosmic-date-pill">
+        <i class="fa-regular fa-clock"></i>
+        <span id="hero-wedding-date">18 . 12 . 2026</span>
+      </div>
+      <div class="hero-lunar-date" id="hero-lunar-date">Tức ngày 10 tháng 11 năm Bính Ngọ</div>
+
+      <!-- Hero Photo with Holographic Aurora Portal -->
+      <div class="aurora-portal-wrap">
+        <div class="aurora-glow-ring"></div>
+        <div class="aurora-portal-frame">
+          <img id="hero-img" src="image/chinh.jpg" alt="Hoàng Ninh &amp; Mai Phương">
+          <div class="portal-corner c-tl"></div>
+          <div class="portal-corner c-tr"></div>
+          <div class="portal-corner c-bl"></div>
+          <div class="portal-corner c-br"></div>
+        </div>
+      </div>
+
+      <!-- Cosmic Greeting Message -->
+      <div class="cosmic-message-card">
+        <i class="fa-solid fa-quote-left quote-cosmic"></i>
+        <p class="greeting-text" id="hero-greeting-text">
+          Đến dự buổi tiệc chung vui cùng gia đình chúng tôi. Giữa hàng tỷ vì sao trong vũ trụ bao la, chúng mình thật may mắn vì đã gặp được nhau và có bạn cùng chứng kiến khoảnh khắc này!
+        </p>
+      </div>
+    </header>
+
+    <!-- SECTION: ASTRONOMICAL COUNTDOWN -->
+    <section class="section-galaxy-countdown" id="section-countdown">
+      <div class="cosmic-sec-header">
+        <span class="sec-orbit-tag">DESTINY COUNTDOWN</span>
+        <h2 class="sec-cosmic-title">Đếm Ngược Giờ Gặp Nhau</h2>
+        <div class="cosmic-divider">
+          <span class="star-dot">★</span>
+          <span class="beam-line"></span>
+          <span class="star-dot">✦</span>
+          <span class="beam-line"></span>
+          <span class="star-dot">★</span>
+        </div>
+      </div>
+
+      <div class="cosmic-countdown-grid">
+        <div class="countdown-orb-item">
+          <div class="orb-val" id="cd-days">00</div>
+          <div class="orb-unit">NGÀY</div>
+        </div>
+        <div class="orb-sep">:</div>
+        <div class="countdown-orb-item">
+          <div class="orb-val" id="cd-hours">00</div>
+          <div class="orb-unit">GIỜ</div>
+        </div>
+        <div class="orb-sep">:</div>
+        <div class="countdown-orb-item">
+          <div class="orb-val" id="cd-mins">00</div>
+          <div class="orb-unit">PHÚT</div>
+        </div>
+        <div class="orb-sep">:</div>
+        <div class="countdown-orb-item">
+          <div class="orb-val" id="cd-secs">00</div>
+          <div class="orb-unit">GIÂY</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: PARENTS & TWO FAMILIES -->
+    <section class="section-galaxy-parents" id="section-parents">
+      <div class="cosmic-sec-header">
+        <span class="sec-orbit-tag">TWO FAMILIES</span>
+        <h2 class="sec-cosmic-title">Đại Diện Hai Bên Gia Đình</h2>
+        <div class="cosmic-divider">
+          <span class="star-dot">★</span>
+          <span class="beam-line"></span>
+          <span class="star-dot">✦</span>
+          <span class="beam-line"></span>
+          <span class="star-dot">★</span>
+        </div>
+      </div>
+
+      <div class="galaxy-parents-grid">
+        <!-- Groom Family -->
+        <div class="galaxy-family-card groom-side">
+          <div class="card-starlight-tag"><i class="fa-solid fa-moon"></i> NHÀ TRAI</div>
+          <div class="parent-names" id="groom-parents-text">
+            ÔNG HOÀNG VĂN HIỂN<br>BÀ NGUYỄN THỊ HÀ
+          </div>
+          <div class="parent-addr">
+            <i class="fa-solid fa-location-dot"></i>
+            <span id="groom-address-text">Quận 12, TP. Hồ Chí Minh</span>
+          </div>
+        </div>
+
+        <!-- Bride Family -->
+        <div class="galaxy-family-card bride-side">
+          <div class="card-starlight-tag"><i class="fa-solid fa-sun"></i> NHÀ GÁI</div>
+          <div class="parent-names" id="bride-parents-text">
+            ÔNG NGÔ VĂN CỔN<br>BÀ NGUYỄN THỊ BÌNH
+          </div>
+          <div class="parent-addr">
+            <i class="fa-solid fa-location-dot"></i>
+            <span id="bride-address-text">Xã Bà Điểm, TP. Hồ Chí Minh</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: WEDDING EVENTS SCHEDULE -->
+    <section class="section-galaxy-events" id="section-events">
+      <div class="cosmic-sec-header">
+        <span class="sec-orbit-tag">TIMELINE &amp; LOCATIONS</span>
+        <h2 class="sec-cosmic-title">Thời Khắc Trọng Đại</h2>
+        <div class="cosmic-divider">
+          <span class="star-dot">★</span>
+          <span class="beam-line"></span>
+          <span class="star-dot">✦</span>
+          <span class="beam-line"></span>
+          <span class="star-dot">★</span>
+        </div>
+      </div>
+
+      <div class="galaxy-events-list">
+        <!-- Event 1: Nhà Gái -->
+        <div class="cosmic-event-card">
+          <div class="event-orbit-badge">LỄ VU QUY &bull; NHÀ GÁI</div>
+          <div class="event-time" id="event-bride-time"><i class="fa-solid fa-clock"></i> 09:00 - Thứ Bảy</div>
+          <h3 class="event-venue" id="event-bride-venue">TƯ GIA NHÀ GÁI</h3>
+          <p class="event-addr" id="event-bride-address">Xã Bà Điểm, TP. Hồ Chí Minh</p>
+          <div class="event-action">
+            <a href="#" target="_blank" class="btn-galaxy-map" id="btn-map-bride">
+              <i class="fa-solid fa-location-arrow"></i> Chỉ Đường Google Maps
+            </a>
+          </div>
+        </div>
+
+        <!-- Event 2: Nhà Trai -->
+        <div class="cosmic-event-card highlight-event">
+          <div class="event-orbit-badge highlight">TIỆC CƯỚI THÀNH HÔN &bull; NHÀ TRAI</div>
+          <div class="event-time" id="event-groom-time"><i class="fa-solid fa-clock"></i> 11:00 - Chủ Nhật</div>
+          <h3 class="event-venue" id="event-groom-venue">TRUNG TÂM TIỆC CƯỚI ROYAL PALACE</h3>
+          <p class="event-addr" id="event-groom-address">Quận 12, TP. Hồ Chí Minh</p>
+          <div class="event-action">
+            <a href="#" target="_blank" class="btn-galaxy-map highlight" id="btn-map-groom">
+              <i class="fa-solid fa-location-arrow"></i> Chỉ Đường Google Maps
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: PHOTO ALBUM / STARRY GALLERY -->
+    <section class="section-galaxy-gallery" id="section-gallery">
+      <div class="cosmic-sec-header">
+        <span class="sec-orbit-tag">COSMIC MEMORIES</span>
+        <h2 class="sec-cosmic-title">Khoảnh Khắc Tinh Tú</h2>
+        <div class="cosmic-divider">
+          <span class="star-dot">★</span>
+          <span class="beam-line"></span>
+          <span class="star-dot">✦</span>
+          <span class="beam-line"></span>
+          <span class="star-dot">★</span>
+        </div>
+      </div>
+
+      <div class="galaxy-mosaic-gallery" id="gallery-grid">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- SECTION: GIFT REGISTRY & VIETQR -->
+    <section class="section-galaxy-gift" id="section-gift">
+      <div class="cosmic-sec-header">
+        <span class="sec-orbit-tag">WISHES &amp; GIFTS</span>
+        <h2 class="sec-cosmic-title">Hộp Mừng Cưới</h2>
+        <div class="cosmic-divider">
+          <span class="star-dot">★</span>
+          <span class="beam-line"></span>
+          <span class="star-dot">✦</span>
+          <span class="beam-line"></span>
+          <span class="star-dot">★</span>
+        </div>
+      </div>
+
+      <div class="galaxy-gift-card">
+        <p class="gift-cosmic-desc">
+          Sự hiện diện của quý khách là món quà quý báu nhất. Nếu quý khách muốn gửi lời chúc mừng từ phương xa, có thể quét mã VietQR ngân hàng dưới đây:
+        </p>
+
+        <div class="qr-cosmic-wrap">
+          <div class="qr-neon-frame">
+            <img id="gift-qr-img" src="image/qr_acb.svg" alt="Mã VietQR Mừng Cưới">
+          </div>
+          <div class="qr-bank-info">
+            <div class="b-row">
+              <span class="lbl">Ngân Hàng:</span>
+              <strong class="val" id="gift-bank-name">ACB (Á Châu)</strong>
+            </div>
+            <div class="b-row">
+              <span class="lbl">Chủ Tài Khoản:</span>
+              <strong class="val" id="gift-account-holder">HOANG VAN NINH</strong>
+            </div>
+            <div class="b-row">
+              <span class="lbl">Số Tài Khoản:</span>
+              <div class="stk-copy-box">
+                <span class="stk-num" id="gift-account-number">873588</span>
+                <button type="button" class="btn-copy-stk" id="btn-copy-stk" title="Sao chép số tài khoản">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+              </div>
+            </div>
+            <div class="b-row">
+              <span class="lbl">Nội Dung:</span>
+              <span class="val note" id="gift-transfer-note">Mừng cưới Hoàng Ninh - Mai Phương</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: WISHES / COSMIC GUESTBOOK -->
+    <section class="section-galaxy-wishes" id="section-wishes">
+      <div class="cosmic-sec-header">
+        <span class="sec-orbit-tag">STARLIGHT BLESSINGS</span>
+        <h2 class="sec-cosmic-title">Sổ Lưu Bút Thiên Hà</h2>
+        <div class="cosmic-divider">
+          <span class="star-dot">★</span>
+          <span class="beam-line"></span>
+          <span class="star-dot">✦</span>
+          <span class="beam-line"></span>
+          <span class="star-dot">★</span>
+        </div>
+      </div>
+
+      <div class="galaxy-wishes-card">
+        <form class="galaxy-wish-form" id="wish-form">
+          <div class="f-group">
+            <label for="wish-name">Tên của bạn:</label>
+            <input type="text" id="wish-name" class="input-cosmic" placeholder="Ví dụ: Bạn Minh, Chị Lan..." required>
+          </div>
+          <div class="f-group">
+            <label for="wish-text">Lời chúc gửi tới đôi bạn:</label>
+            <textarea id="wish-text" rows="3" class="input-cosmic" placeholder="Chúc hai bạn mãi mãi bên nhau, tình yêu rực rỡ như muôn ánh sao..." required></textarea>
+          </div>
+          <button type="submit" class="btn-send-cosmic-wish">
+            <i class="fa-solid fa-paper-plane"></i> Thắp Sáng Lời Chúc
+          </button>
+        </form>
+
+        <div class="wishes-stream-container" id="wishes-list">
+          <div class="empty-notice">Hãy là ngôi sao đầu tiên gửi lời chúc phúc tới dâu rể!</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="galaxy-footer">
+      <div class="footer-orbit-icon"><i class="fa-solid fa-infinity"></i></div>
+      <div class="footer-monogram" id="footer-monogram">HOÀNG NINH &amp; MAI PHƯƠNG</div>
+      <p class="footer-thanks">Cảm ơn bạn đã là một mảnh ghép rực rỡ trong dải ngân hà hạnh phúc của chúng mình!</p>
+      
+      <div class="footer-setting-wrap">
+        <a href="tao-thiep.html" class="btn-galaxy-footer-setting" id="btn-footer-settings">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Tùy Biến &amp; Cài Đặt Mẫu Thiệp Này
+        </a>
+      </div>
+
+      <div class="footer-stars">✦ ✧ ★ ✧ ✦</div>
+    </footer>
+
+  </main>
+
+  <!-- LIGHTBOX MODAL -->
+  <div class="galaxy-lightbox" id="galaxy-lightbox">
+    <div class="lightbox-overlay"></div>
+    <div class="lightbox-body">
+      <img id="lightbox-img" src="" alt="Ảnh Cưới Phóng To">
+      <button type="button" class="btn-close-lightbox" id="btn-close-lightbox">&times;</button>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="galaxy-toast" id="galaxy-toast"></div>
+
+  <!-- JavaScript -->
+  <script src="thiep-thien-ha.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>THIỆP CƯỚI ĐÈN LỒNG &amp; PHÁO HOA • HOÀNG NINH &amp; MAI PHƯƠNG</title>
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="THIỆP CƯỚI ĐÈN LỒNG &amp; PHÁO HOA • HOÀNG NINH &amp; MAI PHƯƠNG">
+  <meta property="og:description" content="Trân trọng kính mời quý khách đến dự đêm hội hoa đăng và pháo hoa mừng ngày thành hôn của chúng tôi!">
+  <meta property="og:image" content="image/chinh.jpg">
+
+  <!-- Google Fonts: Playfair Display, Cinzel Decorative, Montserrat, Great Vibes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Fireworks Theme Stylesheet -->
+  <link rel="stylesheet" href="thiep-phao-hoa.css">
+</head>
+
+<body data-theme="fireworks">
+
+  <!-- Canvas Fireworks & Sky Lanterns Engine -->
+  <canvas id="fireworks-canvas" class="fireworks-canvas"></canvas>
+
+  <!-- Background Music Audio -->
+  <audio id="wedding-audio" loop preload="auto">
+    <source src="https://statics.pancake.vn/web-media/5e/ee/bf/4a/afa10d3bdf98ca17ec3191ebbfd3c829d135d06939ee1f1b712d731d-w:0-h:0-l:2938934-t:audio/mpeg.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Floating Settings / Builder Button -->
+  <a href="tao-thiep.html" class="fireworks-settings-btn" id="fireworks-settings-btn" title="Cài đặt &amp; Tùy biến thiệp cưới">
+    <div class="gear-wrap">
+      <i class="fa-solid fa-gear"></i>
+    </div>
+    <span class="settings-hint">Cài đặt</span>
+  </a>
+
+  <!-- Floating Lantern Music Player -->
+  <div class="fireworks-music-player" id="fireworks-music-player" title="Bật/Tắt âm nhạc đêm hội">
+    <div class="lantern-icon-glow">
+      <i class="fa-solid fa-fire"></i>
+    </div>
+  </div>
+
+  <!-- ==================== 1. RIBBON & FIREWORKS OPENING OVERLAY ==================== -->
+  <div class="fireworks-overlay" id="fireworks-overlay">
+    <div class="festive-glow-aura"></div>
+
+    <div class="ribbon-modal-scene">
+      <!-- Golden Seal Emblem -->
+      <div class="golden-seal-emblem">
+        <div class="seal-inner-star">囍</div>
+      </div>
+
+      <div class="festive-sub-text">HỶ SỰ LỄ THÀNH HÔN</div>
+      <h1 class="festive-couple-title" id="overlay-couple-names">HOÀNG NINH &bull; MAI PHƯƠNG</h1>
+      <div class="festive-date" id="overlay-wedding-date">18 . 12 . 2026</div>
+
+      <!-- Velvet Invitation Card -->
+      <div class="festive-glass-card">
+        <div class="card-gold-border"></div>
+        <div class="festive-to">TRÂN TRỌNG KÍNH MỜI:</div>
+        <div class="festive-guest-name" id="overlay-guest-name">Quý Khách</div>
+        <p class="festive-desc">Chạm để mở tiệc hỷ, cùng thắp sáng đèn lồng và ngắm pháo hoa rực rỡ chúc phúc cho chúng mình!</p>
+      </div>
+
+      <!-- Button Launch Fireworks -->
+      <button type="button" class="btn-fireworks-launch" id="btn-fireworks-launch">
+        <i class="fa-solid fa-sparkles"></i>
+        <span>MỞ THIỆP &amp; BẮN PHÁO HOA</span>
+      </button>
+
+      <button type="button" class="btn-skip-festive" id="btn-skip-festive">
+        Vào xem trực tiếp <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== 2. MAIN FESTIVE INVITATION ==================== -->
+  <main class="fireworks-wrapper" id="main-content">
+
+    <!-- HERO HEADER: GOLDEN LANTERN ARCH -->
+    <header class="section-fireworks-hero" id="section-hero">
+      <div class="festive-crown-tag">
+        <span>🏮</span> TRÂN TRỌNG BÁO HỶ <span>🏮</span>
+      </div>
+
+      <div class="couple-festive-names">
+        <h1 class="groom-name" id="hero-groom-name">HOÀNG NINH</h1>
+        <div class="heart-knot">&hearts;</div>
+        <h1 class="bride-name" id="hero-bride-name">MAI PHƯƠNG</h1>
+      </div>
+
+      <div class="festive-date-badge">
+        <i class="fa-solid fa-calendar-check"></i>
+        <span id="hero-wedding-date">18 . 12 . 2026</span>
+      </div>
+      <div class="festive-lunar-date" id="hero-lunar-date">Tức ngày 10 tháng 11 năm Bính Ngọ</div>
+
+      <!-- Hero Photo with Golden Lantern Frame -->
+      <div class="lantern-frame-container">
+        <div class="lantern-glow-ambient"></div>
+        <div class="lantern-arch-photo">
+          <img id="hero-img" src="image/chinh.jpg" alt="Hoàng Ninh &amp; Mai Phương">
+          <div class="corner-knot tl">⚜</div>
+          <div class="corner-knot tr">⚜</div>
+          <div class="corner-knot bl">⚜</div>
+          <div class="corner-knot br">⚜</div>
+        </div>
+      </div>
+
+      <!-- Greeting Card -->
+      <div class="festive-greeting-card">
+        <div class="card-lantern-icon">🏮</div>
+        <p class="card-greeting-text" id="hero-greeting-text">
+          Đến dự buổi tiệc chung vui cùng gia đình chúng tôi. Tình yêu như ngọn đèn lồng ấm áp thắp sáng đêm đông, sự hiện diện của bạn là niềm hạnh phúc lớn nhất của chúng mình!
+        </p>
+      </div>
+
+      <div class="interactive-tap-hint">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> Chạm bất kỳ đâu trên màn hình để bắn pháo hoa trái tim!
+      </div>
+    </header>
+
+    <!-- SECTION: COUNTDOWN WITH LANTERN TILES -->
+    <section class="section-fireworks-countdown" id="section-countdown">
+      <div class="festive-sec-title">
+        <span class="eyebrow">COUNTDOWN TO HAPPINESS</span>
+        <h2>Đếm Ngược Giờ Khai Tiệc</h2>
+        <div class="golden-line-sep">
+          <span>🏮</span>
+          <span class="bar"></span>
+          <span>✨</span>
+          <span class="bar"></span>
+          <span>🏮</span>
+        </div>
+      </div>
+
+      <div class="lantern-countdown-row">
+        <div class="lantern-cd-item">
+          <div class="lantern-val" id="cd-days">00</div>
+          <div class="lantern-lbl">NGÀY</div>
+        </div>
+        <div class="cd-knot">&bull;</div>
+        <div class="lantern-cd-item">
+          <div class="lantern-val" id="cd-hours">00</div>
+          <div class="lantern-lbl">GIỜ</div>
+        </div>
+        <div class="cd-knot">&bull;</div>
+        <div class="lantern-cd-item">
+          <div class="lantern-val" id="cd-mins">00</div>
+          <div class="lantern-lbl">PHÚT</div>
+        </div>
+        <div class="cd-knot">&bull;</div>
+        <div class="lantern-cd-item">
+          <div class="lantern-val" id="cd-secs">00</div>
+          <div class="lantern-lbl">GIÂY</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: TWO FAMILIES -->
+    <section class="section-fireworks-parents" id="section-parents">
+      <div class="festive-sec-title">
+        <span class="eyebrow">FAMILY WITH LOVE</span>
+        <h2>Hai Bên Gia Đình</h2>
+        <div class="golden-line-sep">
+          <span>🏮</span>
+          <span class="bar"></span>
+          <span>✨</span>
+          <span class="bar"></span>
+          <span>🏮</span>
+        </div>
+      </div>
+
+      <div class="festive-parents-grid">
+        <!-- Groom Family -->
+        <div class="festive-parent-box groom-box">
+          <div class="box-crest"><i class="fa-solid fa-dragon"></i> NHÀ TRAI</div>
+          <div class="parent-text" id="groom-parents-text">
+            ÔNG HOÀNG VĂN HIỂN<br>BÀ NGUYỄN THỊ HÀ
+          </div>
+          <div class="parent-address">
+            <i class="fa-solid fa-location-dot"></i>
+            <span id="groom-address-text">Quận 12, TP. Hồ Chí Minh</span>
+          </div>
+        </div>
+
+        <!-- Bride Family -->
+        <div class="festive-parent-box bride-box">
+          <div class="box-crest"><i class="fa-solid fa-feather"></i> NHÀ GÁI</div>
+          <div class="parent-text" id="bride-parents-text">
+            ÔNG NGÔ VĂN CỔN<br>BÀ NGUYỄN THỊ BÌNH
+          </div>
+          <div class="parent-address">
+            <i class="fa-solid fa-location-dot"></i>
+            <span id="bride-address-text">Xã Bà Điểm, TP. Hồ Chí Minh</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: WEDDING EVENTS & RECEPTION -->
+    <section class="section-fireworks-events" id="section-events">
+      <div class="festive-sec-title">
+        <span class="eyebrow">WEDDING BANQUET</span>
+        <h2>Chương Trình Tiệc Cưới</h2>
+        <div class="golden-line-sep">
+          <span>🏮</span>
+          <span class="bar"></span>
+          <span>✨</span>
+          <span class="bar"></span>
+          <span>🏮</span>
+        </div>
+      </div>
+
+      <div class="festive-events-wrap">
+        <!-- Event 1: Nhà Gái -->
+        <div class="festive-event-card">
+          <div class="card-ribbon-tag">TIỆC VU QUY &bull; NHÀ GÁI</div>
+          <div class="ev-time" id="event-bride-time"><i class="fa-solid fa-clock"></i> 09:00 - Thứ Bảy</div>
+          <h3 class="ev-venue" id="event-bride-venue">TƯ GIA NHÀ GÁI</h3>
+          <p class="ev-addr" id="event-bride-address">Xã Bà Điểm, TP. Hồ Chí Minh</p>
+          <a href="#" target="_blank" class="btn-festive-map" id="btn-map-bride">
+            <i class="fa-solid fa-map-location-dot"></i> Chỉ Đường Google Maps
+          </a>
+        </div>
+
+        <!-- Event 2: Nhà Trai -->
+        <div class="festive-event-card highlight-card">
+          <div class="card-ribbon-tag highlight">TIỆC THÀNH HÔN &bull; NHÀ TRAI</div>
+          <div class="ev-time" id="event-groom-time"><i class="fa-solid fa-clock"></i> 11:00 - Chủ Nhật</div>
+          <h3 class="ev-venue" id="event-groom-venue">TRUNG TÂM TIỆC CƯỚI ROYAL PALACE</h3>
+          <p class="ev-addr" id="event-groom-address">Quận 12, TP. Hồ Chí Minh</p>
+          <a href="#" target="_blank" class="btn-festive-map highlight" id="btn-map-groom">
+            <i class="fa-solid fa-map-location-dot"></i> Chỉ Đường Google Maps
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: PHOTO ALBUM -->
+    <section class="section-fireworks-gallery" id="section-gallery">
+      <div class="festive-sec-title">
+        <span class="eyebrow">SWEET MOMENTS</span>
+        <h2>Khoảnh Khắc Hạnh Phúc</h2>
+        <div class="golden-line-sep">
+          <span>🏮</span>
+          <span class="bar"></span>
+          <span>✨</span>
+          <span class="bar"></span>
+          <span>🏮</span>
+        </div>
+      </div>
+
+      <div class="festive-gallery-grid" id="gallery-grid">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- SECTION: GIFT REGISTRY & VIETQR -->
+    <section class="section-fireworks-gift" id="section-gift">
+      <div class="festive-sec-title">
+        <span class="eyebrow">WEDDING GIFTS</span>
+        <h2>Hộp Mừng Cưới</h2>
+        <div class="golden-line-sep">
+          <span>🏮</span>
+          <span class="bar"></span>
+          <span>✨</span>
+          <span class="bar"></span>
+          <span>🏮</span>
+        </div>
+      </div>
+
+      <div class="festive-gift-box">
+        <p class="gift-lead-text">
+          Sự hiện diện của quý khách là niềm chúc phúc to lớn nhất cho đôi uyên ương. Nếu ở xa, quý khách có thể gửi lời chúc và món quà mừng qua mã VietQR dưới đây:
+        </p>
+
+        <div class="festive-qr-block">
+          <div class="festive-qr-frame">
+            <img id="gift-qr-img" src="image/qr_acb.svg" alt="Mã VietQR Mừng Cưới">
+          </div>
+          <div class="festive-bank-details">
+            <div class="b-row">
+              <span class="lbl">Ngân Hàng:</span>
+              <strong class="val" id="gift-bank-name">ACB (Á Châu)</strong>
+            </div>
+            <div class="b-row">
+              <span class="lbl">Chủ Tài Khoản:</span>
+              <strong class="val" id="gift-account-holder">HOANG VAN NINH</strong>
+            </div>
+            <div class="b-row">
+              <span class="lbl">Số Tài Khoản:</span>
+              <div class="stk-row">
+                <span class="stk-number" id="gift-account-number">873588</span>
+                <button type="button" class="btn-copy-stk" id="btn-copy-stk" title="Sao chép số tài khoản">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+              </div>
+            </div>
+            <div class="b-row">
+              <span class="lbl">Nội Dung:</span>
+              <span class="val note" id="gift-transfer-note">Mừng cưới Hoàng Ninh - Mai Phương</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: WISHES / GUESTBOOK -->
+    <section class="section-fireworks-wishes" id="section-wishes">
+      <div class="festive-sec-title">
+        <span class="eyebrow">LANTERN BLESSINGS</span>
+        <h2>Sổ Lưu Bút Hoa Đăng</h2>
+        <div class="golden-line-sep">
+          <span>🏮</span>
+          <span class="bar"></span>
+          <span>✨</span>
+          <span class="bar"></span>
+          <span>🏮</span>
+        </div>
+      </div>
+
+      <div class="festive-wishes-box">
+        <form class="festive-wish-form" id="wish-form">
+          <div class="form-item">
+            <label for="wish-name">Tên của bạn:</label>
+            <input type="text" id="wish-name" class="input-festive" placeholder="Ví dụ: Bạn Hưng, Cô Mai..." required>
+          </div>
+          <div class="form-item">
+            <label for="wish-text">Lời chúc phúc gửi dâu rể:</label>
+            <textarea id="wish-text" rows="3" class="input-festive" placeholder="Chúc hai bạn trăm năm hạnh phúc, gia đình êm ấm, phú quý cát tường..." required></textarea>
+          </div>
+          <button type="submit" class="btn-submit-wish">
+            <i class="fa-solid fa-paper-plane"></i> Gửi Thẻ Ước Nguyện Hoa Đăng
+          </button>
+        </form>
+
+        <div class="wishes-scroll-box" id="wishes-list">
+          <div class="empty-notice">Hãy là người đầu tiên thả đèn hoa đăng gửi lời chúc mừng!</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="fireworks-footer">
+      <div class="footer-knot">囍</div>
+      <div class="footer-names" id="footer-monogram">HOÀNG NINH &amp; MAI PHƯƠNG</div>
+      <p class="footer-desc">Trân trọng cảm ơn sự hiện diện và những lời chúc phúc ngọt ngào của bạn!</p>
+      
+      <div class="footer-setting-wrap">
+        <a href="tao-thiep.html" class="btn-fireworks-footer-setting" id="btn-footer-settings">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Tùy Biến &amp; Cài Đặt Mẫu Thiệp Này
+        </a>
+      </div>
+
+      <div class="footer-decor">🏮 ✨ 🏮 ✨ 🏮</div>
+    </footer>
+
+  </main>
+
+  <!-- LIGHTBOX MODAL -->
+  <div class="festive-lightbox" id="festive-lightbox">
+    <div class="lightbox-overlay"></div>
+    <div class="lightbox-body">
+      <img id="lightbox-img" src="" alt="Ảnh Cưới Phóng To">
+      <button type="button" class="btn-close-lightbox" id="btn-close-lightbox">&times;</button>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="festive-toast" id="festive-toast"></div>
+
+  <!-- JavaScript -->
+  <script src="thiep-phao-hoa.js"></script>
+</body>
+
+</html>

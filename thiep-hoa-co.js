@@ -582,6 +582,12 @@
         } else if (customData.templateLayout === 'modern') {
           window.location.replace('thiep-hien-dai.html' + window.location.search + window.location.hash);
           return;
+        } else if (customData.templateLayout === 'galaxy') {
+          window.location.replace('thiep-thien-ha.html' + window.location.search + window.location.hash);
+          return;
+        } else if (customData.templateLayout === 'fireworks') {
+          window.location.replace('thiep-phao-hoa.html' + window.location.search + window.location.hash);
+          return;
         }
       }
       applyConfig(customData);

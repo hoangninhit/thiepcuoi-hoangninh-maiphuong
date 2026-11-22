@@ -1207,10 +1207,10 @@ body {
   100% { transform: scale(1); opacity: 1; }
 }
 
-/* Template Layout Grid (3 Mẫu Thiệp Mới) */
+/* Template Layout Grid (5 Mẫu Thiệp Độc Quyền) */
 .template-layout-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 12px;
   margin-top: 10px;
 }
@@ -1273,6 +1273,16 @@ body {
 
 .template-card-preview.garden-preview {
   background: linear-gradient(135deg, #8c4a5a 0%, #d4a5b2 100%);
+}
+
+.template-card-preview.galaxy-preview {
+  background: radial-gradient(circle at center, #241c4f 0%, #0c0b1f 60%, #04040a 100%);
+  border: 1px solid rgba(100, 223, 223, 0.4);
+}
+
+.template-card-preview.fireworks-preview {
+  background: radial-gradient(circle at center, #8a0e1b 0%, #42080d 60%, #1a0205 100%);
+  border: 1px solid rgba(212, 175, 55, 0.4);
 }
 
 .template-card-preview .tpl-icon {

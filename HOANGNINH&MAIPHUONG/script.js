@@ -1852,6 +1852,12 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (customData.templateLayout === 'garden') {
           window.location.replace('thiep-hoa-co.html' + window.location.search + window.location.hash);
           return;
+        } else if (customData.templateLayout === 'galaxy') {
+          window.location.replace('thiep-thien-ha.html' + window.location.search + window.location.hash);
+          return;
+        } else if (customData.templateLayout === 'fireworks') {
+          window.location.replace('thiep-phao-hoa.html' + window.location.search + window.location.hash);
+          return;
         }
       }
 

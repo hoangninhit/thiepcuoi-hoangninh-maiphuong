@@ -1,0 +1,1130 @@
+/**
+ * THIỆP CƯỚI ĐÈN LỒNG & PHÁO HOA (THIEP-PHAO-HOA.CSS)
+ * Floating Sky Lanterns, Interactive Fireworks Canvas, Festive Red & Gold Aesthetics
+ */
+
+:root {
+  --festive-red-deep: #42080d;
+  --festive-red-card: rgba(66, 8, 13, 0.78);
+  --festive-red-bright: #9e1422;
+  --festive-gold: #d4af37;
+  --festive-gold-light: #fbe285;
+  --festive-gold-glow: rgba(212, 175, 55, 0.4);
+  --border-gold: rgba(212, 175, 55, 0.35);
+  --text-pure: #ffffff;
+  --text-cream: #fcefe6;
+  --text-muted: #d9b8b8;
+
+  --font-title: 'Playfair Display', Georgia, serif;
+  --font-decor: 'Cinzel Decorative', cursive;
+  --font-script: 'Great Vibes', cursive;
+  --font-sans: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Base Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--text-cream);
+  background: radial-gradient(circle at 50% 15%, #590a12 0%, #30050a 50%, #150204 100%);
+  background-attachment: fixed;
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Background Fireworks & Lanterns Canvas */
+.fireworks-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Floating Settings / Builder Button */
+.fireworks-settings-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+  height: 44px;
+  padding: 0 16px 0 12px;
+  border-radius: 25px;
+  background: rgba(66, 8, 13, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid var(--festive-gold);
+  box-shadow: 0 0 18px var(--festive-gold-glow);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--festive-gold-light);
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.fireworks-settings-btn:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 0 25px rgba(251, 226, 133, 0.6);
+  background: rgba(90, 10, 18, 0.95);
+  color: #fff;
+}
+
+.fireworks-settings-btn .gear-wrap {
+  font-size: 16px;
+  transition: transform 0.4s ease;
+}
+
+.fireworks-settings-btn:hover .gear-wrap {
+  transform: rotate(90deg);
+}
+
+/* Floating Lantern Music Player */
+.fireworks-music-player {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(66, 8, 13, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid var(--festive-gold);
+  box-shadow: 0 0 18px var(--festive-gold-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.fireworks-music-player:hover {
+  transform: scale(1.08);
+}
+
+.lantern-icon-glow {
+  color: var(--festive-gold-light);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: flickerLantern 2s infinite alternate;
+}
+
+@keyframes flickerLantern {
+  0% { transform: scale(1); filter: drop-shadow(0 0 4px #ff9e00); }
+  100% { transform: scale(1.15); filter: drop-shadow(0 0 12px #ffdd00); }
+}
+
+/* ==================== 1. INTRO OVERLAY ==================== */
+.fireworks-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: radial-gradient(circle at center, #6b0c16 0%, #3d050c 55%, #150204 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  transition: opacity 0.9s cubic-bezier(0.2, 0.9, 0.3, 1), visibility 0.9s ease, transform 0.9s ease;
+}
+
+.fireworks-overlay.dismissed {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.08);
+  pointer-events: none;
+}
+
+.ribbon-modal-scene {
+  width: 100%;
+  max-width: 440px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  animation: fadeInFestive 1s ease-out;
+}
+
+@keyframes fadeInFestive {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Golden Seal Emblem */
+.golden-seal-emblem {
+  position: relative;
+  width: 86px;
+  height: 86px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  border: 2px solid var(--festive-gold);
+  background: radial-gradient(circle, #85131f 0%, #4a0910 100%);
+  box-shadow: 0 0 25px var(--festive-gold-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seal-inner-star {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 32px;
+  color: var(--festive-gold-light);
+  text-shadow: 0 0 12px rgba(251, 226, 133, 0.8);
+}
+
+.festive-sub-text {
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: var(--festive-gold-light);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.festive-couple-title {
+  font-family: var(--font-title);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #fff;
+  text-shadow: 0 0 15px rgba(251, 226, 133, 0.5);
+  margin-bottom: 8px;
+}
+
+.festive-date {
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: var(--festive-gold);
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.festive-glass-card {
+  background: var(--festive-red-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-gold);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(212, 175, 55, 0.1);
+  border-radius: 20px;
+  padding: 24px 20px;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.festive-to {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.festive-guest-name {
+  font-family: var(--font-title);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--festive-gold-light);
+  text-shadow: 0 0 12px rgba(251, 226, 133, 0.4);
+  margin-bottom: 8px;
+}
+
+.festive-desc {
+  font-size: 13px;
+  color: var(--text-cream);
+  line-height: 1.5;
+}
+
+.btn-fireworks-launch {
+  width: 100%;
+  padding: 15px 24px;
+  background: linear-gradient(135deg, #c59b27 0%, #e63946 50%, #d4af37 100%);
+  background-size: 200% auto;
+  color: #fff;
+  border: none;
+  border-radius: 35px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+  transition: all 0.3s ease;
+  animation: gradientShift 4s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.btn-fireworks-launch:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 35px rgba(251, 226, 133, 0.8);
+}
+
+.btn-skip-festive {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-top: 14px;
+  cursor: pointer;
+  padding: 6px 12px;
+  transition: color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-skip-festive:hover {
+  color: var(--festive-gold-light);
+}
+
+/* ==================== 2. MAIN PAGE WRAPPER ==================== */
+.fireworks-wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px 16px 60px;
+  position: relative;
+  z-index: 10;
+}
+
+/* Section Title */
+.festive-sec-title {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.festive-sec-title .eyebrow {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 4px;
+  font-weight: 600;
+  color: var(--festive-gold-light);
+  margin-bottom: 4px;
+}
+
+.festive-sec-title h2 {
+  font-family: var(--font-title);
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+.golden-line-sep {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+  color: var(--festive-gold);
+  font-size: 13px;
+}
+
+.golden-line-sep .bar {
+  width: 45px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--festive-gold), transparent);
+}
+
+/* ==================== HERO SECTION ==================== */
+.section-fireworks-hero {
+  text-align: center;
+  padding: 20px 0 35px;
+}
+
+.festive-crown-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  letter-spacing: 4px;
+  font-weight: 700;
+  color: var(--festive-gold-light);
+  margin-bottom: 12px;
+}
+
+.couple-festive-names {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.couple-festive-names .groom-name,
+.couple-festive-names .bride-name {
+  font-family: var(--font-title);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #fff;
+  text-shadow: 0 0 15px rgba(251, 226, 133, 0.4);
+}
+
+.couple-festive-names .heart-knot {
+  font-size: 26px;
+  color: #ff4d6d;
+  animation: heartbeat 1.5s ease infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.festive-date-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  border-radius: 25px;
+  background: var(--festive-red-card);
+  border: 1px solid var(--border-gold);
+  box-shadow: 0 0 15px var(--festive-gold-glow);
+  font-size: 14px;
+  letter-spacing: 3px;
+  color: var(--festive-gold-light);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.festive-lunar-date {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-bottom: 25px;
+}
+
+/* Lantern Arch Photo Frame */
+.lantern-frame-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.lantern-glow-ambient {
+  position: absolute;
+  inset: -8px;
+  max-width: 396px;
+  margin: 0 auto;
+  border-radius: 28px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.4) 0%, rgba(158, 20, 34, 0.2) 100%);
+  filter: blur(14px);
+}
+
+.lantern-arch-photo {
+  position: relative;
+  width: 88%;
+  max-width: 380px;
+  aspect-ratio: 3 / 4;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 3px solid var(--festive-gold);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  background: #000;
+}
+
+.lantern-arch-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.lantern-arch-photo:hover img {
+  transform: scale(1.04);
+}
+
+.corner-knot {
+  position: absolute;
+  font-size: 20px;
+  color: var(--festive-gold-light);
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.corner-knot.tl { top: 10px; left: 10px; }
+.corner-knot.tr { top: 10px; right: 10px; }
+.corner-knot.bl { bottom: 10px; left: 10px; }
+.corner-knot.br { bottom: 10px; right: 10px; }
+
+.festive-greeting-card {
+  background: var(--festive-red-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-gold);
+  border-radius: 20px;
+  padding: 22px 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  max-width: 520px;
+  margin: 0 auto 16px;
+}
+
+.card-lantern-icon {
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+.card-greeting-text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-cream);
+}
+
+.interactive-tap-hint {
+  font-size: 12px;
+  color: var(--festive-gold-light);
+  animation: pulseHint 2s infinite ease-in-out;
+}
+
+@keyframes pulseHint {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* ==================== COUNTDOWN SECTION ==================== */
+.section-fireworks-countdown {
+  margin-bottom: 40px;
+}
+
+.lantern-countdown-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.lantern-cd-item {
+  flex: 1;
+  max-width: 85px;
+  background: var(--festive-red-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-gold);
+  border-radius: 18px;
+  padding: 16px 6px;
+  text-align: center;
+  box-shadow: 0 0 15px var(--festive-gold-glow);
+}
+
+.lantern-val {
+  font-family: var(--font-title);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--festive-gold-light);
+  text-shadow: 0 0 10px rgba(251, 226, 133, 0.5);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.lantern-lbl {
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  color: var(--text-cream);
+}
+
+.cd-knot {
+  font-size: 20px;
+  color: var(--festive-gold);
+}
+
+/* ==================== PARENTS SECTION ==================== */
+.section-fireworks-parents {
+  margin-bottom: 40px;
+}
+
+.festive-parents-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.festive-parent-box {
+  background: var(--festive-red-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-gold);
+  border-radius: 20px;
+  padding: 22px 16px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+}
+
+.box-crest {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--festive-gold-light);
+  margin-bottom: 10px;
+}
+
+.parent-text {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.parent-address {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ==================== EVENTS SECTION ==================== */
+.section-fireworks-events {
+  margin-bottom: 40px;
+}
+
+.festive-events-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.festive-event-card {
+  background: var(--festive-red-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-gold);
+  border-radius: 22px;
+  padding: 24px 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transition: transform 0.25s ease;
+}
+
+.festive-event-card:hover {
+  transform: translateY(-2px);
+}
+
+.card-ribbon-tag {
+  display: inline-block;
+  padding: 4px 14px;
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid var(--border-gold);
+  color: var(--festive-gold-light);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.ev-time {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--festive-gold-light);
+  margin-bottom: 6px;
+}
+
+.ev-venue {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.ev-addr {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+}
+
+.btn-festive-map {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 25px;
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid var(--festive-gold);
+  color: var(--festive-gold-light);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.btn-festive-map:hover {
+  background: var(--festive-gold);
+  color: #30050a;
+  box-shadow: 0 0 20px rgba(251, 226, 133, 0.6);
+}
+
+/* ==================== GALLERY SECTION ==================== */
+.section-fireworks-gallery {
+  margin-bottom: 40px;
+}
+
+.festive-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.festive-photo-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  border: 2px solid var(--border-gold);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+.festive-photo-card.tall {
+  grid-row: span 2;
+  aspect-ratio: 1 / 2;
+}
+
+.festive-photo-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.festive-photo-card:hover img {
+  transform: scale(1.06);
+}
+
+/* ==================== GIFT & VIETQR ==================== */
+.section-fireworks-gift {
+  margin-bottom: 40px;
+}
+
+.festive-gift-box {
+  background: var(--festive-red-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-gold);
+  border-radius: 24px;
+  padding: 24px 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.gift-lead-text {
+  font-size: 13px;
+  color: var(--text-cream);
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.festive-qr-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.festive-qr-frame {
+  width: 190px;
+  height: 190px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid var(--festive-gold);
+  box-shadow: 0 0 25px var(--festive-gold-glow);
+  background: #fff;
+}
+
+.festive-qr-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.festive-bank-details {
+  width: 100%;
+  max-width: 380px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 16px;
+  font-size: 13px;
+}
+
+.b-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.b-row:last-child {
+  border-bottom: none;
+}
+
+.b-row .lbl {
+  color: var(--text-muted);
+}
+
+.b-row .val {
+  color: #fff;
+  font-weight: 600;
+}
+
+.b-row .note {
+  color: var(--festive-gold-light);
+  font-style: italic;
+  text-align: right;
+  max-width: 60%;
+}
+
+.stk-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stk-number {
+  font-family: monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--festive-gold-light);
+  letter-spacing: 1px;
+}
+
+.btn-copy-stk {
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--festive-gold-light);
+  border: 1px solid var(--border-gold);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-copy-stk:hover {
+  background: var(--festive-gold);
+  color: #30050a;
+}
+
+/* ==================== WISHES SECTION ==================== */
+.section-fireworks-wishes {
+  margin-bottom: 40px;
+}
+
+.festive-wishes-box {
+  background: var(--festive-red-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-gold);
+  border-radius: 24px;
+  padding: 24px 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.festive-wish-form {
+  margin-bottom: 24px;
+}
+
+.form-item {
+  margin-bottom: 14px;
+}
+
+.form-item label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.input-festive {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-gold);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-festive:focus {
+  border-color: var(--festive-gold-light);
+  box-shadow: 0 0 12px var(--festive-gold-glow);
+}
+
+.btn-submit-wish {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #c59b27 0%, #e63946 100%);
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 0 18px rgba(212, 175, 55, 0.4);
+  transition: transform 0.2s ease;
+}
+
+.btn-submit-wish:hover {
+  transform: translateY(-2px);
+}
+
+.wishes-scroll-box {
+  max-height: 320px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.empty-notice {
+  text-align: center;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-muted);
+  padding: 16px 0;
+}
+
+.lantern-wish-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 12px 14px;
+  border-left: 3px solid var(--festive-gold);
+}
+
+.wish-header-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.wish-sender-name {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--festive-gold-light);
+}
+
+.wish-send-time {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.wish-message-body {
+  font-size: 13px;
+  color: #fff;
+  line-height: 1.5;
+}
+
+/* ==================== FOOTER ==================== */
+.fireworks-footer {
+  text-align: center;
+  padding: 30px 16px 20px;
+}
+
+.footer-knot {
+  font-size: 26px;
+  color: var(--festive-gold);
+  margin-bottom: 6px;
+}
+
+.footer-names {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.footer-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  max-width: 420px;
+  margin: 0 auto 12px;
+}
+
+.footer-setting-wrap {
+  margin: 18px 0 14px;
+}
+
+.btn-fireworks-footer-setting {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: linear-gradient(135deg, #c59b27 0%, #85131f 100%);
+  color: #fff;
+  border: 1px solid var(--festive-gold);
+  border-radius: 25px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+  transition: all 0.25s ease;
+}
+
+.btn-fireworks-footer-setting:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(251, 226, 133, 0.6);
+  color: #fff;
+}
+
+.footer-decor {
+  font-size: 14px;
+  color: var(--festive-gold);
+  opacity: 0.8;
+}
+
+/* ==================== LIGHTBOX & TOAST ==================== */
+.festive-lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.festive-lightbox.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 2, 4, 0.9);
+  backdrop-filter: blur(10px);
+}
+
+.lightbox-body {
+  position: relative;
+  z-index: 2;
+  max-width: 90vw;
+  max-height: 85vh;
+}
+
+.lightbox-body img {
+  max-width: 100%;
+  max-height: 85vh;
+  border-radius: 16px;
+  border: 1.5px solid var(--border-gold);
+  box-shadow: 0 0 35px var(--festive-gold-glow);
+}
+
+.btn-close-lightbox {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 32px;
+  cursor: pointer;
+}
+
+.festive-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(30px);
+  background: rgba(66, 8, 13, 0.95);
+  border: 1px solid var(--festive-gold);
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 30px;
+  font-size: 13px;
+  z-index: 10001;
+  opacity: 0;
+  visibility: hidden;
+  box-shadow: 0 0 20px var(--festive-gold-glow);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.festive-toast.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Hide settings in iframe preview */
+body.in-preview .fireworks-settings-btn,
+body.in-preview .footer-setting-wrap {
+  display: none !important;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .festive-parents-grid {
+    grid-template-columns: 1fr;
+  }
+  .couple-festive-names .groom-name,
+  .couple-festive-names .bride-name {
+    font-size: 24px;
+  }
+  .lantern-val {
+    font-size: 22px;
+  }
+  .fireworks-settings-btn {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 50%;
+  }
+  .fireworks-settings-btn .settings-hint {
+    display: none;
+  }
+}

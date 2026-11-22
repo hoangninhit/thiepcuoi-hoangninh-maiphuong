@@ -111,6 +111,81 @@ body {
   z-index: 8;
 }
 
+/* Floating Settings / Builder Button */
+.garden-settings-player {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+  height: 46px;
+  padding: 0 16px 0 12px;
+  border-radius: 25px;
+  background: var(--card-glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--card-glass-border);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--primary-color);
+  font-size: 13px;
+  font-weight: 600;
+  transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.garden-settings-player:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--primary-color);
+}
+
+.garden-settings-player .gear-icon-wrap {
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s ease;
+}
+
+.garden-settings-player:hover .gear-icon-wrap {
+  transform: rotate(90deg);
+}
+
+.footer-setting-wrap {
+  margin: 18px 0 14px;
+}
+
+.btn-garden-footer-setting {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: #fff;
+  border-radius: 25px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.25);
+  transition: all 0.25s ease;
+}
+
+.btn-garden-footer-setting:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.35);
+  color: #fff;
+}
+
+/* Hide settings button in iframe preview */
+body.in-preview .garden-settings-player,
+body.in-preview .footer-setting-wrap {
+  display: none !important;
+}
+
 /* Floating Music Player */
 .garden-music-player {
   position: fixed;

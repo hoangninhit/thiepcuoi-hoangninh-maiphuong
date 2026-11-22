@@ -1877,9 +1877,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Auto-open gate when in preview mode (?preview=1 or ?skipIntro=1)
     if (urlParams.get('preview') === '1' || urlParams.get('skipIntro') === '1') {
+      document.body.classList.add('in-preview');
       setTimeout(() => {
         skipIntroDirectly();
       }, 150);
+    } else {
+      const btnQuickSettings = document.getElementById('btn-quick-settings');
+      let targetSettingUrl = 'tao-thiep.html';
+      if (window.location.search || window.location.hash) {
+        targetSettingUrl += window.location.search + window.location.hash;
+      }
+      if (btnQuickSettings) btnQuickSettings.href = targetSettingUrl;
     }
 
     // Live preview listeners from tao-thiep.html iframe

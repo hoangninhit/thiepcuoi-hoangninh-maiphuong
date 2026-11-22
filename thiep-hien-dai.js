@@ -492,7 +492,17 @@
 
     // Auto skip intro if in preview
     if (urlParams.get('preview') === '1' || urlParams.get('skipIntro') === '1') {
+      document.body.classList.add('in-preview');
       setTimeout(skipEnvelope, 300);
+    } else {
+      const btnSettings = document.getElementById('modern-settings-btn');
+      const btnFooterSettings = document.getElementById('btn-footer-settings');
+      let targetSettingUrl = 'tao-thiep.html';
+      if (window.location.search || window.location.hash) {
+        targetSettingUrl += window.location.search + window.location.hash;
+      }
+      if (btnSettings) btnSettings.href = targetSettingUrl;
+      if (btnFooterSettings) btnFooterSettings.href = targetSettingUrl;
     }
   }
 

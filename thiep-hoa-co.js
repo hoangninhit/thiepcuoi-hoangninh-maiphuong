@@ -502,10 +502,21 @@
 
     // Check preview mode
     if (urlParams.get('preview') === '1') {
+      document.body.classList.add('in-preview');
       // In preview mode inside iframe, auto dismiss or keep overlay accessible
       if (overlayEl) {
         overlayEl.classList.add('dismissed');
       }
+    } else {
+      // Setup Settings / Builder Link (Mang theo param inv hoặc hash cfg nếu có)
+      const btnSettings = document.getElementById('garden-settings-btn');
+      const btnFooterSettings = document.getElementById('btn-footer-settings');
+      let targetSettingUrl = 'tao-thiep.html';
+      if (window.location.search || window.location.hash) {
+        targetSettingUrl += window.location.search + window.location.hash;
+      }
+      if (btnSettings) btnSettings.href = targetSettingUrl;
+      if (btnFooterSettings) btnFooterSettings.href = targetSettingUrl;
     }
 
     // Parse config from inv or hash
